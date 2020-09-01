@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -22,5 +23,6 @@
       <TextField fx:id="Password" layoutX="220.0" layoutY="200.0" promptText="Password" />
       <Label fx:id="ErrorEng" layoutX="192.0" layoutY="57.0" text="*Username and password did not match" textFill="#fc0000" />
       <Label fx:id="ErrorUkr" layoutX="180.0" layoutY="81.0" text="*Ім'я користувача та пароль не збігаються" textFill="RED" />
+      <Button layoutX="277.0" layoutY="243.0" mnemonicParsing="false" onAction="#loginHandler" text="Login" />
    </children>
 </AnchorPane>
