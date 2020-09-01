@@ -13,14 +13,14 @@
             <Font size="24.0" />
          </font>
       </Label>
-      <TextField layoutX="220.0" layoutY="149.0" promptText="Username" />
+      <TextField fx:id="Username" layoutX="220.0" layoutY="149.0" promptText="Username" />
       <Label layoutX="284.0" layoutY="114.0" text="Login">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <TextField layoutX="220.0" layoutY="200.0" promptText="Password" />
-      <Label layoutX="192.0" layoutY="57.0" text="*Username and password did not match" textFill="#fc0000" />
-      <Label layoutX="180.0" layoutY="81.0" text="*Ім'я користувача та пароль не збігаються" textFill="RED" />
+      <TextField fx:id="Password" layoutX="220.0" layoutY="200.0" promptText="Password" />
+      <Label fx:id="ErrorEng" layoutX="192.0" layoutY="57.0" text="*Username and password did not match" textFill="#fc0000" />
+      <Label fx:id="ErrorUkr" layoutX="180.0" layoutY="81.0" text="*Ім'я користувача та пароль не збігаються" textFill="RED" />
    </children>
 </AnchorPane>

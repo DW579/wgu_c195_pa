@@ -17,4 +17,10 @@ public class LoginScreenController {
     @FXML
     private Label ErrorUkr;
 
+    @FXML
+    private void initialize() {
+        // Error texts initial appear hidden
+        ErrorEng.setVisible(false);
+        ErrorUkr.setVisible(false);
+    }
 }
