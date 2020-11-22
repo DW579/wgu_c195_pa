@@ -428,7 +428,7 @@
             <Font size="14.0" />
          </font>
       </Label>
-      <Label fx:id="PreviousMonthArrow" layoutX="207.0" layoutY="56.0" onMouseClicked="#perviousMonthClickHandler" onMouseEntered="#perviousMonthEnterHandler" onMouseExited="#perviousMonthExitHandler" text="&lt;">
+      <Label fx:id="PreviousMonthArrow" layoutX="207.0" layoutY="56.0" onMouseClicked="#previousMonthClickHandler" onMouseEntered="#previousMonthEnterHandler" onMouseExited="#previousMonthExitHandler" text="&lt;">
          <font>
             <Font name="System Bold" size="24.0" />
          </font>

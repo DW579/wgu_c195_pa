@@ -1,6 +1,6 @@
 package View_Controller;
 
-import javafx.embed.swing.JFXPanel;
+import Model.CurrentDate;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -19,6 +19,9 @@ public class CalendarMonthController {
     public Button WeekViewButton;
     public Label PreviousMonthArrow;
     public Label NextMonthArrow;
+    public Label MonthCalendarMonth;
+
+
 
     //    Menu options
     public void exitHandler(ActionEvent actionEvent) {
@@ -48,16 +51,16 @@ public class CalendarMonthController {
         currentStage.close();
     }
 
-    //    Arrows to change the months
+    //    Arrows to change the month
+    public void previousMonthClickHandler(MouseEvent mouseEvent) {
 
-    public void perviousMonthClickHandler(MouseEvent mouseEvent) {
     }
 
-    public void perviousMonthEnterHandler(MouseEvent mouseEvent) {
+    public void previousMonthEnterHandler(MouseEvent mouseEvent) {
         PreviousMonthArrow.setTextFill(Color.web("#0076a3"));
     }
 
-    public void perviousMonthExitHandler(MouseEvent mouseEvent) {
+    public void previousMonthExitHandler(MouseEvent mouseEvent) {
         PreviousMonthArrow.setTextFill(Color.web("#000000"));
     }
 

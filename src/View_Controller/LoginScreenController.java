@@ -29,12 +29,12 @@ public class LoginScreenController {
     public void loginHandler(ActionEvent actionEvent) throws IOException {
         // If both Username and Password have "test", open calendar page. Else, show error messages
         if(Username.getText().equals("test") && Password.getText().equals("test")) {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("CalendarMonth.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Calendar.fxml"));
             Parent rootAddPart = (Parent) fxmlLoader.load();
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.initStyle(StageStyle.UNDECORATED);
-            stage.setTitle("Calendar Month");
+            stage.setTitle("Calendar");
             stage.setScene(new Scene(rootAddPart));
             stage.show();
             

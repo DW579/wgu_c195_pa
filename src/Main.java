@@ -5,6 +5,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import utils.DBConnection;
 
+import java.util.HashMap;
+
 public class Main extends Application {
 
     @Override
