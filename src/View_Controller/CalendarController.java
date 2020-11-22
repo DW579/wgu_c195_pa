@@ -52,101 +52,108 @@ public class CalendarController {
 
     // Previous month arrow
     public void previousMonthClicked(MouseEvent mouseEvent) {
-        // Decrease current_mont int
-        if(current_month == 1) {
-            current_month = 12;
+        // If month_view == true then we are viewing the calendar as a month and we change the
+        // month and year by months, else we are viewing it as a week
+        if(month_view) {
+            // Decrease current_mont int
+            if(current_month == 1) {
+                current_month = 12;
 
-            current_year -= 1;
-            Year.setText(Integer.toString(current_year));
+                current_year -= 1;
+                Year.setText(Integer.toString(current_year));
+            }
+            else {
+                current_month -= 1;
+            }
+
+            // Change the text of Month to reflect current_month int
+            if(current_month == 1) {
+                Month.setText("January");
+            }
+            else if(current_month == 2) {
+                Month.setText("February");
+            }
+            else if(current_month == 3) {
+                Month.setText("March");
+            }
+            else if(current_month == 4) {
+                Month.setText("April");
+            }
+            else if(current_month == 5) {
+                Month.setText("May");
+            }
+            else if(current_month == 6) {
+                Month.setText("June");
+            }
+            else if(current_month == 7) {
+                Month.setText("July");
+            }
+            else if(current_month == 8) {
+                Month.setText("August");
+            }
+            else if(current_month == 9) {
+                Month.setText("September");
+            }
+            else if(current_month == 10) {
+                Month.setText("October");
+            }
+            else if(current_month == 11) {
+                Month.setText("November");
+            }
+            else if(current_month == 12) {
+                Month.setText("December");
+            }
+
+            // Change the numbers on the days of the weeks in month
+            // Find the number of days in the month
+            YearMonth yearMonthObject = YearMonth.of(current_year, current_month);
+            int daysInMonth = yearMonthObject.lengthOfMonth();
+            LocalDate localDate = LocalDate.of(current_year, current_month, 1);
+            int first_day_of_week = localDate.getDayOfWeek().getValue();
+            int i = 0;
+            int day_num = 1;
+
+            // The int for Sunday is 7, switch it to 0 for the start of the week
+            if(first_day_of_week == 7) {
+                first_day_of_week = 0;
+            }
+
+            // Add the days of the week that are skip at the beginning of the month
+            daysInMonth = daysInMonth + first_day_of_week;
+
+            // Loop through and change each number
+            ObservableList month_grid_children = MonthGridPane.getChildren();
+
+            // Set labels to no number for the days before the first day of the month
+            while(i < first_day_of_week) {
+                AnchorPane anchor_pane = (AnchorPane) month_grid_children.get(i);
+                ObservableList anchor_pane_children = anchor_pane.getChildren();
+                Label label = (Label) anchor_pane_children.get(0);
+                label.setText("");
+                i += 1;
+            }
+
+            // Set labels to the numbers of each day
+            while(i < daysInMonth) {
+                AnchorPane anchor_pane = (AnchorPane) month_grid_children.get(i);
+                ObservableList anchor_pane_children = anchor_pane.getChildren();
+                Label label = (Label) anchor_pane_children.get(0);
+                label.setText(Integer.toString(day_num));
+                i += 1;
+                day_num += 1;
+            }
+
+            // Set labels to empty for the days that not included for the current month
+            while(i < 40) {
+                AnchorPane anchor_pane = (AnchorPane) month_grid_children.get(i);
+                ObservableList anchor_pane_children = anchor_pane.getChildren();
+                Label label = (Label) anchor_pane_children.get(0);
+                label.setText("");
+                i += 1;
+            }
         }
         else {
-            current_month -= 1;
-        }
 
-        // Change the text of Month to reflect current_month int
-        if(current_month == 1) {
-            Month.setText("January");
-        }
-        else if(current_month == 2) {
-            Month.setText("February");
-        }
-        else if(current_month == 3) {
-            Month.setText("March");
-        }
-        else if(current_month == 4) {
-            Month.setText("April");
-        }
-        else if(current_month == 5) {
-            Month.setText("May");
-        }
-        else if(current_month == 6) {
-            Month.setText("June");
-        }
-        else if(current_month == 7) {
-            Month.setText("July");
-        }
-        else if(current_month == 8) {
-            Month.setText("August");
-        }
-        else if(current_month == 9) {
-            Month.setText("September");
-        }
-        else if(current_month == 10) {
-            Month.setText("October");
-        }
-        else if(current_month == 11) {
-            Month.setText("November");
-        }
-        else if(current_month == 12) {
-            Month.setText("December");
-        }
-
-        // Change the numbers on the days of the weeks in month
-        // Find the number of days in the month
-        YearMonth yearMonthObject = YearMonth.of(current_year, current_month);
-        int daysInMonth = yearMonthObject.lengthOfMonth();
-        LocalDate localDate = LocalDate.of(current_year, current_month, 1);
-        int first_day_of_week = localDate.getDayOfWeek().getValue();
-        int i = 0;
-        int day_num = 1;
-
-        // The int for Sunday is 7, switch it to 0 for the start of the week
-        if(first_day_of_week == 7) {
-            first_day_of_week = 0;
-        }
-
-        // Add the days of the week that are skip at the beginning of the month
-        daysInMonth = daysInMonth + first_day_of_week;
-
-        // Loop through and change each number
-        ObservableList month_grid_children = MonthGridPane.getChildren();
-
-        // Set labels to no number for the days before the first day of the month
-        while(i < first_day_of_week) {
-            AnchorPane anchor_pane = (AnchorPane) month_grid_children.get(i);
-            ObservableList anchor_pane_children = anchor_pane.getChildren();
-            Label label = (Label) anchor_pane_children.get(0);
-            label.setText("");
-            i += 1;
-        }
-
-        // Set labels to the numbers of each day
-        while(i < daysInMonth) {
-            AnchorPane anchor_pane = (AnchorPane) month_grid_children.get(i);
-            ObservableList anchor_pane_children = anchor_pane.getChildren();
-            Label label = (Label) anchor_pane_children.get(0);
-            label.setText(Integer.toString(day_num));
-            i += 1;
-            day_num += 1;
-        }
-
-        // Set labels to empty for the days that not included for the current month
-        while(i < 40) {
-            AnchorPane anchor_pane = (AnchorPane) month_grid_children.get(i);
-            ObservableList anchor_pane_children = anchor_pane.getChildren();
-            Label label = (Label) anchor_pane_children.get(0);
-            label.setText("");
-            i += 1;
         }
     }
 
@@ -160,101 +167,108 @@ public class CalendarController {
 
     // Next month arrow
     public void nextMonthClicked(MouseEvent mouseEvent) {
-        // Increase current_mont int
-        if(current_month == 12) {
-            current_month = 1;
+        // If month_view == true then we are viewing the calendar as a month and we change the
+        // month and year by months, else we are viewing it as a week
+        if(month_view) {
+            // Increase current_mont int
+            if(current_month == 12) {
+                current_month = 1;
 
-            current_year += 1;
-            Year.setText(Integer.toString(current_year));
+                current_year += 1;
+                Year.setText(Integer.toString(current_year));
+            }
+            else {
+                current_month += 1;
+            }
+
+            // Change the text of Month to reflect current_month int
+            if(current_month == 1) {
+                Month.setText("January");
+            }
+            else if(current_month == 2) {
+                Month.setText("February");
+            }
+            else if(current_month == 3) {
+                Month.setText("March");
+            }
+            else if(current_month == 4) {
+                Month.setText("April");
+            }
+            else if(current_month == 5) {
+                Month.setText("May");
+            }
+            else if(current_month == 6) {
+                Month.setText("June");
+            }
+            else if(current_month == 7) {
+                Month.setText("July");
+            }
+            else if(current_month == 8) {
+                Month.setText("August");
+            }
+            else if(current_month == 9) {
+                Month.setText("September");
+            }
+            else if(current_month == 10) {
+                Month.setText("October");
+            }
+            else if(current_month == 11) {
+                Month.setText("November");
+            }
+            else if(current_month == 12) {
+                Month.setText("December");
+            }
+
+            // Change the numbers on the days of the weeks in month
+            // Find the number of days in the month
+            YearMonth yearMonthObject = YearMonth.of(current_year, current_month);
+            int daysInMonth = yearMonthObject.lengthOfMonth();
+            LocalDate localDate = LocalDate.of(current_year, current_month, 1);
+            int first_day_of_week = localDate.getDayOfWeek().getValue();
+            int i = 0;
+            int day_num = 1;
+
+            // The int for Sunday is 7, switch it to 0 for the start of the week
+            if(first_day_of_week == 7) {
+                first_day_of_week = 0;
+            }
+
+            // Add the days of the week that are skip at the beginning of the month
+            daysInMonth = daysInMonth + first_day_of_week;
+
+            // Loop through and change each number
+            ObservableList month_grid_children = MonthGridPane.getChildren();
+
+            // Set labels to no number for the days before the first day of the month
+            while(i < first_day_of_week) {
+                AnchorPane anchor_pane = (AnchorPane) month_grid_children.get(i);
+                ObservableList anchor_pane_children = anchor_pane.getChildren();
+                Label label = (Label) anchor_pane_children.get(0);
+                label.setText("");
+                i += 1;
+            }
+
+            // Set labels to the numbers of each day
+            while(i < daysInMonth) {
+                AnchorPane anchor_pane = (AnchorPane) month_grid_children.get(i);
+                ObservableList anchor_pane_children = anchor_pane.getChildren();
+                Label label = (Label) anchor_pane_children.get(0);
+                label.setText(Integer.toString(day_num));
+                i += 1;
+                day_num += 1;
+            }
+
+            // Set labels to empty for the days that not included for the current month
+            while(i < 40) {
+                AnchorPane anchor_pane = (AnchorPane) month_grid_children.get(i);
+                ObservableList anchor_pane_children = anchor_pane.getChildren();
+                Label label = (Label) anchor_pane_children.get(0);
+                label.setText("");
+                i += 1;
+            }
         }
         else {
-            current_month += 1;
-        }
 
-        // Change the text of Month to reflect current_month int
-        if(current_month == 1) {
-            Month.setText("January");
-        }
-        else if(current_month == 2) {
-            Month.setText("February");
-        }
-        else if(current_month == 3) {
-            Month.setText("March");
-        }
-        else if(current_month == 4) {
-            Month.setText("April");
-        }
-        else if(current_month == 5) {
-            Month.setText("May");
-        }
-        else if(current_month == 6) {
-            Month.setText("June");
-        }
-        else if(current_month == 7) {
-            Month.setText("July");
-        }
-        else if(current_month == 8) {
-            Month.setText("August");
-        }
-        else if(current_month == 9) {
-            Month.setText("September");
-        }
-        else if(current_month == 10) {
-            Month.setText("October");
-        }
-        else if(current_month == 11) {
-            Month.setText("November");
-        }
-        else if(current_month == 12) {
-            Month.setText("December");
-        }
-
-        // Change the numbers on the days of the weeks in month
-        // Find the number of days in the month
-        YearMonth yearMonthObject = YearMonth.of(current_year, current_month);
-        int daysInMonth = yearMonthObject.lengthOfMonth();
-        LocalDate localDate = LocalDate.of(current_year, current_month, 1);
-        int first_day_of_week = localDate.getDayOfWeek().getValue();
-        int i = 0;
-        int day_num = 1;
-
-        // The int for Sunday is 7, switch it to 0 for the start of the week
-        if(first_day_of_week == 7) {
-            first_day_of_week = 0;
-        }
-
-        // Add the days of the week that are skip at the beginning of the month
-        daysInMonth = daysInMonth + first_day_of_week;
-
-        // Loop through and change each number
-        ObservableList month_grid_children = MonthGridPane.getChildren();
-
-        // Set labels to no number for the days before the first day of the month
-        while(i < first_day_of_week) {
-            AnchorPane anchor_pane = (AnchorPane) month_grid_children.get(i);
-            ObservableList anchor_pane_children = anchor_pane.getChildren();
-            Label label = (Label) anchor_pane_children.get(0);
-            label.setText("");
-            i += 1;
-        }
-
-        // Set labels to the numbers of each day
-        while(i < daysInMonth) {
-            AnchorPane anchor_pane = (AnchorPane) month_grid_children.get(i);
-            ObservableList anchor_pane_children = anchor_pane.getChildren();
-            Label label = (Label) anchor_pane_children.get(0);
-            label.setText(Integer.toString(day_num));
-            i += 1;
-            day_num += 1;
-        }
-
-        // Set labels to empty for the days that not included for the current month
-        while(i < 40) {
-            AnchorPane anchor_pane = (AnchorPane) month_grid_children.get(i);
-            ObservableList anchor_pane_children = anchor_pane.getChildren();
-            Label label = (Label) anchor_pane_children.get(0);
-            label.setText("");
-            i += 1;
         }
 
     }
