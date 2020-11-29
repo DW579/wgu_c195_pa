@@ -13,12 +13,12 @@
    <children>
       <Button fx:id="ViewButton" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#changeViewHandler" text="Week View" />
       <Button fx:id="ExitButton" layoutX="909.0" layoutY="14.0" mnemonicParsing="false" onAction="#exitHandler" text="X" />
-      <Label fx:id="Month" layoutX="14.0" layoutY="57.0" text="November">
+      <Label fx:id="Month" layoutX="14.0" layoutY="57.0" text="Month">
          <font>
             <Font name="System Bold" size="24.0" />
          </font>
       </Label>
-      <Label fx:id="Year" layoutX="130.0" layoutY="57.0" text="2020">
+      <Label fx:id="Year" layoutX="130.0" layoutY="57.0" text="Year">
          <font>
             <Font name="System Bold" size="24.0" />
          </font>
@@ -54,7 +54,7 @@
          <children>
             <AnchorPane fx:id="AnchorPane00" onMouseClicked="#anchorPane00Clicked" prefHeight="200.0" prefWidth="132.0">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label00Clicked" text="1">
+                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label00Clicked" text="0">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
@@ -64,7 +64,7 @@
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane10" layoutX="10.0" layoutY="9.0" onMouseClicked="#anchorPane10Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label10Clicked" text="2">
+                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label10Clicked" text="0">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
@@ -74,7 +74,7 @@
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane20" layoutX="142.0" layoutY="9.0" onMouseClicked="#anchorPane20Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label20Clicked" text="3">
+                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label20Clicked" text="0">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
@@ -84,7 +84,7 @@
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane30" layoutX="10.0" layoutY="9.0" onMouseClicked="#anchorPane30Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label30Clicked" text="4">
+                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label30Clicked" text="0">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
@@ -94,7 +94,7 @@
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane40" layoutX="10.0" layoutY="9.0" onMouseClicked="#anchorPane40Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label40Clicked" text="5">
+                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label40Clicked" text="0">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
@@ -104,7 +104,7 @@
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane50" layoutX="10.0" layoutY="9.0" onMouseClicked="#anchorPane50Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="5">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label50Clicked" text="6">
+                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label50Clicked" text="0">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
@@ -114,7 +114,7 @@
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane60" layoutX="10.0" layoutY="9.0" onMouseClicked="#anchorPane60Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="6">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label60Clicked" text="7">
+                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label60Clicked" text="0">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
@@ -124,7 +124,7 @@
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane01" layoutX="799.0" layoutY="9.0" onMouseClicked="#anchorPane01Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label01Clicked" text="8">
+                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label01Clicked" text="0">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
@@ -134,7 +134,7 @@
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane11" layoutX="10.0" layoutY="9.0" onMouseClicked="#anchorPane11Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label11Clicked" text="9">
+                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label11Clicked" text="0">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
@@ -144,7 +144,7 @@
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane21" layoutX="10.0" layoutY="9.0" onMouseClicked="#anchorPane21Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label21Clicked" text="10">
+                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label21Clicked" text="0">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
@@ -154,7 +154,7 @@
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane31" layoutX="10.0" layoutY="9.0" onMouseClicked="#anchorPane31Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label31Clicked" text="11">
+                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label31Clicked" text="0">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
@@ -164,7 +164,7 @@
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane41" layoutX="10.0" layoutY="9.0" onMouseClicked="#anchorPane41Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="1">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label41Clicked" text="12">
+                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label41Clicked" text="0">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
@@ -174,7 +174,7 @@
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane51" layoutX="10.0" layoutY="9.0" onMouseClicked="#anchorPane51Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="1">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label51Clicked" text="13">
+                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label51Clicked" text="0">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
@@ -184,7 +184,7 @@
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane61" layoutX="10.0" layoutY="9.0" onMouseClicked="#anchorPane61Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="1">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label61Clicked" text="14">
+                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label61Clicked" text="0">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
@@ -194,7 +194,7 @@
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane02" layoutX="799.0" layoutY="127.0" onMouseClicked="#anchorPane02Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label02Clicked" text="15">
+                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label02Clicked" text="0">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
@@ -204,7 +204,7 @@
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane12" layoutX="10.0" layoutY="9.0" onMouseClicked="#anchorPane12Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label12Clicked" text="16">
+                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label12Clicked" text="0">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
@@ -214,7 +214,7 @@
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane22" layoutX="10.0" layoutY="9.0" onMouseClicked="#anchorPane22Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label22Clicked" text="17">
+                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label22Clicked" text="0">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
@@ -224,7 +224,7 @@
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane32" layoutX="10.0" layoutY="9.0" onMouseClicked="#anchorPane32Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="2">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label32Clicked" text="18">
+                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label32Clicked" text="0">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
@@ -234,7 +234,7 @@
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane42" layoutX="10.0" layoutY="9.0" onMouseClicked="#anchorPane42Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="2">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label42Clicked" text="19">
+                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label42Clicked" text="0">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
@@ -244,7 +244,7 @@
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane52" layoutX="10.0" layoutY="9.0" onMouseClicked="#anchorPane52Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="2">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label52Clicked" text="20">
+                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label52Clicked" text="0">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
@@ -254,7 +254,7 @@
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane62" layoutX="10.0" layoutY="9.0" onMouseClicked="#anchorPane62Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="2">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label62Clicked" text="21">
+                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label62Clicked" text="0">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
@@ -264,7 +264,7 @@
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane03" layoutX="799.0" layoutY="245.0" onMouseClicked="#anchorPane03Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="3">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label03Clicked" text="22" textFill="ORANGE">
+                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label03Clicked" text="0">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
@@ -274,7 +274,7 @@
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane13" layoutX="10.0" layoutY="9.0" onMouseClicked="#anchorPane13Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label13Clicked" text="23">
+                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label13Clicked" text="0">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
@@ -284,7 +284,7 @@
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane23" layoutX="10.0" layoutY="9.0" onMouseClicked="#anchorPane23Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label23Clicked" text="24">
+                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label23Clicked" text="0">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
@@ -294,7 +294,7 @@
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane33" layoutX="10.0" layoutY="9.0" onMouseClicked="#anchorPane33Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="3">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label33Clicked" text="25">
+                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label33Clicked" text="0">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
@@ -304,7 +304,7 @@
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane43" layoutX="10.0" layoutY="9.0" onMouseClicked="#anchorPane43Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="3">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label43Clicked" text="26">
+                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label43Clicked" text="0">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
@@ -314,7 +314,7 @@
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane53" layoutX="10.0" layoutY="9.0" onMouseClicked="#anchorPane53Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="3">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label53Clicked" text="27">
+                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label53Clicked" text="0">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
@@ -324,7 +324,7 @@
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane63" layoutX="10.0" layoutY="9.0" onMouseClicked="#anchorPane63Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="3">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label63Clicked" text="28">
+                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label63Clicked" text="0">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
@@ -334,7 +334,7 @@
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane04" layoutX="799.0" layoutY="363.0" onMouseClicked="#anchorPane04Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="4">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label04Clicked" text="29">
+                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label04Clicked" text="0">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
@@ -344,7 +344,7 @@
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane14" layoutX="10.0" layoutY="9.0" onMouseClicked="#anchorPane14Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label14Clicked" text="30">
+                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label14Clicked" text="0">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
@@ -595,5 +595,6 @@
             </AnchorPane>
          </children>
       </GridPane>
+      <Button fx:id="CustomerButton" layoutX="130.0" layoutY="14.0" mnemonicParsing="false" onAction="#customerButtonHandler" text="Customer" />
    </children>
 </AnchorPane>
