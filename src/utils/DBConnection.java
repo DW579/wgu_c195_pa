@@ -48,4 +48,9 @@ public class DBConnection {
             System.out.println("Error: " + e.getMessage());
         }
     }
+
+    // Get Database Connection
+    public static Connection getConnection() {
+        return conn;
+    }
 }
