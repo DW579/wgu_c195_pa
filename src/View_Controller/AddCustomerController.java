@@ -23,10 +23,6 @@ public class AddCustomerController {
     public Button SaveButton;
     public Button CloseButton;
 
-    // Initial Customer ID
-    private static int dynamicCustomerId = 1;
-    private static int dynamicCountryId = 1;
-
     // Close Add Customer window
     public void closeButtonHandler(ActionEvent actionEvent) {
         Stage stage = (Stage) CloseButton.getScene().getWindow();
@@ -41,9 +37,10 @@ public class AddCustomerController {
         Boolean error = false;
         int idCountry = 1;
         int idCity = 1;
+        int idAddress = 1;
 
         // Check to see if all fields have values
-        if(NameField.getText().isEmpty() || AddressField.getText().isEmpty() || CityField.getText().isEmpty() || CountryField.getText().isEmpty() || PhoneField.getText().isEmpty()) {
+        if(NameField.getText().isEmpty() || AddressField.getText().isEmpty() || Address2Field.getText().isEmpty() || CityField.getText().isEmpty() || ZipCodeField.getText().isEmpty() || CountryField.getText().isEmpty() || PhoneField.getText().isEmpty()) {
             System.out.println("Not all required fields are filled out");
         }
         else {
@@ -90,7 +87,6 @@ public class AddCustomerController {
                 try {
                     Statement dbConnectionStatement = DBConnection.getConnection().createStatement();
 
-                    // SELECT * FROM city WHERE city=user_entry AND country=idCountry
                     String queryForCityAndCountry = "SELECT * FROM city WHERE city='" + CityField.getText() + "' AND countryId='" + idCountry + "'";
                     ResultSet rs = dbConnectionStatement.executeQuery(queryForCityAndCountry);
 
@@ -130,7 +126,42 @@ public class AddCustomerController {
 
             // Check against Addresses in DB. If error from Country or City try/catch do not run
             if(!error) {
-                System.out.println("Run query for address");
+                try {
+                    Statement dbConnectionStatement = DBConnection.getConnection().createStatement();
+
+                    String queryForAddressAndCity = "SELECT * FROM address WHERE address='" + AddressField.getText() + "' AND address2='" + Address2Field.getText() + "' AND cityId='" + idCity + "'";
+                    ResultSet rs = dbConnectionStatement.executeQuery(queryForAddressAndCity);
+
+                    if(rs.next()) {
+                        System.out.println("There is a Address/City entry");
+
+                        idAddress = rs.getInt("addressId");
+
+                        System.out.println("idAddress = " + Integer.toString(idAddress));
+                    }
+                    else {
+                        System.out.println("No Address/City entry");
+
+                        String queryAllAddresses = "SELECT * FROM address";
+                        ResultSet rs2 = dbConnectionStatement.executeQuery(queryAllAddresses);
+
+                        rs2.last();
+
+                        // If there are entries in address table, set idAddress to be +1 of last entry's id
+                        if(rs2.getRow() > 0) {
+                            idAddress = rs2.getInt("addressId") + 1;
+                        }
+
+                        System.out.println("idAddress = " + Integer.toString(idAddress));
+
+                        String insertNewAddress = "INSERT INTO address VALUES (" + idAddress + ",'" + AddressField.getText() + "','" + Address2Field.getText() + "'," + idCity + ",'" + ZipCodeField.getText() + "','" + PhoneField.getText() + "','2019-01-01 00:00:00','test','2019-01-01 00:00:00','test');";
+                        dbConnectionStatement.executeUpdate(insertNewAddress);
+                    }
+                }
+                catch (SQLException e) {
+                    System.out.println("SQLException error: " + e.getMessage());
+                    error = true;
+                }
             }
 
             // Close Add Customer Window after save
