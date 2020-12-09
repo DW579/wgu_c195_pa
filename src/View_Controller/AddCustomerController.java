@@ -38,6 +38,7 @@ public class AddCustomerController {
         int idCountry = 1;
         int idCity = 1;
         int idAddress = 1;
+        int idCustomer = 1;
 
         // Check to see if all fields have values
         if(NameField.getText().isEmpty() || AddressField.getText().isEmpty() || Address2Field.getText().isEmpty() || CityField.getText().isEmpty() || ZipCodeField.getText().isEmpty() || CountryField.getText().isEmpty() || PhoneField.getText().isEmpty()) {
@@ -156,6 +157,46 @@ public class AddCustomerController {
 
                         String insertNewAddress = "INSERT INTO address VALUES (" + idAddress + ",'" + AddressField.getText() + "','" + Address2Field.getText() + "'," + idCity + ",'" + ZipCodeField.getText() + "','" + PhoneField.getText() + "','2019-01-01 00:00:00','test','2019-01-01 00:00:00','test');";
                         dbConnectionStatement.executeUpdate(insertNewAddress);
+                    }
+                }
+                catch (SQLException e) {
+                    System.out.println("SQLException error: " + e.getMessage());
+                    error = true;
+                }
+            }
+
+            // Check against Customer in DB. If error from Address, Country, or City try/catch do not run
+            if(!error) {
+                try {
+                    Statement dbConnectionStatement = DBConnection.getConnection().createStatement();
+
+                    String queryForCustomerAndAddress = "SELECT * FROM customer WHERE customerName='" + NameField.getText() + "' AND addressId='" + idAddress + "'";
+                    ResultSet rs = dbConnectionStatement.executeQuery(queryForCustomerAndAddress);
+
+                    if(rs.next()) {
+                        System.out.println("There is a Customer/Address entry");
+
+                        idCustomer = rs.getInt("customerId");
+
+                        System.out.println("idCustomer = " + Integer.toString(idCustomer));
+                    }
+                    else {
+                        System.out.println("No Customer/Address entry");
+
+                        String queryAllCustomer = "SELECT * FROM customer";
+                        ResultSet rs2 = dbConnectionStatement.executeQuery(queryAllCustomer);
+
+                        rs2.last();
+
+                        // If there are entries in customer table, set idCustomer to be +1 of last entry's id
+                        if(rs2.getRow() > 0) {
+                            idCustomer = rs2.getInt("customerId") + 1;
+                        }
+
+                        System.out.println("idCustomer = " + Integer.toString(idCustomer));
+
+                        String insertNewCustomer = "INSERT INTO customer VALUES (" + idCustomer + ",'" + NameField.getText() + "','" + idAddress + "',1,'2019-01-01 00:00:00','test','2019-01-01 00:00:00','test');";
+                        dbConnectionStatement.executeUpdate(insertNewCustomer);
                     }
                 }
                 catch (SQLException e) {
