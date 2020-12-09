@@ -36,5 +36,6 @@
       <Label layoutX="390.0" layoutY="136.0" text="*" textFill="RED" />
       <Label layoutX="350.0" layoutY="222.0" text="*" textFill="RED" />
       <Label layoutX="350.0" layoutY="295.0" text="*" textFill="RED" />
+      <Label layoutX="390.0" layoutY="337.0" text="*" textFill="RED" />
    </children>
 </AnchorPane>
