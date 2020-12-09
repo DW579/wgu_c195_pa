@@ -38,18 +38,15 @@ public class AddCustomerController {
 
     // Customer data into DB
     public void saveButtonHandler(ActionEvent actionEvent) {
-        int idCountry;
+        Boolean error = false;
+        int idCountry = 1;
+        int idCity = 1;
 
         // Check to see if all fields have values
         if(NameField.getText().isEmpty() || AddressField.getText().isEmpty() || CityField.getText().isEmpty() || CountryField.getText().isEmpty()) {
             System.out.println("Not all required fields are filled out");
         }
         else {
-            // Maybe need later
-            //                ResultSetMetaData rsmd = rs.getMetaData();
-            //                System.out.println(rsmd.getColumnName(1));
-
-
             // Check against Countries in DB
             // If Country already in DB, use it's countryId. If not, then Insert a new entry and use that new countryId
             try {
@@ -58,42 +55,84 @@ public class AddCustomerController {
                 ResultSet rs = dbConnectionStatement.executeQuery(queryForCountry);
 
                 if(rs.next()) {
-                    System.out.println("There is an entry");
+                    System.out.println("There is a Country entry");
 
                     idCountry = rs.getInt("countryId");
 
                     System.out.println(idCountry);
                 }
                 else {
-                    System.out.println("No entry");
+                    System.out.println("No Country entry");
 
                     String queryAllCountries = "SELECT * FROM country";
                     ResultSet rs2 = dbConnectionStatement.executeQuery(queryAllCountries);
 
                     rs2.last();
 
-                    idCountry = rs2.getInt("countryId") + 1;
+                    // If there are entries in country table, set idCountry to be +1 of last entry's id
+                    if(rs2.getRow() > 0) {
+                        idCountry = rs2.getInt("countryId") + 1;
+                    }
+
+                    System.out.println(idCountry);
 
                     String insertNewCountry = "INSERT INTO country VALUES (" + idCountry + ",'" + CountryField.getText() + "','2019-01-01 00:00:00','test','2019-01-01 00:00:00','test');";
                     dbConnectionStatement.executeUpdate(insertNewCountry);
-
-                    System.out.println(idCountry);
                 }
-
-
             }
             catch (SQLException e) {
                 System.out.println("SQLException error: " + e.getMessage());
+                error = true;
             }
 
             // Check against Cities in DB
+            if(!error) {
+                // If city already in DB, use it's cityId. If not, then Insert a new entry and use that new cityId
+                try {
+                    Statement dbConnectionStatement = DBConnection.getConnection().createStatement();
+                    String queryForCity = "SELECT * FROM city WHERE city='" + CityField.getText() + "'";
+                    ResultSet rs = dbConnectionStatement.executeQuery(queryForCity);
+
+                    if(rs.next()) {
+                        System.out.println("There is a City entry");
+
+                        idCity = rs.getInt("cityId");
+
+                        System.out.println(idCity);
+                    }
+                    else {
+                        System.out.println("No City entry");
+
+                        String queryAllCities = "SELECT * FROM city";
+                        ResultSet rs2 = dbConnectionStatement.executeQuery(queryAllCities);
+
+                        rs2.last();
+
+                        // If there are entries in country table, set idCountry to be +1 of last entry's id
+                        if(rs2.getRow() > 0) {
+                            idCity = rs2.getInt("cityId") + 1;
+                        }
+
+                        System.out.println(idCity);
+
+                        String insertNewCity = "INSERT INTO city VALUES (" + idCity + ",'" + CityField.getText() + "','" + idCountry + "','2019-01-01 00:00:00','test','2019-01-01 00:00:00','test');";
+                        dbConnectionStatement.executeUpdate(insertNewCity);
+                    }
+                }
+                catch (SQLException e) {
+                    System.out.println("SQLException error: " + e.getMessage());
+                    error = true;
+                }
+            }
 
             // Check against Addresses in DB
+            if(!error) {
+                System.out.println("Run query for address");
+            }
 
+            // Close Add Customer Window after save
+            Stage stage = (Stage) SaveButton.getScene().getWindow();
+            stage.close();
         }
-
-        // Close Add Customer Window after save
-        Stage stage = (Stage) SaveButton.getScene().getWindow();
-        stage.close();
     }
 }
