@@ -100,7 +100,6 @@ public class CalendarController {
                 }
             }
         }
-
     }
 
     // Change between Month and Week views

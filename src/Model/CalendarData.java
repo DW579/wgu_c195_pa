@@ -159,4 +159,12 @@ public class CalendarData {
     public static ObservableList<Customer> getAllCustomers() {
         return allCustomers;
     }
+
+    public static ObservableList<Customer> getAllCustomer() {
+        return allCustomers;
+    }
+
+    public static void deleteCustomer(Customer selectedCustomer) {
+        allCustomers.remove(selectedCustomer);
+    }
 }

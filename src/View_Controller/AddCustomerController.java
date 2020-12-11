@@ -4,13 +4,17 @@ import Model.CalendarData;
 import Model.Customer;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
 import utils.DBConnection;
@@ -46,7 +50,12 @@ public class AddCustomerController {
 
         // Check to see if all fields have values
         if(NameField.getText().isEmpty() || AddressField.getText().isEmpty() || Address2Field.getText().isEmpty() || CityField.getText().isEmpty() || ZipCodeField.getText().isEmpty() || CountryField.getText().isEmpty() || PhoneField.getText().isEmpty()) {
-            System.out.println("Not all required fields are filled out");
+            Alert fillAllRequired = new Alert(Alert.AlertType.CONFIRMATION);
+            fillAllRequired.initModality(Modality.NONE);
+            fillAllRequired.setTitle("Fill All Required Fields");
+            fillAllRequired.setHeaderText("Fill All Required Fields");
+            fillAllRequired.setContentText("Please fill in all required fields");
+            Optional<ButtonType> userChoice = fillAllRequired.showAndWait();
         }
         else {
             // Check against Countries in DB
