@@ -1,14 +1,18 @@
 package View_Controller;
 
+import Model.CalendarData;
+import Model.Customer;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.concurrent.atomic.AtomicReference;
+
 import utils.DBConnection;
 
 public class AddCustomerController {
@@ -202,6 +206,27 @@ public class AddCustomerController {
                 catch (SQLException e) {
                     System.out.println("SQLException error: " + e.getMessage());
                     error = true;
+                }
+            }
+
+            // Add new Customer object into ObservableList in CalendarData
+            if(!error) {
+                // Search through allCustomers and make sure there is not already a similar customer in DB
+                ObservableList<Customer> allCustomers = CalendarData.getAllCustomers();
+                Boolean customerExist = false;
+                int currentCustomerId = idCustomer;
+
+                for (Customer customer : allCustomers) {
+                    System.out.println(customer.getId());
+                    if (currentCustomerId == customer.getId()) {
+                        customerExist = true;
+                    }
+                }
+
+                if(!customerExist) {
+                    Customer newCustomer = new Customer(idCustomer, NameField.getText(), idAddress, 1, "2019-01-01 00:00:00", "test", "2019-01-01 00:00:00", "test");
+
+                    CalendarData.addCustomer(newCustomer);
                 }
             }
 

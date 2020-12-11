@@ -1,15 +1,21 @@
 package Model;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.HashMap;
 
 public class CalendarData {
+    // Calendar static
     public static LocalDate todays_date = LocalDate.now();
     public static int selected_month = todays_date.getMonthValue();
     public static int selected_year = todays_date.getYear();
     public static HashMap<Integer, String> all_months = new HashMap<>();
     public static HashMap<Integer, String> anchor_pane_values_map = new HashMap<>();
+    // Customer static
+    private static ObservableList<Customer> allCustomers = FXCollections.observableArrayList();
 
     static {
         // Input all months in all_months HashMap
@@ -143,5 +149,14 @@ public class CalendarData {
             return false;
         }
 
+    }
+
+    // Customer calls
+    public static void addCustomer(Customer newCustomer) {
+        allCustomers.add(newCustomer);
+    }
+
+    public static ObservableList<Customer> getAllCustomers() {
+        return allCustomers;
     }
 }
