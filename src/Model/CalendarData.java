@@ -2,7 +2,10 @@ package Model;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import utils.DBConnection;
 
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.HashMap;
@@ -160,11 +163,30 @@ public class CalendarData {
         return allCustomers;
     }
 
-    public static ObservableList<Customer> getAllCustomer() {
-        return allCustomers;
-    }
-
     public static void deleteCustomer(Customer selectedCustomer) {
         allCustomers.remove(selectedCustomer);
+    }
+
+    public static void updateCustomer(int customerId, String customerName, String address, String address2, String city, String postalCode, String country, String phone) {
+        allCustomers.forEach((customer) -> {
+            if(customer.getId() == customerId) {
+                // Set update name in Object
+                customer.setName(customer.setName(customerName));
+
+                // Set update name in DB
+                try {
+                    Statement dbConnectionStatement = DBConnection.getConnection().createStatement();
+
+                    // Update Customer Name
+                    String queryUpdateCustomerName = "UPDATE customer SET customerName='" + customerName + "' WHERE customerId=" + customerId;
+                    Boolean updateCustomer = dbConnectionStatement.execute(queryUpdateCustomerName);
+                }
+                catch (SQLException e) {
+                    System.out.println("SQLException error: " + e.getMessage());
+                }
+
+            }
+        });
+
     }
 }

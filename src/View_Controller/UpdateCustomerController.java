@@ -1,5 +1,6 @@
 package View_Controller;
 
+import Model.CalendarData;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -101,6 +102,21 @@ public class UpdateCustomerController {
     }
 
     public void saveButtonHandler(ActionEvent actionEvent) {
+//        try {
+//            Statement dbConnectionStatement = DBConnection.getConnection().createStatement();
+//
+//            // Update Customer Name
+//            String queryUpdateCustomerName = "UPDATE customer SET customerName='" + NameField.getText() + "' WHERE customerId=" + IdField.getText();
+//            Boolean updateCustomer = dbConnectionStatement.execute(queryUpdateCustomerName);
+//        }
+//        catch (SQLException e) {
+//            System.out.println("SQLException error: " + e.getMessage());
+//        }
+
+        CalendarData.updateCustomer(Integer.parseInt(IdField.getText()), NameField.getText(), AddressField.getText(), Address2Field.getText(), CityField.getText(), ZipCodeField.getText(), CountryField.getText(), PhoneField.getText());
+
+        Stage stage = (Stage) SaveButton.getScene().getWindow();
+        stage.close();
     }
 
     public void closeButtonHandler(ActionEvent actionEvent) {

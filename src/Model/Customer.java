@@ -41,8 +41,9 @@ public class Customer {
         return name.get();
     }
 
-    public void setName(String name) {
+    public String setName(String name) {
         this.name.set(name);
+        return name;
     }
 
     public StringProperty nameProperty() {
