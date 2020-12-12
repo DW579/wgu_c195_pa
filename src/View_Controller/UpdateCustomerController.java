@@ -102,16 +102,6 @@ public class UpdateCustomerController {
     }
 
     public void saveButtonHandler(ActionEvent actionEvent) {
-//        try {
-//            Statement dbConnectionStatement = DBConnection.getConnection().createStatement();
-//
-//            // Update Customer Name
-//            String queryUpdateCustomerName = "UPDATE customer SET customerName='" + NameField.getText() + "' WHERE customerId=" + IdField.getText();
-//            Boolean updateCustomer = dbConnectionStatement.execute(queryUpdateCustomerName);
-//        }
-//        catch (SQLException e) {
-//            System.out.println("SQLException error: " + e.getMessage());
-//        }
 
         CalendarData.updateCustomer(Integer.parseInt(IdField.getText()), NameField.getText(), AddressField.getText(), Address2Field.getText(), CityField.getText(), ZipCodeField.getText(), CountryField.getText(), PhoneField.getText());
 

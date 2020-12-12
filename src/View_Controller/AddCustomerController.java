@@ -66,15 +66,9 @@ public class AddCustomerController {
                 ResultSet rs = dbConnectionStatement.executeQuery(queryForCountry);
 
                 if(rs.next()) {
-                    System.out.println("There is a Country entry");
-
                     idCountry = rs.getInt("countryId");
-
-                    System.out.println("idCountry = " + Integer.toString(idCountry));
                 }
                 else {
-                    System.out.println("No Country entry");
-
                     String queryAllCountries = "SELECT * FROM country";
                     ResultSet rs2 = dbConnectionStatement.executeQuery(queryAllCountries);
 
@@ -84,8 +78,6 @@ public class AddCustomerController {
                     if(rs2.getRow() > 0) {
                         idCountry = rs2.getInt("countryId") + 1;
                     }
-
-                    System.out.println("idCountry = " + Integer.toString(idCountry));
 
                     String insertNewCountry = "INSERT INTO country VALUES (" + idCountry + ",'" + CountryField.getText() + "','2019-01-01 00:00:00','test','2019-01-01 00:00:00','test');";
                     dbConnectionStatement.executeUpdate(insertNewCountry);
@@ -106,16 +98,10 @@ public class AddCustomerController {
 
                     // If statement returns an entry then no need to INSERT another entry but grab the cityId
                     if(rs.next()) {
-                        System.out.println("There is a City/Country entry");
-
                         idCity = rs.getInt("cityId");
-
-                        System.out.println("idCity = " + Integer.toString(idCity));
                     }
                     //Else, INSERT a new entry
                     else {
-                        System.out.println("No City/Country entry");
-
                         String queryAllCities = "SELECT * FROM city";
                         ResultSet rs2 = dbConnectionStatement.executeQuery(queryAllCities);
 
@@ -125,8 +111,6 @@ public class AddCustomerController {
                         if(rs2.getRow() > 0) {
                             idCity = rs2.getInt("cityId") + 1;
                         }
-
-                        System.out.println("idCity = " + Integer.toString(idCity));
 
                         String insertNewCity = "INSERT INTO city VALUES (" + idCity + ",'" + CityField.getText() + "'," + idCountry + ",'2019-01-01 00:00:00','test','2019-01-01 00:00:00','test');";
                         dbConnectionStatement.executeUpdate(insertNewCity);
@@ -147,15 +131,9 @@ public class AddCustomerController {
                     ResultSet rs = dbConnectionStatement.executeQuery(queryForAddressAndCity);
 
                     if(rs.next()) {
-                        System.out.println("There is a Address/City entry");
-
                         idAddress = rs.getInt("addressId");
-
-                        System.out.println("idAddress = " + Integer.toString(idAddress));
                     }
                     else {
-                        System.out.println("No Address/City entry");
-
                         String queryAllAddresses = "SELECT * FROM address";
                         ResultSet rs2 = dbConnectionStatement.executeQuery(queryAllAddresses);
 
@@ -165,8 +143,6 @@ public class AddCustomerController {
                         if(rs2.getRow() > 0) {
                             idAddress = rs2.getInt("addressId") + 1;
                         }
-
-                        System.out.println("idAddress = " + Integer.toString(idAddress));
 
                         String insertNewAddress = "INSERT INTO address VALUES (" + idAddress + ",'" + AddressField.getText() + "','" + Address2Field.getText() + "'," + idCity + ",'" + ZipCodeField.getText() + "','" + PhoneField.getText() + "','2019-01-01 00:00:00','test','2019-01-01 00:00:00','test');";
                         dbConnectionStatement.executeUpdate(insertNewAddress);
@@ -187,15 +163,9 @@ public class AddCustomerController {
                     ResultSet rs = dbConnectionStatement.executeQuery(queryForCustomerAndAddress);
 
                     if(rs.next()) {
-                        System.out.println("There is a Customer/Address entry");
-
                         idCustomer = rs.getInt("customerId");
-
-                        System.out.println("idCustomer = " + Integer.toString(idCustomer));
                     }
                     else {
-                        System.out.println("No Customer/Address entry");
-
                         String queryAllCustomer = "SELECT * FROM customer";
                         ResultSet rs2 = dbConnectionStatement.executeQuery(queryAllCustomer);
 
@@ -205,8 +175,6 @@ public class AddCustomerController {
                         if(rs2.getRow() > 0) {
                             idCustomer = rs2.getInt("customerId") + 1;
                         }
-
-                        System.out.println("idCustomer = " + Integer.toString(idCustomer));
 
                         String insertNewCustomer = "INSERT INTO customer VALUES (" + idCustomer + ",'" + NameField.getText() + "','" + idAddress + "',1,'2019-01-01 00:00:00','test','2019-01-01 00:00:00','test');";
                         dbConnectionStatement.executeUpdate(insertNewCustomer);

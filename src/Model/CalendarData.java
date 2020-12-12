@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import utils.DBConnection;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
@@ -170,19 +171,131 @@ public class CalendarData {
     public static void updateCustomer(int customerId, String customerName, String address, String address2, String city, String postalCode, String country, String phone) {
         allCustomers.forEach((customer) -> {
             if(customer.getId() == customerId) {
-                // Set update name in Object
-                customer.setName(customer.setName(customerName));
+                Boolean error = false;
+                int idCountry = 1;
+                int idCity = 1;
+                int idAddress = 1;
 
-                // Set update name in DB
+                // Check against Countries in DB
+                // If Country already in DB, use it's countryId. If not, then Insert a new entry and use that new countryId
                 try {
                     Statement dbConnectionStatement = DBConnection.getConnection().createStatement();
+                    String queryForCountry = "SELECT * FROM country WHERE country='" + country + "'";
+                    ResultSet rs = dbConnectionStatement.executeQuery(queryForCountry);
 
-                    // Update Customer Name
-                    String queryUpdateCustomerName = "UPDATE customer SET customerName='" + customerName + "' WHERE customerId=" + customerId;
-                    Boolean updateCustomer = dbConnectionStatement.execute(queryUpdateCustomerName);
+                    if(rs.next()) {
+                        idCountry = rs.getInt("countryId");
+                    }
+                    else {
+                        String queryAllCountries = "SELECT * FROM country";
+                        ResultSet rs2 = dbConnectionStatement.executeQuery(queryAllCountries);
+
+                        rs2.last();
+
+                        // If there are entries in country table, set idCountry to be +1 of last entry's id
+                        if(rs2.getRow() > 0) {
+                            idCountry = rs2.getInt("countryId") + 1;
+                        }
+
+                        String insertNewCountry = "INSERT INTO country VALUES (" + idCountry + ",'" + country + "','2019-01-01 00:00:00','test','2019-01-01 00:00:00','test');";
+                        dbConnectionStatement.executeUpdate(insertNewCountry);
+                    }
                 }
                 catch (SQLException e) {
                     System.out.println("SQLException error: " + e.getMessage());
+                    error = true;
+                }
+
+                // Check against Cities in DB. If error from Country try/catch do not run
+                if(!error) {
+                    try {
+                        Statement dbConnectionStatement = DBConnection.getConnection().createStatement();
+
+                        String queryForCityAndCountry = "SELECT * FROM city WHERE city='" + city + "' AND countryId='" + idCountry + "'";
+                        ResultSet rs = dbConnectionStatement.executeQuery(queryForCityAndCountry);
+
+                        // If statement returns an entry then no need to INSERT another entry but grab the cityId
+                        if(rs.next()) {
+                            idCity = rs.getInt("cityId");
+                        }
+                        //Else, INSERT a new entry
+                        else {
+                            String queryAllCities = "SELECT * FROM city";
+                            ResultSet rs2 = dbConnectionStatement.executeQuery(queryAllCities);
+
+                            rs2.last();
+
+                            // If there are entries in city table, set idCity to be +1 of last entry's id
+                            if(rs2.getRow() > 0) {
+                                idCity = rs2.getInt("cityId") + 1;
+                            }
+
+                            String insertNewCity = "INSERT INTO city VALUES (" + idCity + ",'" + city + "'," + idCountry + ",'2019-01-01 00:00:00','test','2019-01-01 00:00:00','test');";
+                            dbConnectionStatement.executeUpdate(insertNewCity);
+                        }
+                    }
+                    catch (SQLException e) {
+                        System.out.println("SQLException error: " + e.getMessage());
+                        error = true;
+                    }
+                }
+
+                // Check against Addresses in DB. If error from Country or City try/catch do not run
+                if(!error) {
+                    try {
+                        Statement dbConnectionStatement = DBConnection.getConnection().createStatement();
+
+                        String queryForAddressAndCity = "SELECT * FROM address WHERE address='" + address + "' AND address2='" + address2 + "' AND cityId='" + idCity + "'";
+                        ResultSet rs = dbConnectionStatement.executeQuery(queryForAddressAndCity);
+
+                        if(rs.next()) {
+                            System.out.println("There is a Address/City entry");
+
+                            idAddress = rs.getInt("addressId");
+
+                            System.out.println("idAddress = " + Integer.toString(idAddress));
+                        }
+                        else {
+                            System.out.println("No Address/City entry");
+
+                            String queryAllAddresses = "SELECT * FROM address";
+                            ResultSet rs2 = dbConnectionStatement.executeQuery(queryAllAddresses);
+
+                            rs2.last();
+
+                            // If there are entries in address table, set idAddress to be +1 of last entry's id
+                            if(rs2.getRow() > 0) {
+                                idAddress = rs2.getInt("addressId") + 1;
+                            }
+
+                            System.out.println("idAddress = " + Integer.toString(idAddress));
+
+                            String insertNewAddress = "INSERT INTO address VALUES (" + idAddress + ",'" + address + "','" + address2 + "'," + idCity + ",'" + postalCode + "','" + phone + "','2019-01-01 00:00:00','test','2019-01-01 00:00:00','test');";
+                            dbConnectionStatement.executeUpdate(insertNewAddress);
+                        }
+                    }
+                    catch (SQLException e) {
+                        System.out.println("SQLException error: " + e.getMessage());
+                        error = true;
+                    }
+                }
+
+                // Set update name in DB and ObservableList
+                if(!error) {
+                    try {
+                        Statement dbConnectionStatement = DBConnection.getConnection().createStatement();
+
+                        // Update Customer Name
+                        String queryUpdateCustomerName = "UPDATE customer SET customerName='" + customerName + "', addressId=" + Integer.toString(idAddress) + " WHERE customerId=" + Integer.toString(customerId);
+                        dbConnectionStatement.execute(queryUpdateCustomerName);
+                    }
+                    catch (SQLException e) {
+                        System.out.println("SQLException error: " + e.getMessage());
+                    }
+
+                    // Set update name in Object
+                    customer.setName(customerName);
+                    customer.setAddressId(idAddress);
                 }
 
             }

@@ -57,6 +57,7 @@ public class Customer {
 
     public void setAddressId(int addressId) {
         this.addressId.set(addressId);
+        return;
     }
 
     public IntegerProperty addressIdProperty() {
