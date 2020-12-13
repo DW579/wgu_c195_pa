@@ -1,6 +1,11 @@
 package Model;
 
 import javafx.beans.property.*;
+import utils.DBConnection;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class Customer {
     private final IntegerProperty id;
@@ -21,6 +26,14 @@ public class Customer {
         this.createdBy = new SimpleStringProperty(createdBy);
         this.lastUpdate = new SimpleStringProperty(lastUpdate);
         this.lastUpdateBy = new SimpleStringProperty(lastUpdateBy);
+    }
+
+    private final StringProperty address = new SimpleStringProperty();
+    private final StringProperty phone = new SimpleStringProperty();
+
+    // Set address
+    public void setAddress(String address1) {
+        this.address.set(address1);
     }
 
     // Get/Set/Property id
@@ -60,8 +73,8 @@ public class Customer {
         return;
     }
 
-    public IntegerProperty addressIdProperty() {
-        return addressId;
+    public StringProperty addressProperty() {
+        return address;
     }
 
     // Get/Set/Property active
@@ -127,6 +140,24 @@ public class Customer {
 
     public StringProperty nameLastUpdateBy() {
         return lastUpdateBy;
+    }
+
+    // Property phone
+    public StringProperty phoneProperty() {
+        try {
+            Statement dbConnectionStatement = DBConnection.getConnection().createStatement();
+            String queryForAddress = "SELECT * FROM address WHERE addressId=" + Integer.toString(id.get());
+            ResultSet rs = dbConnectionStatement.executeQuery(queryForAddress);
+
+            rs.next();
+
+            this.phone.set(rs.getString("phone"));
+        }
+        catch (SQLException e) {
+            System.out.println("SQLException error: " + e.getMessage());
+        }
+
+        return phone;
     }
 
 }

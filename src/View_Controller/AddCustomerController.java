@@ -194,7 +194,6 @@ public class AddCustomerController {
                 int currentCustomerId = idCustomer;
 
                 for (Customer customer : allCustomers) {
-                    System.out.println(customer.getId());
                     if (currentCustomerId == customer.getId()) {
                         customerExist = true;
                     }
@@ -204,6 +203,8 @@ public class AddCustomerController {
                     Customer newCustomer = new Customer(idCustomer, NameField.getText(), idAddress, 1, "2019-01-01 00:00:00", "test", "2019-01-01 00:00:00", "test");
 
                     CalendarData.addCustomer(newCustomer);
+
+                    newCustomer.setAddress(AddressField.getText());
                 }
             }
 

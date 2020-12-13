@@ -272,6 +272,8 @@ public class CalendarData {
 
                             String insertNewAddress = "INSERT INTO address VALUES (" + idAddress + ",'" + address + "','" + address2 + "'," + idCity + ",'" + postalCode + "','" + phone + "','2019-01-01 00:00:00','test','2019-01-01 00:00:00','test');";
                             dbConnectionStatement.executeUpdate(insertNewAddress);
+
+                            customer.setAddress(address);
                         }
                     }
                     catch (SQLException e) {

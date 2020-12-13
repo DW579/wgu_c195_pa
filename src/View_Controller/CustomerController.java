@@ -44,7 +44,6 @@ public class CustomerController {
     // Need a FilteredList
     FilteredList<Customer> filteredCustomersData = new FilteredList<>(CalendarData.getAllCustomers(), p -> true);
 
-
     // Close Customer Window
     public void exitButtonHandler(ActionEvent actionEvent) {
         Stage stage = (Stage) ExitButton.getScene().getWindow();
@@ -134,6 +133,26 @@ public class CustomerController {
                 Customer newCustomer = new Customer(customerId, customerName, addressId, active, createDate, createdBy, lastUpdate, lastUpdateBy);
 
                 CalendarData.addCustomer(newCustomer);
+                
+                String address1 = null;
+
+                try {
+                    Statement dbCS = DBConnection.getConnection().createStatement();
+                    String queryAddress = "SELECT * FROM address WHERE addressId=" + Integer.toString(addressId);
+                    ResultSet rsAddress = dbCS.executeQuery(queryAddress);
+
+                    rsAddress.next();
+
+                    address1 = rsAddress.getString("address");
+
+                    newCustomer.setAddress(address1);
+                }
+
+                catch (SQLException e) {
+                    System.out.println("SQLException error: " + e.getMessage());
+                }
+
+
             }
         }
         catch (SQLException e) {
@@ -143,10 +162,10 @@ public class CustomerController {
         // Initialize and update Customer table
         CustomerIdCol.setCellValueFactory(cellData -> cellData.getValue().idProperty().asObject());
         CustomerNameCol.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
-        CustomerAddressCol.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
+        CustomerAddressCol.setCellValueFactory(cellData -> cellData.getValue().addressProperty());
         CustomerCityCol.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
         CustomerStateCol.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
-        CustomerPhoneCol.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
+        CustomerPhoneCol.setCellValueFactory(cellData -> cellData.getValue().phoneProperty());
         CustomerTable.setItems(CalendarData.getAllCustomers());
     }
 }
