@@ -29,11 +29,60 @@ public class Customer {
     }
 
     private final StringProperty address = new SimpleStringProperty();
+    private final StringProperty address2 = new SimpleStringProperty();
+    private final StringProperty city = new SimpleStringProperty();
+    private final StringProperty zip = new SimpleStringProperty();
+    private final StringProperty country = new SimpleStringProperty();
     private final StringProperty phone = new SimpleStringProperty();
 
-    // Set address
+    // Set/Property address
     public void setAddress(String address1) {
         this.address.set(address1);
+    }
+
+    // Set/Property address2
+    public void setAddress2(String address2) {
+        this.address2.set(address2);
+    }
+
+    public StringProperty address2Property() {
+        return address2;
+    }
+
+    // Set/Property city
+    public void setCity(String city) {
+        this.city.set(city);
+    }
+
+    public StringProperty cityProperty() {
+        return city;
+    }
+
+    // Set/Property zip
+    public void setZip(String zip) {
+        this.zip.set(zip);
+    }
+
+    public StringProperty zipProperty() {
+        return zip;
+    }
+
+    // Set/Property country
+    public void setCountry(String country) {
+        this.country.set(country);
+    }
+
+    public StringProperty countryProperty() {
+        return country;
+    }
+
+    // Set/Property phone
+    public void setPhone(String phone1) {
+        this.phone.set(phone1);
+    }
+
+    public StringProperty phoneProperty() {
+        return phone;
     }
 
     // Get/Set/Property id
@@ -140,24 +189,6 @@ public class Customer {
 
     public StringProperty nameLastUpdateBy() {
         return lastUpdateBy;
-    }
-
-    // Property phone
-    public StringProperty phoneProperty() {
-        try {
-            Statement dbConnectionStatement = DBConnection.getConnection().createStatement();
-            String queryForAddress = "SELECT * FROM address WHERE addressId=" + Integer.toString(id.get());
-            ResultSet rs = dbConnectionStatement.executeQuery(queryForAddress);
-
-            rs.next();
-
-            this.phone.set(rs.getString("phone"));
-        }
-        catch (SQLException e) {
-            System.out.println("SQLException error: " + e.getMessage());
-        }
-
-        return phone;
     }
 
 }

@@ -114,57 +114,12 @@ public class CustomerController {
 
     @FXML
     private void initialize() {
-        // Get all customer data from DB and insert into Customer ObservableList
-        try {
-            Statement dbConnectionStatement = DBConnection.getConnection().createStatement();
-            String queryAllCustomers = "SELECT * FROM customer";
-            ResultSet rs = dbConnectionStatement.executeQuery(queryAllCustomers);
-
-            while(rs.next()) {
-                int customerId = rs.getInt("customerId");
-                String customerName = rs.getString("customerName");
-                int addressId = rs.getInt("addressId");
-                int active = rs.getInt("active");
-                String createDate = rs.getString("createDate");
-                String createdBy = rs.getString("createdBy");
-                String lastUpdate = rs.getString("lastUpdate");
-                String lastUpdateBy = rs.getString("lastUpdateBy");
-
-                Customer newCustomer = new Customer(customerId, customerName, addressId, active, createDate, createdBy, lastUpdate, lastUpdateBy);
-
-                CalendarData.addCustomer(newCustomer);
-                
-                String address1 = null;
-
-                try {
-                    Statement dbCS = DBConnection.getConnection().createStatement();
-                    String queryAddress = "SELECT * FROM address WHERE addressId=" + Integer.toString(addressId);
-                    ResultSet rsAddress = dbCS.executeQuery(queryAddress);
-
-                    rsAddress.next();
-
-                    address1 = rsAddress.getString("address");
-
-                    newCustomer.setAddress(address1);
-                }
-
-                catch (SQLException e) {
-                    System.out.println("SQLException error: " + e.getMessage());
-                }
-
-
-            }
-        }
-        catch (SQLException e) {
-            System.out.println("SQLException error: " + e.getMessage());
-        }
-
         // Initialize and update Customer table
         CustomerIdCol.setCellValueFactory(cellData -> cellData.getValue().idProperty().asObject());
         CustomerNameCol.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
         CustomerAddressCol.setCellValueFactory(cellData -> cellData.getValue().addressProperty());
-        CustomerCityCol.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
-        CustomerStateCol.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
+        CustomerCityCol.setCellValueFactory(cellData -> cellData.getValue().cityProperty());
+        CustomerStateCol.setCellValueFactory(cellData -> cellData.getValue().countryProperty());
         CustomerPhoneCol.setCellValueFactory(cellData -> cellData.getValue().phoneProperty());
         CustomerTable.setItems(CalendarData.getAllCustomers());
     }

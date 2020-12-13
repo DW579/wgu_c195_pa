@@ -14,7 +14,7 @@
           <TableColumn fx:id="CustomerNameCol" prefWidth="106.0" text="Name" />
             <TableColumn fx:id="CustomerAddressCol" prefWidth="145.0" text="Address" />
             <TableColumn fx:id="CustomerCityCol" minWidth="7.0" text="City" />
-            <TableColumn fx:id="CustomerStateCol" minWidth="5.0" prefWidth="62.0" text="State" />
+            <TableColumn fx:id="CustomerStateCol" minWidth="5.0" prefWidth="62.0" text="Country" />
             <TableColumn fx:id="CustomerPhoneCol" prefWidth="103.0" text="Phone" />
         </columns>
       </TableView>

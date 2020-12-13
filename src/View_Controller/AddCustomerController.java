@@ -205,6 +205,10 @@ public class AddCustomerController {
                     CalendarData.addCustomer(newCustomer);
 
                     newCustomer.setAddress(AddressField.getText());
+                    newCustomer.setCity(CityField.getText());
+                    newCustomer.setCountry(CountryField.getText());
+                    newCustomer.setPhone(PhoneField.getText());
+
                 }
             }
 

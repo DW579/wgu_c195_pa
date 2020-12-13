@@ -298,6 +298,12 @@ public class CalendarData {
                     // Set update name in Object
                     customer.setName(customerName);
                     customer.setAddressId(idAddress);
+                    customer.setAddress(address);
+                    customer.setAddress2(address2);
+                    customer.setCity(city);
+                    customer.setZip(postalCode);
+                    customer.setCountry(country);
+                    customer.setPhone(phone);
                 }
 
             }
