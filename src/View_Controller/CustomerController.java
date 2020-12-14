@@ -62,6 +62,24 @@ public class CustomerController {
         stage.show();
     }
 
+    public void addAppointmentHandler(ActionEvent actionEvent) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AddAppointment.fxml"));
+        Parent rootAddAppointment = fxmlLoader.load();
+        Stage stage = new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initStyle(StageStyle.UNDECORATED);
+        stage.setTitle("Add Appointment");
+        stage.setScene(new Scene(rootAddAppointment));
+        stage.show();
+
+        // Get ID of selected table row
+        int customerId = CustomerTable.getSelectionModel().getSelectedItem().getId();
+
+        // Pass customer id to UpdateCustomerController
+        AddAppointmentController addAppointmentController = fxmlLoader.getController();
+        addAppointmentController.selectedCustomer(customerId);
+    }
+
     public void updateCustomerHandler(ActionEvent actionEvent) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("UpdateCustomer.fxml"));
         Parent rootUpdateCustomer = fxmlLoader.load();

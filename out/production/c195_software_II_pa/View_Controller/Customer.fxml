@@ -18,8 +18,9 @@
             <TableColumn fx:id="CustomerPhoneCol" prefWidth="103.0" text="Phone" />
         </columns>
       </TableView>
-      <Button layoutX="80.0" layoutY="81.0" mnemonicParsing="false" onAction="#addCustomerHandler" text="Add Customer" />
-      <Button layoutX="211.0" layoutY="81.0" mnemonicParsing="false" onAction="#updateCustomerHandler" text="Update Customer" />
+      <Button layoutX="38.0" layoutY="81.0" mnemonicParsing="false" onAction="#addCustomerHandler" text="Add Customer" />
+      <Button layoutX="316.0" layoutY="81.0" mnemonicParsing="false" onAction="#updateCustomerHandler" text="Update Customer/Appointment" />
       <Button layoutX="396.0" layoutY="341.0" mnemonicParsing="false" onAction="#deleteCustomerHandler" text="Delete Customer" />
+      <Button layoutX="157.0" layoutY="81.0" mnemonicParsing="false" onAction="#addAppointmentHandler" text="Add Appointment" />
    </children>
 </AnchorPane>
