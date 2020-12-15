@@ -326,4 +326,33 @@ public class CalendarData {
     public static void deleteAppointment(Appointment selectedAppointment) {
         allAppointments.remove(selectedAppointment);
     }
+
+    public static void updateAppointment(int appointmentId, int customerId, String title, String type, String start, String end) {
+        // Update DB
+        try {
+            Statement dbConnectionStatement = DBConnection.getConnection().createStatement();
+            String queryUpdateAppointment = "UPDATE appointment SET title='" + title + "',type='" + type + "',start=" + start + ",end=" + end + " WHERE appointmentId=" + Integer.toString(appointmentId);
+            dbConnectionStatement.execute(queryUpdateAppointment);
+        }
+        catch (SQLException e) {
+            System.out.println("SQLException error: " + e.getMessage());
+        }
+
+        // Update Object
+        allAppointments.forEach((appointment) -> {
+
+            if(appointment.getId() == appointmentId) {
+
+                appointment.setId(appointmentId);
+                appointment.setTitle(title);
+                appointment.setType(type);
+                appointment.setStart(start);
+                appointment.setEnd(end);
+
+            }
+
+        });
+
+    }
+
 }

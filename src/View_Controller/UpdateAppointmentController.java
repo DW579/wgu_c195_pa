@@ -1,5 +1,6 @@
 package View_Controller;
 
+import Model.CalendarData;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
@@ -78,11 +79,26 @@ public class UpdateAppointmentController {
     }
 
     public void SaveHandler(ActionEvent actionEvent) {
+
+        int appointmentId = Integer.parseInt(AppointmentIdField.getText());
+        int customerId = Integer.parseInt(CustomerIdField.getText());
+        String title = TitleField.getText();
+        String type = TypeField.getText();
+        String start = "'" + StartDateField.getValue().toString() + " " + StartHourField.getText() + ":" + StartMinuteField.getText() + ":00'";
+        String end = "'" + EndDateField.getValue().toString() + " " + EndHourField.getText() + ":" + EndMinuteField.getText() + ":00'";
+
+        CalendarData.updateAppointment(appointmentId, customerId, title, type, start, end);
+
+        Stage stage = (Stage) SaveButton.getScene().getWindow();
+        stage.close();
+
     }
 
     public void CancelHandler(ActionEvent actionEvent) {
+
         Stage stage = (Stage) CancelButton.getScene().getWindow();
         stage.close();
+
     }
 
 }
