@@ -1,8 +1,14 @@
 package View_Controller;
 
+import Model.Appointment;
 import Model.CalendarData;
+import Model.Customer;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import utils.DBConnection;
@@ -25,12 +31,37 @@ public class UpdateCustomerController {
     public Button SaveButton;
     public Button CloseButton;
 
+    // Appointment Table View
+    @FXML
+    private TableView<Appointment> AppointmentTableView;
+    @FXML
+    private TableColumn<Appointment, Integer> AppointmentIDColumn;
+    @FXML
+    private TableColumn<Appointment, String> TitleColumn;
+    @FXML
+    private TableColumn<Appointment, String> TypeColumn;
+    @FXML
+    private TableColumn<Appointment, String> StartDateColumn;
+    @FXML
+    private TableColumn<Appointment, String> EndDateColumn;
+
+    FilteredList<Appointment> filteredAppointmentsData = new FilteredList<>(CalendarData.getAllAppointments(), p -> true);
+
     public void selectedCustomer(int customerId) throws IOException {
         int addressId = 0;
         int cityId = 0;
         int countryId = 0;
 
         IdField.setText(Integer.toString(customerId));
+
+        // Initialize and update Appointment table
+        AppointmentIDColumn.setCellValueFactory(cellData -> cellData.getValue().idProperty().asObject());
+        TitleColumn.setCellValueFactory(cellData -> cellData.getValue().titleProperty());
+        TypeColumn.setCellValueFactory(cellData -> cellData.getValue().typeProperty());
+        StartDateColumn.setCellValueFactory(cellData -> cellData.getValue().startProperty());
+        EndDateColumn.setCellValueFactory(cellData -> cellData.getValue().endProperty());
+        // *** Lamda expression. This is for to filter the table view of appointments associated with the selected customer. ***
+        AppointmentTableView.setItems(CalendarData.getAllAppointments().filtered(a -> a.getCustomerId() == customerId));
 
         // Look up customer data in customer table
         try {
@@ -112,5 +143,17 @@ public class UpdateCustomerController {
     public void closeButtonHandler(ActionEvent actionEvent) {
         Stage stage = (Stage) CloseButton.getScene().getWindow();
         stage.close();
+    }
+
+    @FXML
+    private void initialize() {
+//        // Initialize and update Appointment table
+//        AppointmentIDColumn.setCellValueFactory(cellData -> cellData.getValue().idProperty().asObject());
+//        TitleColumn.setCellValueFactory(cellData -> cellData.getValue().titleProperty());
+//        TypeColumn.setCellValueFactory(cellData -> cellData.getValue().typeProperty());
+//        StartDateColumn.setCellValueFactory(cellData -> cellData.getValue().startProperty());
+//        EndDateColumn.setCellValueFactory(cellData -> cellData.getValue().endProperty());
+//        // *** Lamda expression. This is for to filter the table view of appointments associated with the selected customer. ***
+//        AppointmentTableView.setItems(CalendarData.getAllAppointments().filtered(a -> a.getCustomerId() == Integer.parseInt(IdField.getText())));
     }
 }

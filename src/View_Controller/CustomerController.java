@@ -25,7 +25,7 @@ public class CustomerController {
 
     public Button ExitButton;
 
-    // Product Table View
+    // Customer Table View
     @FXML
     private TableView<Customer> CustomerTable;
     @FXML
@@ -63,21 +63,34 @@ public class CustomerController {
     }
 
     public void addAppointmentHandler(ActionEvent actionEvent) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AddAppointment.fxml"));
-        Parent rootAddAppointment = fxmlLoader.load();
-        Stage stage = new Stage();
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.initStyle(StageStyle.UNDECORATED);
-        stage.setTitle("Add Appointment");
-        stage.setScene(new Scene(rootAddAppointment));
-        stage.show();
 
-        // Get ID of selected table row
-        int customerId = CustomerTable.getSelectionModel().getSelectedItem().getId();
+        if(CustomerTable.getSelectionModel().isEmpty()) {
+            Alert noSelection = new Alert(Alert.AlertType.CONFIRMATION);
+            noSelection.initModality(Modality.NONE);
+            noSelection.setTitle("Please Select");
+            noSelection.setHeaderText("Please Select");
+            noSelection.setContentText("Please select a customer from the table");
+            Optional<ButtonType> userChoice = noSelection.showAndWait();
+        }
+        else {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AddAppointment.fxml"));
+            Parent rootAddAppointment = fxmlLoader.load();
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initStyle(StageStyle.UNDECORATED);
+            stage.setTitle("Add Appointment");
+            stage.setScene(new Scene(rootAddAppointment));
+            stage.show();
 
-        // Pass customer id to UpdateCustomerController
-        AddAppointmentController addAppointmentController = fxmlLoader.getController();
-        addAppointmentController.selectedCustomer(customerId);
+            // Get ID of selected table row
+            int customerId = CustomerTable.getSelectionModel().getSelectedItem().getId();
+
+            // Pass customer id to UpdateCustomerController
+            AddAppointmentController addAppointmentController = fxmlLoader.getController();
+            addAppointmentController.selectedCustomer(customerId);
+        }
+
+
     }
 
     public void updateCustomerHandler(ActionEvent actionEvent) throws IOException {

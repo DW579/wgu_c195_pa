@@ -21,6 +21,9 @@ public class CalendarData {
     // Customer static
     private static ObservableList<Customer> allCustomers = FXCollections.observableArrayList();
 
+    // Appointment objects
+    private static ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
+
     static {
         // Input all months in all_months HashMap
         all_months.put(1, "January");
@@ -309,5 +312,18 @@ public class CalendarData {
             }
         });
 
+    }
+
+    // Appointment calls
+    public static void addAppointment(Appointment newAppointment) {
+        allAppointments.add(newAppointment);
+    }
+
+    public static ObservableList<Appointment> getAllAppointments() {
+        return allAppointments;
+    }
+
+    public static void deleteAppointment(Appointment selectedAppointment) {
+        allAppointments.remove(selectedAppointment);
     }
 }

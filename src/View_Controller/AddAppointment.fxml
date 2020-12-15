@@ -25,9 +25,23 @@
       <Button fx:id="SaveButton" layoutX="455.0" layoutY="359.0" mnemonicParsing="false" onAction="#SaveHandler" text="Save" />
       <TextField fx:id="AppointmentIdField" disable="true" layoutX="248.0" layoutY="72.0" prefHeight="27.0" prefWidth="86.0" promptText="Auto Gen." />
       <TextField fx:id="CustomerIdField" disable="true" layoutX="248.0" layoutY="112.0" prefHeight="27.0" prefWidth="86.0" promptText="Auto Gen." />
-      <TextField fx:id="TitleField" layoutX="248.0" layoutY="148.0" />
-      <TextField fx:id="TypeField" layoutX="248.0" layoutY="187.0" />
-      <DatePicker fx:id="StartField" layoutX="248.0" layoutY="223.0" />
-      <DatePicker fx:id="EndField" layoutX="248.0" layoutY="262.0" />
+      <TextField fx:id="TitleField" layoutX="248.0" layoutY="148.0" promptText="Appointment Title" />
+      <TextField fx:id="TypeField" layoutX="248.0" layoutY="187.0" promptText="Appointment Type" />
+      <DatePicker fx:id="StartDateField" layoutX="248.0" layoutY="223.0" />
+      <DatePicker fx:id="EndDateField" layoutX="248.0" layoutY="262.0" />
+      <TextField fx:id="StartHourField" layoutX="460.0" layoutY="223.0" prefHeight="27.0" prefWidth="36.0" promptText="00" />
+      <TextField fx:id="StartMinuteField" layoutX="513.0" layoutY="223.0" prefHeight="27.0" prefWidth="36.0" promptText="00" />
+      <TextField fx:id="EndHourField" layoutX="460.0" layoutY="262.0" prefHeight="27.0" prefWidth="36.0" promptText="00" />
+      <TextField fx:id="EndMinuteField" layoutX="513.0" layoutY="262.0" prefHeight="27.0" prefWidth="36.0" promptText="00" />
+      <Label layoutX="471.0" layoutY="201.0" text="Hr" />
+      <Label layoutX="521.0" layoutY="201.0" text="Min" />
+      <Label layoutX="499.0" layoutY="228.0" text=":" />
+      <Label layoutX="499.0" layoutY="267.0" text=":" />
+      <Label layoutX="457.0" layoutY="296.0" text="* 24-hour format" textFill="RED" />
+      <Label layoutX="421.0" layoutY="153.0" text="*" textFill="RED" />
+      <Label layoutX="421.0" layoutY="192.0" text="*" textFill="RED" />
+      <Label layoutX="557.0" layoutY="228.0" text="*" textFill="RED" />
+      <Label layoutX="557.0" layoutY="267.0" text="*" textFill="RED" />
+      <Label layoutX="248.0" layoutY="43.0" text="* Required" textFill="RED" />
    </children>
 </AnchorPane>
