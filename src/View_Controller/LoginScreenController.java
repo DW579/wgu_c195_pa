@@ -1,5 +1,6 @@
 package View_Controller;
 
+import Model.Appointment;
 import Model.CalendarData;
 import Model.Customer;
 import javafx.event.ActionEvent;
@@ -149,6 +150,38 @@ public class LoginScreenController {
                 catch (SQLException e) {
                     System.out.println("SQLException error: " + e.getMessage());
                 }
+            }
+        }
+        catch (SQLException e) {
+            System.out.println("SQLException error: " + e.getMessage());
+        }
+
+        // Get all appointment data from DB and insert into Appointment ObservableList
+        try {
+            Statement dbConnectionStatement = DBConnection.getConnection().createStatement();
+            String queryAllAppointments = "SELECT * FROM appointment";
+            ResultSet rs = dbConnectionStatement.executeQuery(queryAllAppointments);
+
+            while(rs.next()) {
+                int appointmentId = rs.getInt("appointmentId");
+                int customerId = rs.getInt("customerId");
+                int userId = rs.getInt("userId");
+                String title = rs.getString("title");
+                String description = rs.getString("description");
+                String location = rs.getString("location");
+                String contact = rs.getString("contact");
+                String type = rs.getString("type");
+                String url = rs.getString("url");
+                String start = rs.getString("start");
+                String end = rs.getString("end");
+                String createDate = rs.getString("createDate");
+                String createdBy = rs.getString("createdBy");
+                String lastUpdate = rs.getString("lastUpdate");
+                String lastUpdateBy = rs.getString("lastUpdateBy");
+
+                Appointment newAppointment = new Appointment(appointmentId, customerId, userId, title, description, location, contact, type, url, start, end, createDate, createdBy, lastUpdate, lastUpdateBy);
+
+                CalendarData.addAppointment(newAppointment);
             }
         }
         catch (SQLException e) {
