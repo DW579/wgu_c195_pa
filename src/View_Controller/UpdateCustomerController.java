@@ -177,7 +177,51 @@ public class UpdateCustomerController {
     }
 
     public void DeleteAppointmentHandler(ActionEvent actionEvent) {
+        if(AppointmentTableView.getSelectionModel().isEmpty()) {
+            Alert noSelection = new Alert(Alert.AlertType.CONFIRMATION);
+            noSelection.initModality(Modality.NONE);
+            noSelection.setTitle("Please Select");
+            noSelection.setHeaderText("Please Select");
+            noSelection.setContentText("Please select an appointment from the table");
+            Optional<ButtonType> userChoice = noSelection.showAndWait();
+        }
+        else {
+            int selectedAppointmentId = AppointmentTableView.getSelectionModel().getSelectedItem().getId();
 
+            Alert confirmDelete = new Alert(Alert.AlertType.CONFIRMATION);
+            confirmDelete.initModality(Modality.NONE);
+            confirmDelete.setTitle("Delete?");
+            confirmDelete.setHeaderText("Delete?");
+            confirmDelete.setContentText("Are you sure you want to delete this appointment?");
+            Optional<ButtonType> userChoice = confirmDelete.showAndWait();
+
+            // Get ID of selected appointment in TableView
+            if(userChoice.get() == ButtonType.OK) {
+
+                // Get selected table row
+                Appointment selectedAppointment = AppointmentTableView.getSelectionModel().getSelectedItem();
+
+                // Get customerId
+                int customerId = selectedAppointment.getCustomerId();
+
+                // Delete selectedAppointment
+                CalendarData.deleteAppointment(selectedAppointment);
+
+                // Update the Table view
+//                AppointmentTableView.setItems(CalendarData.getAllAppointments());
+                AppointmentTableView.setItems(CalendarData.getAllAppointments().filtered(a -> a.getCustomerId() == customerId));
+
+                // Delete from DB
+                try {
+                    Statement dbConnectionStatement = DBConnection.getConnection().createStatement();
+                    String queryDeleteAppointment = "DELETE FROM appointment WHERE appointmentId=" + selectedAppointmentId + "";
+                    dbConnectionStatement.executeUpdate(queryDeleteAppointment);
+                }
+                catch (SQLException e) {
+                    System.out.println("SQLException error: " + e.getMessage());
+                }
+            }
+        }
     }
 
     @FXML
