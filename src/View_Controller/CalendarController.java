@@ -1,16 +1,15 @@
 package View_Controller;
 
+import Model.Appointment;
 import Model.CalendarData;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
@@ -18,20 +17,31 @@ import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import utils.DBConnection;
 
 import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.Optional;
 
 public class CalendarController {
+    public Button CustomerButton;
     public Button ViewButton;
     public Button ExitButton;
+
     public Label Month;
     public Label Year;
     public Label PreviousMonthArrow;
     public Label NextMonthArrow;
+
     public GridPane MonthGridPane;
     public GridPane WeekGridPane;
+
     public AnchorPane AnchorPane00;
     public AnchorPane AnchorPane10;
     public AnchorPane AnchorPane20;
@@ -74,15 +84,34 @@ public class CalendarController {
     public AnchorPane AnchorPane45;
     public AnchorPane AnchorPane55;
     public AnchorPane AnchorPane65;
-    public Button CustomerButton;
+
+    public Label Label00;
+    public Label Label10;
+    public Label Label20;
+    public Label Label30;
+    public Label Label40;
+    public Label Label50;
+    public Label Label60;
+
+    public ListView ListView00;
+    public ListView ListView10;
+    public ListView ListView20;
+    public ListView ListView30;
+    public ListView ListView40;
+    public ListView ListView50;
+    public ListView ListView60;
 
     private boolean month_view = true;
 
     @FXML
     private void initialize() {
+        String year = CalendarData.getSelectedYear();
+        String month = CalendarData.getSelectedMonth();
+        int monthInt = CalendarData.getSelectedMonthInt();
+
         // Update Month and Year text to reflect today's date
-        Month.setText(CalendarData.getSelectedMonth());
-        Year.setText(CalendarData.getSelectedYear());
+        Month.setText(month);
+        Year.setText(year);
 
         // Set Text of each label in it's anchor pane to it's correct num
         ObservableList all_month_anchor_panes = MonthGridPane.getChildren();
@@ -94,16 +123,65 @@ public class CalendarController {
             Label anchor_label = (Label) all_anchor_children.get(0);
             anchor_label.setText(CalendarData.getAnchorPaneValue(i));
 
+            ObservableList<String> appointments_today = FXCollections.observableArrayList();
+            ListView anchor_list_view = (ListView) all_anchor_children.get(1);
+
+            // If the Anchor Pane
             if(CalendarData.getAnchorPaneValue(i) != "") {
+
+                // Set Today's day in Orange
                 if (Integer.parseInt(CalendarData.getAnchorPaneValue(i)) == LocalDate.now().getDayOfMonth()) {
                     anchor_label.setTextFill(Color.web("#ffa500"));
                 }
+
+                String day = null;
+
+                // Add a 0 in front of 1 - 9, else no need for 0
+                if (CalendarData.getAnchorPaneValue(i).length() < 2) {
+                    day = "0" + CalendarData.getAnchorPaneValue(i);
+                }
+                else {
+                    day = CalendarData.getAnchorPaneValue(i);
+                }
+
+                String startFullDate = "'" + year + "-" + Integer.toString(monthInt) + "-" + day + " 00:00:00'";
+                String endFullDate = "'" + year + "-" + Integer.toString(monthInt) + "-" + day + " 23:59:59'";
+
+                // Input all appointments into it's day if appointments exist
+                try {
+                    Statement dbConnectionStatement = DBConnection.getConnection().createStatement();
+                    String queryForDaysAppointments = "SELECT * FROM appointment WHERE start BETWEEN " + startFullDate + " AND " + endFullDate;
+                    ResultSet rs = dbConnectionStatement.executeQuery(queryForDaysAppointments);
+
+                    while(rs.next()) {
+
+                        appointments_today.add(rs.getString("title"));
+
+                    }
+
+                    anchor_list_view.setItems(appointments_today);
+                }
+                catch (SQLException e) {
+                    System.out.println("SQLException error: " + e.getMessage());
+                }
+
             }
+
         }
+
     }
 
     // Change between Month and Week views
-    public void changeViewHandler(ActionEvent actionEvent) {
+    public void changeViewHandler(ActionEvent actionEvent) throws IOException {
+//        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("CalendarTest.fxml"));
+//        Parent rootCustomer = fxmlLoader.load();
+//        Stage stage = new Stage();
+//        stage.initModality(Modality.APPLICATION_MODAL);
+//        stage.initStyle(StageStyle.UNDECORATED);
+//        stage.setTitle("Customer");
+//        stage.setScene(new Scene(rootCustomer));
+//        stage.show();
+
         if(month_view){
             month_view = false;
             ViewButton.setText("Month View");
@@ -116,6 +194,8 @@ public class CalendarController {
             WeekGridPane.setVisible(false);
             MonthGridPane.setVisible(true);
         }
+
+
     }
 
     // Open Customer window
@@ -147,8 +227,56 @@ public class CalendarController {
             anchor_label.setText(CalendarData.getAnchorPaneValue(i));
             anchor_label.setTextFill(Color.web("#000000"));
 
+            // ObservableList that will hold the titles of appointments
+            ObservableList<String> appointments_today = FXCollections.observableArrayList();
+
+            // Clear the ListView of other appointments
+            ListView anchor_list_view = (ListView) all_anchor_children.get(1);
+            anchor_list_view.getItems().clear();
+
+            // Color label orange if today
             if(CalendarData.getAnchorPaneValue(i) != "" && CalendarData.isToday() && Integer.parseInt(CalendarData.getAnchorPaneValue(i)) == LocalDate.now().getDayOfMonth()) {
                 anchor_label.setTextFill(Color.web("#ffa500"));
+            }
+
+            // Add appointments to the day if any
+            String year = CalendarData.getSelectedYear();
+            int monthInt = CalendarData.getSelectedMonthInt();
+
+            // If the Anchor Pane has a number
+            if(CalendarData.getAnchorPaneValue(i) != "") {
+
+                String day = null;
+
+                // Add a 0 in front of 1 - 9, else no need for 0
+                if (CalendarData.getAnchorPaneValue(i).length() < 2) {
+                    day = "0" + CalendarData.getAnchorPaneValue(i);
+                }
+                else {
+                    day = CalendarData.getAnchorPaneValue(i);
+                }
+
+                String startFullDate = "'" + year + "-" + Integer.toString(monthInt) + "-" + day + " 00:00:00'";
+                String endFullDate = "'" + year + "-" + Integer.toString(monthInt) + "-" + day + " 23:59:59'";
+
+                // Input all appointments into it's day if appointments exist
+                try {
+                    Statement dbConnectionStatement = DBConnection.getConnection().createStatement();
+                    String queryForDaysAppointments = "SELECT * FROM appointment WHERE start BETWEEN " + startFullDate + " AND " + endFullDate;
+                    ResultSet rs = dbConnectionStatement.executeQuery(queryForDaysAppointments);
+
+                    while(rs.next()) {
+
+                        appointments_today.add(rs.getString("title"));
+
+                    }
+
+                    anchor_list_view.setItems(appointments_today);
+                }
+                catch (SQLException e) {
+                    System.out.println("SQLException error: " + e.getMessage());
+                }
+
             }
         }
     }
@@ -178,8 +306,55 @@ public class CalendarController {
             anchor_label.setText(CalendarData.getAnchorPaneValue(i));
             anchor_label.setTextFill(Color.web("#000000"));
 
+            // ObservableList that will hold the titles of appointments
+            ObservableList<String> appointments_today = FXCollections.observableArrayList();
+
+            // Clear the ListView of other appointments
+            ListView anchor_list_view = (ListView) all_anchor_children.get(1);
+            anchor_list_view.getItems().clear();
+
             if(CalendarData.getAnchorPaneValue(i) != "" && CalendarData.isToday() && Integer.parseInt(CalendarData.getAnchorPaneValue(i)) == LocalDate.now().getDayOfMonth()) {
                 anchor_label.setTextFill(Color.web("#ffa500"));
+            }
+
+            // Add appointments to the day if any
+            String year = CalendarData.getSelectedYear();
+            int monthInt = CalendarData.getSelectedMonthInt();
+
+            // If the Anchor Pane has a number
+            if(CalendarData.getAnchorPaneValue(i) != "") {
+
+                String day = null;
+
+                // Add a 0 in front of 1 - 9, else no need for 0
+                if (CalendarData.getAnchorPaneValue(i).length() < 2) {
+                    day = "0" + CalendarData.getAnchorPaneValue(i);
+                }
+                else {
+                    day = CalendarData.getAnchorPaneValue(i);
+                }
+
+                String startFullDate = "'" + year + "-" + Integer.toString(monthInt) + "-" + day + " 00:00:00'";
+                String endFullDate = "'" + year + "-" + Integer.toString(monthInt) + "-" + day + " 23:59:59'";
+
+                // Input all appointments into it's day if appointments exist
+                try {
+                    Statement dbConnectionStatement = DBConnection.getConnection().createStatement();
+                    String queryForDaysAppointments = "SELECT * FROM appointment WHERE start BETWEEN " + startFullDate + " AND " + endFullDate;
+                    ResultSet rs = dbConnectionStatement.executeQuery(queryForDaysAppointments);
+
+                    while(rs.next()) {
+
+                        appointments_today.add(rs.getString("title"));
+
+                    }
+
+                    anchor_list_view.setItems(appointments_today);
+                }
+                catch (SQLException e) {
+                    System.out.println("SQLException error: " + e.getMessage());
+                }
+
             }
         }
     }

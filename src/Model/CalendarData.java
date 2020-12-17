@@ -24,6 +24,9 @@ public class CalendarData {
     // Appointment objects
     private static ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
 
+    //Appointment titles
+    private static ObservableList<String> allAppointmentsForCalendar = FXCollections.observableArrayList();
+
     static {
         // Input all months in all_months HashMap
         all_months.put(1, "January");
@@ -75,6 +78,10 @@ public class CalendarData {
         }
     }
 
+    public static int getSelectedMonthInt() {
+        return selected_month;
+    }
+
     public static String getSelectedMonth() {
         return all_months.get(selected_month);
     }
@@ -105,6 +112,18 @@ public class CalendarData {
         }
 
         return all_months.get(selected_month);
+    }
+
+    public static int updatePreviousMonthInt() {
+        if(selected_month > 1) {
+            selected_month -= 1;
+        }
+        else {
+            selected_month = 12;
+            selected_year -= 1;
+        }
+
+        return selected_month;
     }
 
     public static String getAnchorPaneValue(int pos_num) {
@@ -353,6 +372,21 @@ public class CalendarData {
 
         });
 
+
     }
 
+    // Appointment calls for the calendar
+    public static void addAppointmentForCalendar(String newAppointment) {
+        allAppointmentsForCalendar.add(newAppointment);
+    }
+
+    public static ObservableList<String> getAllAppointmentForCalendar() {
+        ObservableList<String> allAppointmentsStringTitles = FXCollections.observableArrayList();
+
+        allAppointments.forEach((appointment) -> {
+            allAppointmentsStringTitles.add(appointment.getTitle());
+        });
+
+        return allAppointmentsStringTitles;
+    }
 }

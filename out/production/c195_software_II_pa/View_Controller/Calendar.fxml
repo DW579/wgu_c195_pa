@@ -54,422 +54,422 @@
          <children>
             <AnchorPane fx:id="AnchorPane00" onMouseClicked="#anchorPane00Clicked" prefHeight="200.0" prefWidth="132.0">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label00Clicked" text="0">
+                  <Label fx:id="Label00" layoutX="9.0" layoutY="3.0" onMouseClicked="#label00Clicked" text="0">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <ListView layoutY="28.0" onMouseClicked="#listView00Clicked" prefHeight="67.0" prefWidth="132.0" />
+                  <ListView fx:id="ListView00" layoutY="28.0" onMouseClicked="#listView00Clicked" prefHeight="67.0" prefWidth="132.0" />
                </children>
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane10" layoutX="10.0" layoutY="9.0" onMouseClicked="#anchorPane10Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label10Clicked" text="0">
+                  <Label fx:id="Label10" layoutX="9.0" layoutY="3.0" onMouseClicked="#label10Clicked" text="0">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <ListView layoutY="28.0" onMouseClicked="#listView10Clicked" prefHeight="67.0" prefWidth="132.0" />
+                  <ListView fx:id="ListView10" layoutY="28.0" onMouseClicked="#listView10Clicked" prefHeight="67.0" prefWidth="132.0" />
                </children>
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane20" layoutX="142.0" layoutY="9.0" onMouseClicked="#anchorPane20Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label20Clicked" text="0">
+                  <Label fx:id="Label20" layoutX="9.0" layoutY="3.0" onMouseClicked="#label20Clicked" text="0">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <ListView layoutY="28.0" onMouseClicked="#listView20Clicked" prefHeight="67.0" prefWidth="132.0" />
+                  <ListView fx:id="ListView20" layoutY="28.0" onMouseClicked="#listView20Clicked" prefHeight="67.0" prefWidth="132.0" />
                </children>
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane30" layoutX="10.0" layoutY="9.0" onMouseClicked="#anchorPane30Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label30Clicked" text="0">
+                  <Label fx:id="Label30" layoutX="9.0" layoutY="3.0" onMouseClicked="#label30Clicked" text="0">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <ListView layoutY="28.0" onMouseClicked="#listView30Clicked" prefHeight="67.0" prefWidth="132.0" />
+                  <ListView fx:id="ListView30" layoutY="28.0" onMouseClicked="#listView30Clicked" prefHeight="67.0" prefWidth="132.0" />
                </children>
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane40" layoutX="10.0" layoutY="9.0" onMouseClicked="#anchorPane40Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label40Clicked" text="0">
+                  <Label fx:id="Label40" layoutX="9.0" layoutY="3.0" onMouseClicked="#label40Clicked" text="0">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <ListView layoutY="28.0" onMouseClicked="#listView40Clicked" prefHeight="67.0" prefWidth="132.0" />
+                  <ListView fx:id="ListView40" layoutY="28.0" onMouseClicked="#listView40Clicked" prefHeight="67.0" prefWidth="132.0" />
                </children>
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane50" layoutX="10.0" layoutY="9.0" onMouseClicked="#anchorPane50Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="5">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label50Clicked" text="0">
+                  <Label fx:id="Label50" layoutX="9.0" layoutY="3.0" onMouseClicked="#label50Clicked" text="0">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <ListView layoutY="28.0" onMouseClicked="#listView50Clicked" prefHeight="67.0" prefWidth="132.0" />
+                  <ListView fx:id="ListView50" layoutY="28.0" onMouseClicked="#listView50Clicked" prefHeight="67.0" prefWidth="132.0" />
                </children>
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane60" layoutX="10.0" layoutY="9.0" onMouseClicked="#anchorPane60Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="6">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label60Clicked" text="0">
+                  <Label fx:id="Label60" layoutX="9.0" layoutY="3.0" onMouseClicked="#label60Clicked" text="0">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <ListView layoutY="28.0" onMouseClicked="#listView60Clicked" prefHeight="67.0" prefWidth="132.0" />
+                  <ListView fx:id="ListView60" layoutY="28.0" onMouseClicked="#listView60Clicked" prefHeight="67.0" prefWidth="132.0" />
                </children>
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane01" layoutX="799.0" layoutY="9.0" onMouseClicked="#anchorPane01Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label01Clicked" text="0">
+                  <Label fx:id="Label01" layoutX="9.0" layoutY="3.0" onMouseClicked="#label01Clicked" text="0">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <ListView layoutY="28.0" onMouseClicked="#listView01Clicked" prefHeight="67.0" prefWidth="132.0" />
+                  <ListView fx:id="ListView01" layoutY="28.0" onMouseClicked="#listView01Clicked" prefHeight="67.0" prefWidth="132.0" />
                </children>
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane11" layoutX="10.0" layoutY="9.0" onMouseClicked="#anchorPane11Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label11Clicked" text="0">
+                  <Label fx:id="Label11" layoutX="9.0" layoutY="3.0" onMouseClicked="#label11Clicked" text="0">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <ListView layoutY="28.0" onMouseClicked="#listView11Clicked" prefHeight="67.0" prefWidth="132.0" />
+                  <ListView fx:id="ListView11" layoutY="28.0" onMouseClicked="#listView11Clicked" prefHeight="67.0" prefWidth="132.0" />
                </children>
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane21" layoutX="10.0" layoutY="9.0" onMouseClicked="#anchorPane21Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label21Clicked" text="0">
+                  <Label fx:id="Label21" layoutX="9.0" layoutY="3.0" onMouseClicked="#label21Clicked" text="0">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <ListView layoutY="28.0" onMouseClicked="#listView21Clicked" prefHeight="67.0" prefWidth="132.0" />
+                  <ListView fx:id="ListView21" layoutY="28.0" onMouseClicked="#listView21Clicked" prefHeight="67.0" prefWidth="132.0" />
                </children>
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane31" layoutX="10.0" layoutY="9.0" onMouseClicked="#anchorPane31Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label31Clicked" text="0">
+                  <Label fx:id="Label31" layoutX="9.0" layoutY="3.0" onMouseClicked="#label31Clicked" text="0">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <ListView layoutY="28.0" onMouseClicked="#listView31Clicked" prefHeight="67.0" prefWidth="132.0" />
+                  <ListView fx:id="ListView31" layoutY="28.0" onMouseClicked="#listView31Clicked" prefHeight="67.0" prefWidth="132.0" />
                </children>
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane41" layoutX="10.0" layoutY="9.0" onMouseClicked="#anchorPane41Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="1">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label41Clicked" text="0">
+                  <Label fx:id="Label41" layoutX="9.0" layoutY="3.0" onMouseClicked="#label41Clicked" text="0">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <ListView layoutY="28.0" onMouseClicked="#listView41Clicked" prefHeight="67.0" prefWidth="132.0" />
+                  <ListView fx:id="ListView41" layoutY="28.0" onMouseClicked="#listView41Clicked" prefHeight="67.0" prefWidth="132.0" />
                </children>
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane51" layoutX="10.0" layoutY="9.0" onMouseClicked="#anchorPane51Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="1">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label51Clicked" text="0">
+                  <Label fx:id="Label51" layoutX="9.0" layoutY="3.0" onMouseClicked="#label51Clicked" text="0">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <ListView layoutY="28.0" onMouseClicked="#listView51Clicked" prefHeight="67.0" prefWidth="132.0" />
+                  <ListView fx:id="ListView51" layoutY="28.0" onMouseClicked="#listView51Clicked" prefHeight="67.0" prefWidth="132.0" />
                </children>
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane61" layoutX="10.0" layoutY="9.0" onMouseClicked="#anchorPane61Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="1">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label61Clicked" text="0">
+                  <Label fx:id="Label61" layoutX="9.0" layoutY="3.0" onMouseClicked="#label61Clicked" text="0">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <ListView layoutY="28.0" onMouseClicked="#listView61Clicked" prefHeight="67.0" prefWidth="132.0" />
+                  <ListView fx:id="ListView61" layoutY="28.0" onMouseClicked="#listView61Clicked" prefHeight="67.0" prefWidth="132.0" />
                </children>
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane02" layoutX="799.0" layoutY="127.0" onMouseClicked="#anchorPane02Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label02Clicked" text="0">
+                  <Label fx:id="Label02" layoutX="9.0" layoutY="3.0" onMouseClicked="#label02Clicked" text="0">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <ListView layoutY="28.0" onMouseClicked="#listView02Clicked" prefHeight="67.0" prefWidth="132.0" />
+                  <ListView fx:id="ListView02" layoutY="28.0" onMouseClicked="#listView02Clicked" prefHeight="67.0" prefWidth="132.0" />
                </children>
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane12" layoutX="10.0" layoutY="9.0" onMouseClicked="#anchorPane12Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label12Clicked" text="0">
+                  <Label fx:id="Label12" layoutX="9.0" layoutY="3.0" onMouseClicked="#label12Clicked" text="0">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <ListView layoutY="28.0" onMouseClicked="#listView12Clicked" prefHeight="67.0" prefWidth="132.0" />
+                  <ListView fx:id="ListView12" layoutY="28.0" onMouseClicked="#listView12Clicked" prefHeight="67.0" prefWidth="132.0" />
                </children>
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane22" layoutX="10.0" layoutY="9.0" onMouseClicked="#anchorPane22Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label22Clicked" text="0">
+                  <Label fx:id="Label22" layoutX="9.0" layoutY="3.0" onMouseClicked="#label22Clicked" text="0">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <ListView layoutY="28.0" onMouseClicked="#listView22Clicked" prefHeight="67.0" prefWidth="132.0" />
+                  <ListView fx:id="ListView22" layoutY="28.0" onMouseClicked="#listView22Clicked" prefHeight="67.0" prefWidth="132.0" />
                </children>
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane32" layoutX="10.0" layoutY="9.0" onMouseClicked="#anchorPane32Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="2">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label32Clicked" text="0">
+                  <Label fx:id="Label32" layoutX="9.0" layoutY="3.0" onMouseClicked="#label32Clicked" text="0">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <ListView layoutY="28.0" onMouseClicked="#listView32Clicked" prefHeight="67.0" prefWidth="132.0" />
+                  <ListView fx:id="ListView32" layoutY="28.0" onMouseClicked="#listView32Clicked" prefHeight="67.0" prefWidth="132.0" />
                </children>
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane42" layoutX="10.0" layoutY="9.0" onMouseClicked="#anchorPane42Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="2">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label42Clicked" text="0">
+                  <Label fx:id="Label42" layoutX="9.0" layoutY="3.0" onMouseClicked="#label42Clicked" text="0">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <ListView layoutY="28.0" onMouseClicked="#listView42Clicked" prefHeight="67.0" prefWidth="132.0" />
+                  <ListView fx:id="ListView42" layoutY="28.0" onMouseClicked="#listView42Clicked" prefHeight="67.0" prefWidth="132.0" />
                </children>
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane52" layoutX="10.0" layoutY="9.0" onMouseClicked="#anchorPane52Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="2">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label52Clicked" text="0">
+                  <Label fx:id="Label52" layoutX="9.0" layoutY="3.0" onMouseClicked="#label52Clicked" text="0">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <ListView layoutY="28.0" onMouseClicked="#listView52Clicked" prefHeight="67.0" prefWidth="132.0" />
+                  <ListView fx:id="ListView52" layoutY="28.0" onMouseClicked="#listView52Clicked" prefHeight="67.0" prefWidth="132.0" />
                </children>
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane62" layoutX="10.0" layoutY="9.0" onMouseClicked="#anchorPane62Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="2">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label62Clicked" text="0">
+                  <Label fx:id="Label62" layoutX="9.0" layoutY="3.0" onMouseClicked="#label62Clicked" text="0">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <ListView layoutY="28.0" onMouseClicked="#listView62Clicked" prefHeight="67.0" prefWidth="132.0" />
+                  <ListView fx:id="ListView62" layoutY="28.0" onMouseClicked="#listView62Clicked" prefHeight="67.0" prefWidth="132.0" />
                </children>
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane03" layoutX="799.0" layoutY="245.0" onMouseClicked="#anchorPane03Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="3">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label03Clicked" text="0">
+                  <Label fx:id="Label03" layoutX="9.0" layoutY="3.0" onMouseClicked="#label03Clicked" text="0">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <ListView layoutY="28.0" onMouseClicked="#listView03Clicked" prefHeight="67.0" prefWidth="132.0" />
+                  <ListView fx:id="ListView03" layoutY="28.0" onMouseClicked="#listView03Clicked" prefHeight="67.0" prefWidth="132.0" />
                </children>
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane13" layoutX="10.0" layoutY="9.0" onMouseClicked="#anchorPane13Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label13Clicked" text="0">
+                  <Label fx:id="Label13" layoutX="9.0" layoutY="3.0" onMouseClicked="#label13Clicked" text="0">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <ListView layoutY="28.0" onMouseClicked="#listView13Clicked" prefHeight="67.0" prefWidth="132.0" />
+                  <ListView fx:id="ListView13" layoutY="28.0" onMouseClicked="#listView13Clicked" prefHeight="67.0" prefWidth="132.0" />
                </children>
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane23" layoutX="10.0" layoutY="9.0" onMouseClicked="#anchorPane23Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label23Clicked" text="0">
+                  <Label fx:id="Label23" layoutX="9.0" layoutY="3.0" onMouseClicked="#label23Clicked" text="0">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <ListView layoutY="28.0" onMouseClicked="#listView23Clicked" prefHeight="67.0" prefWidth="132.0" />
+                  <ListView fx:id="ListView23" layoutY="28.0" onMouseClicked="#listView23Clicked" prefHeight="67.0" prefWidth="132.0" />
                </children>
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane33" layoutX="10.0" layoutY="9.0" onMouseClicked="#anchorPane33Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="3">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label33Clicked" text="0">
+                  <Label fx:id="Label33" layoutX="9.0" layoutY="3.0" onMouseClicked="#label33Clicked" text="0">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <ListView layoutY="28.0" onMouseClicked="#listView33Clicked" prefHeight="67.0" prefWidth="132.0" />
+                  <ListView fx:id="ListView33" layoutY="28.0" onMouseClicked="#listView33Clicked" prefHeight="67.0" prefWidth="132.0" />
                </children>
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane43" layoutX="10.0" layoutY="9.0" onMouseClicked="#anchorPane43Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="3">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label43Clicked" text="0">
+                  <Label fx:id="Label43" layoutX="9.0" layoutY="3.0" onMouseClicked="#label43Clicked" text="0">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <ListView layoutY="28.0" onMouseClicked="#listView43Clicked" prefHeight="67.0" prefWidth="132.0" />
+                  <ListView fx:id="ListView43" layoutY="28.0" onMouseClicked="#listView43Clicked" prefHeight="67.0" prefWidth="132.0" />
                </children>
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane53" layoutX="10.0" layoutY="9.0" onMouseClicked="#anchorPane53Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="3">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label53Clicked" text="0">
+                  <Label fx:id="Label53" layoutX="9.0" layoutY="3.0" onMouseClicked="#label53Clicked" text="0">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <ListView layoutY="28.0" onMouseClicked="#listView53Clicked" prefHeight="67.0" prefWidth="132.0" />
+                  <ListView fx:id="ListView53" layoutY="28.0" onMouseClicked="#listView53Clicked" prefHeight="67.0" prefWidth="132.0" />
                </children>
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane63" layoutX="10.0" layoutY="9.0" onMouseClicked="#anchorPane63Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="3">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label63Clicked" text="0">
+                  <Label fx:id="Label63" layoutX="9.0" layoutY="3.0" onMouseClicked="#label63Clicked" text="0">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <ListView layoutY="28.0" onMouseClicked="#listView63Clicked" prefHeight="67.0" prefWidth="132.0" />
+                  <ListView fx:id="ListView63" layoutY="28.0" onMouseClicked="#listView63Clicked" prefHeight="67.0" prefWidth="132.0" />
                </children>
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane04" layoutX="799.0" layoutY="363.0" onMouseClicked="#anchorPane04Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="4">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label04Clicked" text="0">
+                  <Label fx:id="Label04" layoutX="9.0" layoutY="3.0" onMouseClicked="#label04Clicked" text="0">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <ListView layoutY="28.0" onMouseClicked="#listView04Clicked" prefHeight="67.0" prefWidth="132.0" />
+                  <ListView fx:id="ListView04" layoutY="28.0" onMouseClicked="#listView04Clicked" prefHeight="67.0" prefWidth="132.0" />
                </children>
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane14" layoutX="10.0" layoutY="9.0" onMouseClicked="#anchorPane14Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label14Clicked" text="0">
+                  <Label fx:id="Label14" layoutX="9.0" layoutY="3.0" onMouseClicked="#label14Clicked" text="0">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <ListView layoutY="28.0" onMouseClicked="#listView14Clicked" prefHeight="67.0" prefWidth="132.0" />
+                  <ListView fx:id="ListView14" layoutY="28.0" onMouseClicked="#listView14Clicked" prefHeight="67.0" prefWidth="132.0" />
                </children>
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane24" layoutX="10.0" layoutY="9.0" onMouseClicked="#anchorPane24Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="4">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label24Clicked">
+                  <Label fx:id="Label24" layoutX="9.0" layoutY="3.0" onMouseClicked="#label24Clicked">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <ListView layoutY="28.0" onMouseClicked="#listView24Clicked" prefHeight="67.0" prefWidth="132.0" />
+                  <ListView fx:id="ListView24" layoutY="28.0" onMouseClicked="#listView24Clicked" prefHeight="67.0" prefWidth="132.0" />
                </children>
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane34" layoutX="10.0" layoutY="9.0" onMouseClicked="#anchorPane34Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="4">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label34Clicked">
+                  <Label fx:id="Label34" layoutX="9.0" layoutY="3.0" onMouseClicked="#label34Clicked">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <ListView layoutY="28.0" onMouseClicked="#listView34Clicked" prefHeight="67.0" prefWidth="132.0" />
+                  <ListView fx:id="ListView34" layoutY="28.0" onMouseClicked="#listView34Clicked" prefHeight="67.0" prefWidth="132.0" />
                </children>
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane44" layoutX="10.0" layoutY="9.0" onMouseClicked="#anchorPane44Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="4">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label44Clicked">
+                  <Label fx:id="Label44" layoutX="9.0" layoutY="3.0" onMouseClicked="#label44Clicked">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <ListView layoutY="28.0" onMouseClicked="#listView44Clicked" prefHeight="67.0" prefWidth="132.0" />
+                  <ListView fx:id="ListView44" layoutY="28.0" onMouseClicked="#listView44Clicked" prefHeight="67.0" prefWidth="132.0" />
                </children>
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane54" layoutX="10.0" layoutY="9.0" onMouseClicked="#anchorPane54Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="4">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label54Clicked">
+                  <Label fx:id="Label54" layoutX="9.0" layoutY="3.0" onMouseClicked="#label54Clicked">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <ListView layoutY="28.0" onMouseClicked="#listView54Clicked" prefHeight="67.0" prefWidth="132.0" />
+                  <ListView fx:id="ListView54" layoutY="28.0" onMouseClicked="#listView54Clicked" prefHeight="67.0" prefWidth="132.0" />
                </children>
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane64" layoutX="10.0" layoutY="9.0" onMouseClicked="#anchorPane64Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="4">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label64Clicked">
+                  <Label fx:id="Label64" layoutX="9.0" layoutY="3.0" onMouseClicked="#label64Clicked">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <ListView layoutY="28.0" onMouseClicked="#listView64Clicked" prefHeight="67.0" prefWidth="132.0" />
+                  <ListView fx:id="ListView64" layoutY="28.0" onMouseClicked="#listView64Clicked" prefHeight="67.0" prefWidth="132.0" />
                </children>
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane05" layoutX="10.0" layoutY="387.0" onMouseClicked="#anchorPane05Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="5">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label05Clicked">
+                  <Label fx:id="Label05" layoutX="9.0" layoutY="3.0" onMouseClicked="#label05Clicked">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <ListView layoutY="28.0" onMouseClicked="#listView05Clicked" prefHeight="67.0" prefWidth="132.0" />
+                  <ListView fx:id="ListView05" layoutY="28.0" onMouseClicked="#listView05Clicked" prefHeight="67.0" prefWidth="132.0" />
                </children>
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane15" layoutX="10.0" layoutY="481.0" onMouseClicked="#anchorPane15Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label15Clicked">
+                  <Label fx:id="Label15" layoutX="9.0" layoutY="3.0" onMouseClicked="#label15Clicked">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <ListView layoutY="28.0" onMouseClicked="#listView15Clicked" prefHeight="67.0" prefWidth="132.0" />
+                  <ListView fx:id="ListView15" layoutY="28.0" onMouseClicked="#listView15Clicked" prefHeight="67.0" prefWidth="132.0" />
                </children>
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane25" layoutX="142.0" layoutY="481.0" onMouseClicked="#anchorPane25Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="5">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label25Clicked">
+                  <Label fx:id="Label25" layoutX="9.0" layoutY="3.0" onMouseClicked="#label25Clicked">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <ListView layoutY="28.0" onMouseClicked="#listView25Clicked" prefHeight="67.0" prefWidth="132.0" />
+                  <ListView fx:id="ListView25" layoutY="28.0" onMouseClicked="#listView25Clicked" prefHeight="67.0" prefWidth="132.0" />
                </children>
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane35" layoutX="274.0" layoutY="481.0" onMouseClicked="#anchorPane35Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="5">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label35Clicked">
+                  <Label fx:id="Label35" layoutX="9.0" layoutY="3.0" onMouseClicked="#label35Clicked">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <ListView layoutY="28.0" onMouseClicked="#listView35Clicked" prefHeight="67.0" prefWidth="132.0" />
+                  <ListView fx:id="ListView35" layoutY="28.0" onMouseClicked="#listView35Clicked" prefHeight="67.0" prefWidth="132.0" />
                </children>
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane45" layoutX="405.0" layoutY="481.0" onMouseClicked="#anchorPane45Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="5">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label45Clicked">
+                  <Label fx:id="Label45" layoutX="9.0" layoutY="3.0" onMouseClicked="#label45Clicked">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <ListView layoutY="28.0" onMouseClicked="#listView45Clicked" prefHeight="67.0" prefWidth="132.0" />
+                  <ListView fx:id="ListView45" layoutY="28.0" onMouseClicked="#listView45Clicked" prefHeight="67.0" prefWidth="132.0" />
                </children>
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane55" layoutX="536.0" layoutY="481.0" onMouseClicked="#anchorPane55Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="5">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label55Clicked">
+                  <Label fx:id="Label55" layoutX="9.0" layoutY="3.0" onMouseClicked="#label55Clicked">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <ListView layoutY="28.0" onMouseClicked="#listView55Clicked" prefHeight="67.0" prefWidth="132.0" />
+                  <ListView fx:id="ListView55" layoutY="28.0" onMouseClicked="#listView55Clicked" prefHeight="67.0" prefWidth="132.0" />
                </children>
             </AnchorPane>
             <AnchorPane fx:id="AnchorPane65" layoutX="667.0" layoutY="481.0" onMouseClicked="#anchorPane65Clicked" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="5">
                <children>
-                  <Label layoutX="9.0" layoutY="3.0" onMouseClicked="#label65Clicked">
+                  <Label fx:id="Label65" layoutX="9.0" layoutY="3.0" onMouseClicked="#label65Clicked">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <ListView layoutY="28.0" onMouseClicked="#listView65Clicked" prefHeight="67.0" prefWidth="132.0" />
+                  <ListView fx:id="ListView65" layoutY="28.0" onMouseClicked="#listView65Clicked" prefHeight="67.0" prefWidth="132.0" />
                </children>
             </AnchorPane>
          </children>

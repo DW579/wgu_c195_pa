@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="700.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View_Controller.CalendarTestController">
+   <children>
+      <Button fx:id="ViewButton" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#changeViewHandler" text="Week View" />
+      <Button fx:id="ExitButton" layoutX="909.0" layoutY="14.0" mnemonicParsing="false" onAction="#exitHandler" text="X" />
+      <Label fx:id="Month" layoutX="14.0" layoutY="57.0" text="Month">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Label>
+      <Label fx:id="Year" layoutX="130.0" layoutY="57.0" text="Year">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Label>
+      <Label fx:id="PreviousMonthArrow" layoutX="205.0" layoutY="57.0" onMouseClicked="#previousMonthClicked" onMouseEntered="#previousMonthEntered" onMouseExited="#previousMonthExited" text="&lt;">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Label fx:id="NextMonthArrow" layoutX="229.0" layoutY="57.0" onMouseClicked="#nextMonthClicked" onMouseEntered="#nextMonthEntered" onMouseExited="#nextMonthExited" text="&gt;">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Label layoutX="54.0" layoutY="103.0" text="Sunday">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="195.0" layoutY="103.0" text="Monday">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="317.0" layoutY="103.0" text="Tuesday">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="440.0" layoutY="103.0" text="Wednesday">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="578.0" layoutY="103.0" text="Thursday">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="718.0" layoutY="103.0" text="Friday">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="849.0" layoutY="103.0" text="Saturday">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Button fx:id="CustomerButton" layoutX="130.0" layoutY="14.0" mnemonicParsing="false" onAction="#customerButtonHandler" text="Customer/Appointment" />
+      <TableView fx:id="TableView1" layoutX="14.0" layoutY="121.0" prefHeight="92.0" prefWidth="132.0">
+        <columns>
+          <TableColumn fx:id="Column1" prefWidth="131.0" resizable="false" text="1" />
+        </columns>
+      </TableView>
+      <TableView fx:id="TableView2" layoutX="147.0" layoutY="121.0" prefHeight="92.0" prefWidth="132.0">
+         <columns>
+            <TableColumn fx:id="Column2" prefWidth="131.0" resizable="false" text="1" />
+         </columns>
+      </TableView>
+      <TableView fx:id="TableView3" layoutX="279.0" layoutY="121.0" prefHeight="92.0" prefWidth="132.0">
+         <columns>
+            <TableColumn fx:id="Column3" prefWidth="131.0" resizable="false" text="1" />
+         </columns>
+      </TableView>
+      <TableView fx:id="TableView4" layoutX="410.0" layoutY="121.0" prefHeight="92.0" prefWidth="132.0">
+         <columns>
+            <TableColumn fx:id="Column4" prefWidth="131.0" resizable="false" text="1" />
+         </columns>
+      </TableView>
+      <TableView fx:id="TableView5" layoutX="540.0" layoutY="121.0" prefHeight="92.0" prefWidth="132.0">
+         <columns>
+            <TableColumn fx:id="Column5" prefWidth="131.0" resizable="false" text="1" />
+         </columns>
+      </TableView>
+      <TableView fx:id="TableView6" layoutX="671.0" layoutY="121.0" prefHeight="92.0" prefWidth="132.0">
+         <columns>
+            <TableColumn fx:id="Column6" prefWidth="131.0" resizable="false" text="1" />
+         </columns>
+      </TableView>
+      <TableView fx:id="TableView7" layoutX="803.0" layoutY="121.0" prefHeight="92.0" prefWidth="132.0">
+         <columns>
+            <TableColumn fx:id="Column7" prefWidth="131.0" resizable="false" text="1" />
+         </columns>
+      </TableView>
+      <TableView fx:id="TableView14" layoutX="803.0" layoutY="213.0" prefHeight="92.0" prefWidth="132.0">
+         <columns>
+            <TableColumn fx:id="Column14" prefWidth="131.0" resizable="false" text="1" />
+         </columns>
+      </TableView>
+      <TableView fx:id="TableView13" layoutX="671.0" layoutY="213.0" prefHeight="92.0" prefWidth="132.0">
+         <columns>
+            <TableColumn fx:id="Column13" prefWidth="131.0" resizable="false" text="1" />
+         </columns>
+      </TableView>
+      <TableView fx:id="TableView12" layoutX="540.0" layoutY="213.0" prefHeight="92.0" prefWidth="132.0">
+         <columns>
+            <TableColumn fx:id="Column12" prefWidth="131.0" resizable="false" text="1" />
+         </columns>
+      </TableView>
+      <TableView fx:id="TableView11" layoutX="410.0" layoutY="213.0" prefHeight="92.0" prefWidth="132.0">
+         <columns>
+            <TableColumn fx:id="Column11" prefWidth="131.0" resizable="false" text="1" />
+         </columns>
+      </TableView>
+      <TableView fx:id="TableView10" layoutX="279.0" layoutY="213.0" prefHeight="92.0" prefWidth="132.0">
+         <columns>
+            <TableColumn fx:id="Column10" prefWidth="131.0" resizable="false" text="1" />
+         </columns>
+      </TableView>
+      <TableView fx:id="TableView9" layoutX="147.0" layoutY="213.0" prefHeight="92.0" prefWidth="132.0">
+         <columns>
+            <TableColumn fx:id="Column9" prefWidth="131.0" resizable="false" text="1" />
+         </columns>
+      </TableView>
+      <TableView fx:id="TableView8" layoutX="14.0" layoutY="213.0" prefHeight="92.0" prefWidth="132.0">
+         <columns>
+            <TableColumn fx:id="Column8" prefWidth="131.0" resizable="false" text="1" />
+         </columns>
+      </TableView>
+      <TableView fx:id="TableView15" layoutX="14.0" layoutY="304.0" prefHeight="92.0" prefWidth="132.0">
+         <columns>
+            <TableColumn fx:id="Column15" prefWidth="131.0" resizable="false" text="1" />
+         </columns>
+      </TableView>
+      <TableView fx:id="TableView16" layoutX="147.0" layoutY="304.0" prefHeight="92.0" prefWidth="132.0">
+         <columns>
+            <TableColumn fx:id="Column16" prefWidth="131.0" resizable="false" text="1" />
+         </columns>
+      </TableView>
+      <TableView fx:id="TableView17" layoutX="279.0" layoutY="304.0" prefHeight="92.0" prefWidth="132.0">
+         <columns>
+            <TableColumn fx:id="Column17" prefWidth="131.0" resizable="false" text="1" />
+         </columns>
+      </TableView>
+      <TableView fx:id="TableView18" layoutX="410.0" layoutY="304.0" prefHeight="92.0" prefWidth="132.0">
+         <columns>
+            <TableColumn fx:id="Column18" prefWidth="131.0" resizable="false" text="1" />
+         </columns>
+      </TableView>
+      <TableView fx:id="TableView19" layoutX="540.0" layoutY="304.0" prefHeight="92.0" prefWidth="132.0">
+         <columns>
+            <TableColumn fx:id="Column19" prefWidth="131.0" resizable="false" text="1" />
+         </columns>
+      </TableView>
+      <TableView fx:id="TableView20" layoutX="671.0" layoutY="304.0" prefHeight="92.0" prefWidth="132.0">
+         <columns>
+            <TableColumn fx:id="Column20" prefWidth="131.0" resizable="false" text="1" />
+         </columns>
+      </TableView>
+      <TableView fx:id="TableView21" layoutX="803.0" layoutY="304.0" prefHeight="92.0" prefWidth="132.0">
+         <columns>
+            <TableColumn fx:id="Column21" prefWidth="131.0" resizable="false" text="1" />
+         </columns>
+      </TableView>
+      <TableView fx:id="TableView28" layoutX="803.0" layoutY="396.0" prefHeight="92.0" prefWidth="132.0">
+         <columns>
+            <TableColumn prefWidth="131.0" resizable="false" text="1" />
+         </columns>
+      </TableView>
+      <TableView fx:id="TableView27" layoutX="671.0" layoutY="396.0" prefHeight="92.0" prefWidth="132.0">
+         <columns>
+            <TableColumn prefWidth="131.0" resizable="false" text="1" />
+         </columns>
+      </TableView>
+      <TableView fx:id="TableView26" layoutX="540.0" layoutY="396.0" prefHeight="92.0" prefWidth="132.0">
+         <columns>
+            <TableColumn prefWidth="131.0" resizable="false" text="1" />
+         </columns>
+      </TableView>
+      <TableView fx:id="TableView25" layoutX="409.0" layoutY="396.0" prefHeight="92.0" prefWidth="132.0">
+         <columns>
+            <TableColumn prefWidth="131.0" resizable="false" text="1" />
+         </columns>
+      </TableView>
+      <TableView fx:id="TableView24" layoutX="279.0" layoutY="396.0" prefHeight="92.0" prefWidth="132.0">
+         <columns>
+            <TableColumn prefWidth="131.0" resizable="false" text="1" />
+         </columns>
+      </TableView>
+      <TableView fx:id="TableView23" layoutX="147.0" layoutY="396.0" prefHeight="92.0" prefWidth="132.0">
+         <columns>
+            <TableColumn prefWidth="131.0" resizable="false" text="1" />
+         </columns>
+      </TableView>
+      <TableView fx:id="TableView22" layoutX="14.0" layoutY="396.0" prefHeight="92.0" prefWidth="132.0">
+         <columns>
+            <TableColumn prefWidth="131.0" resizable="false" text="1" />
+         </columns>
+      </TableView>
+      <TableView fx:id="TableView29" layoutX="14.0" layoutY="488.0" prefHeight="92.0" prefWidth="132.0">
+         <columns>
+            <TableColumn prefWidth="131.0" resizable="false" text="1" />
+         </columns>
+      </TableView>
+      <TableView fx:id="TableView30" layoutX="147.0" layoutY="488.0" prefHeight="92.0" prefWidth="132.0">
+         <columns>
+            <TableColumn prefWidth="131.0" resizable="false" text="1" />
+         </columns>
+      </TableView>
+      <TableView fx:id="TableView31" layoutX="279.0" layoutY="488.0" prefHeight="92.0" prefWidth="132.0">
+         <columns>
+            <TableColumn prefWidth="131.0" resizable="false" text="1" />
+         </columns>
+      </TableView>
+      <TableView fx:id="TableView32" layoutX="410.0" layoutY="488.0" prefHeight="92.0" prefWidth="132.0">
+         <columns>
+            <TableColumn prefWidth="131.0" resizable="false" text="1" />
+         </columns>
+      </TableView>
+      <TableView fx:id="TableView33" layoutX="540.0" layoutY="488.0" prefHeight="92.0" prefWidth="132.0">
+         <columns>
+            <TableColumn prefWidth="131.0" resizable="false" text="1" />
+         </columns>
+      </TableView>
+      <TableView fx:id="TableView34" layoutX="671.0" layoutY="488.0" prefHeight="92.0" prefWidth="132.0">
+         <columns>
+            <TableColumn prefWidth="131.0" resizable="false" text="1" />
+         </columns>
+      </TableView>
+      <TableView fx:id="TableView35" layoutX="803.0" layoutY="488.0" prefHeight="92.0" prefWidth="132.0">
+         <columns>
+            <TableColumn prefWidth="131.0" resizable="false" text="1" />
+         </columns>
+      </TableView>
+      <TableView fx:id="TableView42" layoutX="803.0" layoutY="580.0" prefHeight="92.0" prefWidth="132.0">
+         <columns>
+            <TableColumn prefWidth="131.0" resizable="false" text="1" />
+         </columns>
+      </TableView>
+      <TableView fx:id="TableView41" layoutX="671.0" layoutY="580.0" prefHeight="92.0" prefWidth="132.0">
+         <columns>
+            <TableColumn prefWidth="131.0" resizable="false" text="1" />
+         </columns>
+      </TableView>
+      <TableView fx:id="TableView40" layoutX="540.0" layoutY="580.0" prefHeight="92.0" prefWidth="132.0">
+         <columns>
+            <TableColumn prefWidth="131.0" resizable="false" text="1" />
+         </columns>
+      </TableView>
+      <TableView fx:id="TableView39" layoutX="410.0" layoutY="580.0" prefHeight="92.0" prefWidth="132.0">
+         <columns>
+            <TableColumn prefWidth="131.0" resizable="false" text="1" />
+         </columns>
+      </TableView>
+      <TableView fx:id="TableView38" layoutX="279.0" layoutY="580.0" prefHeight="92.0" prefWidth="132.0">
+         <columns>
+            <TableColumn prefWidth="131.0" resizable="false" text="1" />
+         </columns>
+      </TableView>
+      <TableView fx:id="TableView37" layoutX="147.0" layoutY="580.0" prefHeight="92.0" prefWidth="132.0">
+         <columns>
+            <TableColumn prefWidth="131.0" resizable="false" text="1" />
+         </columns>
+      </TableView>
+      <TableView fx:id="TableView36" layoutX="14.0" layoutY="580.0" prefHeight="92.0" prefWidth="132.0">
+         <columns>
+            <TableColumn prefWidth="131.0" resizable="false" text="1" />
+         </columns>
+      </TableView>
+   </children>
+</AnchorPane>

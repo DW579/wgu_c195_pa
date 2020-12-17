@@ -49,8 +49,8 @@ public class AddAppointmentController {
             // '2019-01-01 00:00:00'
             String startDateTime = "'" + StartDateField.getValue().toString() + " " + StartHourField.getText() + ":" + StartMinuteField.getText() + ":00'";
             String endDateTime = "'" + EndDateField.getValue().toString() + " " + EndHourField.getText() + ":" + EndMinuteField.getText() + ":00'";
+            String calendarEntry = TitleField.getText() + " - " + startDateTime + " " + endDateTime;
 
-//            Appointment newAppointment = new Appointment();
             // Set Dynamic Appointment ID
             int dynamicAppointmentId = 1;
 
@@ -87,6 +87,8 @@ public class AddAppointmentController {
             Appointment newAppointment = new Appointment(dynamicAppointmentId, Integer.parseInt(CustomerIdField.getText()), 1, TitleField.getText(), "test", "test", "test", TypeField.getText(), "test", startDateTime, endDateTime, "2019-01-01 00:00:00","test","2019-01-01 00:00:00","test");
 
             CalendarData.addAppointment(newAppointment);
+
+            CalendarData.addAppointmentForCalendar(calendarEntry);
 
             Stage stage = (Stage) SaveButton.getScene().getWindow();
             stage.close();
