@@ -45,9 +45,20 @@ public class CustomerController {
     FilteredList<Customer> filteredCustomersData = new FilteredList<>(CalendarData.getAllCustomers(), p -> true);
 
     // Close Customer Window
-    public void exitButtonHandler(ActionEvent actionEvent) {
-        Stage stage = (Stage) ExitButton.getScene().getWindow();
-        stage.close();
+    public void exitButtonHandler(ActionEvent actionEvent) throws IOException {
+        // Close Customer stage
+        Stage customerStage = (Stage) ExitButton.getScene().getWindow();
+        customerStage.close();
+
+        // Open calendar stage
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Calendar.fxml"));
+        Parent rootCustomer = fxmlLoader.load();
+        Stage stage = new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initStyle(StageStyle.UNDECORATED);
+        stage.setTitle("Calendar");
+        stage.setScene(new Scene(rootCustomer));
+        stage.show();
     }
 
     // Open Add Customer window
