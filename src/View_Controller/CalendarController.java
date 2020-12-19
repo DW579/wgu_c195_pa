@@ -19,13 +19,19 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import utils.DBConnection;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Optional;
@@ -44,6 +50,7 @@ public class CalendarController {
     public GridPane WeekGridPane;
     public Button ScheduleButton;
     public Label AppointmentTypesQauntity;
+    public Label AppointmentCustomerQauntity;
 
     private boolean month_view = true;
 
@@ -53,6 +60,7 @@ public class CalendarController {
         String month = CalendarData.getSelectedMonth();
         int monthInt = CalendarData.getSelectedMonthInt();
         int appointment_type_amounts = 0;
+        int appointment_customer_amounts = 0;
 
         // Update Month and Year text to reflect today's date
         Month.setText(month);
@@ -125,14 +133,96 @@ public class CalendarController {
             while(rs.next()) {
                 appointment_type_amounts += 1;
             }
-
-            System.out.println(appointment_type_amounts);
         }
         catch (SQLException e) {
             System.out.println("SQLException error: " + e.getMessage());
         }
 
         AppointmentTypesQauntity.setText(Integer.toString(appointment_type_amounts) + " appointment types this month");
+
+        // Get and set the amount of different customers the appointments will be in a given month
+        try {
+            LocalDate whole_month = LocalDate.of(Integer.parseInt(year), monthInt , 1);
+
+            Statement dbConnectionStatement = DBConnection.getConnection().createStatement();
+            String queryCustomerQauntity = "SELECT DISTINCT customerId FROM appointment WHERE start BETWEEN '" + year + "-" + Integer.toString(monthInt) + "-1 00:00:00' AND '" + year + "-" + Integer.toString(monthInt) + "-" + Integer.toString(whole_month.lengthOfMonth()) + " 23:59:59'";
+            ResultSet rs = dbConnectionStatement.executeQuery(queryCustomerQauntity);
+
+            while(rs.next()) {
+                appointment_customer_amounts += 1;
+            }
+        }
+        catch (SQLException e) {
+            System.out.println("SQLException error: " + e.getMessage());
+        }
+
+        AppointmentCustomerQauntity.setText("Appointments with " + Integer.toString(appointment_customer_amounts) + " different customers this month");
+
+        // Check to see if an appointment will start in 15 min. of user log in. If so, show an alert
+        try {
+            // Get LocalDateTime.now()
+            LocalDateTime login_time = LocalDateTime.now();
+            LocalDateTime login_time_plus_fifteen = LocalDateTime.now().plusMinutes(15);
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+            String login_time_formatted = login_time.format(formatter);
+            String login_time_plus_fifteen_formatted = login_time_plus_fifteen.format(formatter);
+
+            Statement dbConnectionStatement = DBConnection.getConnection().createStatement();
+            String queryAllAppointments = "SELECT * FROM appointment WHERE start BETWEEN '" + login_time_formatted + "' AND '" + login_time_plus_fifteen_formatted + "'";
+            ResultSet rs = dbConnectionStatement.executeQuery(queryAllAppointments);
+
+            rs.last();
+
+            if(rs.getRow() > 0) {
+                Alert withinFifteen = new Alert(Alert.AlertType.CONFIRMATION);
+                withinFifteen.initModality(Modality.NONE);
+                withinFifteen.setTitle("Appointment within 15 min.");
+                withinFifteen.setHeaderText("Appointment within 15 min.");
+                withinFifteen.setContentText("You have an appointment within 15 min. Appointment title: " + rs.getString("title"));
+                Optional<ButtonType> userChoice = withinFifteen.showAndWait();
+            }
+        }
+        catch (SQLException e) {
+            System.out.println("SQLException error: " + e.getMessage());
+        }
+
+        // Log user login times in logins.txt
+        try {
+            File logins_file = new File("logins.txt");
+
+            LocalDateTime login_time = LocalDateTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String login_time_formatted = login_time.format(formatter);
+            String new_line = "\n";
+
+            if(logins_file.exists()) {
+                Files.write(Paths.get("logins.txt"), new_line.getBytes(), StandardOpenOption.APPEND);
+                Files.write(Paths.get("logins.txt"), login_time_formatted.getBytes(), StandardOpenOption.APPEND);
+            }
+            else {
+                FileWriter user_login = new FileWriter("logins.txt");
+                user_login.write(login_time_formatted);
+                user_login.close();
+            }
+
+//            if (logins_file.createNewFile()) {
+//                System.out.println("File created: " + logins_file.getName());
+//
+//                user_login.write(login_time_formatted);
+//                user_login.close();
+//
+//            }
+//            else {
+//                System.out.println("File already exists.");
+//
+//                Files.write(Paths.get("logins.txt"), login_time_formatted.getBytes(), StandardOpenOption.APPEND);
+//            }
+        }
+        catch (IOException e) {
+            System.out.println("IOException error: " + e.getMessage());
+        }
 
     }
 
@@ -177,6 +267,7 @@ public class CalendarController {
         Year.setText(CalendarData.getSelectedYear());
         CalendarData.updateDaysNums();
         int appointment_type_amounts = 0;
+        int appointment_customer_amounts = 0;
         int monthIntType = CalendarData.getSelectedMonthInt();
 
         // Set Text of each label in it's anchor pane to it's correct num
@@ -262,6 +353,26 @@ public class CalendarController {
         }
 
         AppointmentTypesQauntity.setText(Integer.toString(appointment_type_amounts) + " appointment types this month");
+
+        // Get and set the amount of different customers the appointments will be in a given month
+        try {
+            LocalDate whole_month = LocalDate.of(Integer.parseInt(CalendarData.getSelectedYear()), monthIntType , 1);
+
+            Statement dbConnectionStatement = DBConnection.getConnection().createStatement();
+            String queryCustomerQauntity = "SELECT DISTINCT customerId FROM appointment WHERE start BETWEEN '" + CalendarData.getSelectedYear() + "-" + Integer.toString(monthIntType) + "-1 00:00:00' AND '" + CalendarData.getSelectedYear() + "-" + Integer.toString(monthIntType) + "-" + Integer.toString(whole_month.lengthOfMonth()) + " 23:59:59'";
+            ResultSet rs = dbConnectionStatement.executeQuery(queryCustomerQauntity);
+
+            while(rs.next()) {
+                appointment_customer_amounts += 1;
+            }
+
+            System.out.println(appointment_customer_amounts);
+        }
+        catch (SQLException e) {
+            System.out.println("SQLException error: " + e.getMessage());
+        }
+
+        AppointmentCustomerQauntity.setText("Appointments with " + Integer.toString(appointment_customer_amounts) + " different customers this month");
     }
 
     public void previousMonthEntered(MouseEvent mouseEvent) {
@@ -278,6 +389,7 @@ public class CalendarController {
         Year.setText(CalendarData.getSelectedYear());
         CalendarData.updateDaysNums();
         int appointment_type_amounts = 0;
+        int appointment_customer_amounts = 0;
         int monthIntType = CalendarData.getSelectedMonthInt();
 
         // Set Text of each label in it's anchor pane to it's correct num
@@ -362,6 +474,26 @@ public class CalendarController {
         }
 
         AppointmentTypesQauntity.setText(Integer.toString(appointment_type_amounts) + " appointment types this month");
+
+        // Get and set the amount of different customers the appointments will be in a given month
+        try {
+            LocalDate whole_month = LocalDate.of(Integer.parseInt(CalendarData.getSelectedYear()), monthIntType , 1);
+
+            Statement dbConnectionStatement = DBConnection.getConnection().createStatement();
+            String queryCustomerQauntity = "SELECT DISTINCT customerId FROM appointment WHERE start BETWEEN '" + CalendarData.getSelectedYear() + "-" + Integer.toString(monthIntType) + "-1 00:00:00' AND '" + CalendarData.getSelectedYear() + "-" + Integer.toString(monthIntType) + "-" + Integer.toString(whole_month.lengthOfMonth()) + " 23:59:59'";
+            ResultSet rs = dbConnectionStatement.executeQuery(queryCustomerQauntity);
+
+            while(rs.next()) {
+                appointment_customer_amounts += 1;
+            }
+
+            System.out.println(appointment_customer_amounts);
+        }
+        catch (SQLException e) {
+            System.out.println("SQLException error: " + e.getMessage());
+        }
+
+        AppointmentCustomerQauntity.setText("Appointments with " + Integer.toString(appointment_customer_amounts) + " different customers this month");
     }
 
     public void nextMonthEntered(MouseEvent mouseEvent) {

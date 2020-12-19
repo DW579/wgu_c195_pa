@@ -596,8 +596,13 @@
          </children>
       </GridPane>
       <Button fx:id="CustomerButton" layoutX="130.0" layoutY="14.0" mnemonicParsing="false" onAction="#customerButtonHandler" text="Customer/Appointment" />
-      <Button fx:id="ScheduleButton" layoutX="301.0" layoutY="14.0" mnemonicParsing="false" onAction="#ScheduleHandler" text="Schedule" />
+      <Button fx:id="ScheduleButton" layoutX="301.0" layoutY="14.0" mnemonicParsing="false" onAction="#ScheduleHandler" text="Today's Schedule" />
       <Label fx:id="AppointmentTypesQauntity" layoutX="302.0" layoutY="63.0" text="0 appointment types this month" textFill="#18a82b">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="AppointmentCustomerQauntity" layoutX="563.0" layoutY="64.0" text="Appointments in 0 different cities this month" textFill="#b59008">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
