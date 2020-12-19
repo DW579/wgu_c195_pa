@@ -26,6 +26,7 @@ import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Optional;
 
@@ -42,6 +43,7 @@ public class CalendarController {
     public GridPane MonthGridPane;
     public GridPane WeekGridPane;
     public Button ScheduleButton;
+    public Label AppointmentTypesQauntity;
 
     private boolean month_view = true;
 
@@ -50,6 +52,7 @@ public class CalendarController {
         String year = CalendarData.getSelectedYear();
         String month = CalendarData.getSelectedMonth();
         int monthInt = CalendarData.getSelectedMonthInt();
+        int appointment_type_amounts = 0;
 
         // Update Month and Year text to reflect today's date
         Month.setText(month);
@@ -111,6 +114,26 @@ public class CalendarController {
 
         }
 
+        // Find and set the amount of different appointment types in the month
+        try {
+            LocalDate whole_month = LocalDate.of(Integer.parseInt(year), monthInt , 1);
+
+            Statement dbConnectionStatement = DBConnection.getConnection().createStatement();
+            String queryTypeQauntity = "SELECT DISTINCT type FROM appointment WHERE start BETWEEN '" + year + "-" + Integer.toString(monthInt) + "-1 00:00:00' AND '" + year + "-" + Integer.toString(monthInt) + "-" + Integer.toString(whole_month.lengthOfMonth()) + " 23:59:59'";
+            ResultSet rs = dbConnectionStatement.executeQuery(queryTypeQauntity);
+
+            while(rs.next()) {
+                appointment_type_amounts += 1;
+            }
+
+            System.out.println(appointment_type_amounts);
+        }
+        catch (SQLException e) {
+            System.out.println("SQLException error: " + e.getMessage());
+        }
+
+        AppointmentTypesQauntity.setText(Integer.toString(appointment_type_amounts) + " appointment types this month");
+
     }
 
     // Change between Month and Week views
@@ -153,6 +176,8 @@ public class CalendarController {
         Month.setText(CalendarData.updatePreviousMonth());
         Year.setText(CalendarData.getSelectedYear());
         CalendarData.updateDaysNums();
+        int appointment_type_amounts = 0;
+        int monthIntType = CalendarData.getSelectedMonthInt();
 
         // Set Text of each label in it's anchor pane to it's correct num
         ObservableList all_month_anchor_panes = MonthGridPane.getChildren();
@@ -217,6 +242,26 @@ public class CalendarController {
 
             }
         }
+
+        // Find and set the amount of different appointment types in the month
+        try {
+            LocalDate whole_month = LocalDate.of(Integer.parseInt(CalendarData.getSelectedYear()), monthIntType , 1);
+
+            Statement dbConnectionStatement = DBConnection.getConnection().createStatement();
+            String queryTypeQauntity = "SELECT DISTINCT type FROM appointment WHERE start BETWEEN '" + Integer.parseInt(CalendarData.getSelectedYear()) + "-" + Integer.toString(monthIntType) + "-1 00:00:00' AND '" + Integer.parseInt(CalendarData.getSelectedYear()) + "-" + Integer.toString(monthIntType) + "-" + Integer.toString(whole_month.lengthOfMonth()) + " 23:59:59'";
+            ResultSet rs = dbConnectionStatement.executeQuery(queryTypeQauntity);
+
+            while(rs.next()) {
+                appointment_type_amounts += 1;
+            }
+
+            System.out.println(appointment_type_amounts);
+        }
+        catch (SQLException e) {
+            System.out.println("SQLException error: " + e.getMessage());
+        }
+
+        AppointmentTypesQauntity.setText(Integer.toString(appointment_type_amounts) + " appointment types this month");
     }
 
     public void previousMonthEntered(MouseEvent mouseEvent) {
@@ -232,6 +277,8 @@ public class CalendarController {
         Month.setText(CalendarData.updateNextMonth());
         Year.setText(CalendarData.getSelectedYear());
         CalendarData.updateDaysNums();
+        int appointment_type_amounts = 0;
+        int monthIntType = CalendarData.getSelectedMonthInt();
 
         // Set Text of each label in it's anchor pane to it's correct num
         ObservableList all_month_anchor_panes = MonthGridPane.getChildren();
@@ -295,6 +342,26 @@ public class CalendarController {
 
             }
         }
+
+        // Find and set the amount of different appointment types in the month
+        try {
+            LocalDate whole_month = LocalDate.of(Integer.parseInt(CalendarData.getSelectedYear()), monthIntType , 1);
+
+            Statement dbConnectionStatement = DBConnection.getConnection().createStatement();
+            String queryTypeQauntity = "SELECT DISTINCT type FROM appointment WHERE start BETWEEN '" + Integer.parseInt(CalendarData.getSelectedYear()) + "-" + Integer.toString(monthIntType) + "-1 00:00:00' AND '" + Integer.parseInt(CalendarData.getSelectedYear()) + "-" + Integer.toString(monthIntType) + "-" + Integer.toString(whole_month.lengthOfMonth()) + " 23:59:59'";
+            ResultSet rs = dbConnectionStatement.executeQuery(queryTypeQauntity);
+
+            while(rs.next()) {
+                appointment_type_amounts += 1;
+            }
+
+            System.out.println(appointment_type_amounts);
+        }
+        catch (SQLException e) {
+            System.out.println("SQLException error: " + e.getMessage());
+        }
+
+        AppointmentTypesQauntity.setText(Integer.toString(appointment_type_amounts) + " appointment types this month");
     }
 
     public void nextMonthEntered(MouseEvent mouseEvent) {
