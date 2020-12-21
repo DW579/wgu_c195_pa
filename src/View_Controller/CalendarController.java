@@ -33,8 +33,10 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Optional;
+import java.util.TimeZone;
 
 public class CalendarController {
     public Button CustomerButton;
@@ -195,52 +197,55 @@ public class CalendarController {
             LocalDateTime login_time = LocalDateTime.now();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             String login_time_formatted = login_time.format(formatter);
-            String new_line = "\n";
+            String user_info = "\n User 1 " + TimeZone.getDefault().getID() + " ";
 
             if(logins_file.exists()) {
-                Files.write(Paths.get("logins.txt"), new_line.getBytes(), StandardOpenOption.APPEND);
+                Files.write(Paths.get("logins.txt"), user_info.getBytes(), StandardOpenOption.APPEND);
                 Files.write(Paths.get("logins.txt"), login_time_formatted.getBytes(), StandardOpenOption.APPEND);
             }
             else {
                 FileWriter user_login = new FileWriter("logins.txt");
+                user_login.write(user_info);
                 user_login.write(login_time_formatted);
                 user_login.close();
             }
 
-//            if (logins_file.createNewFile()) {
-//                System.out.println("File created: " + logins_file.getName());
-//
-//                user_login.write(login_time_formatted);
-//                user_login.close();
-//
-//            }
-//            else {
-//                System.out.println("File already exists.");
-//
-//                Files.write(Paths.get("logins.txt"), login_time_formatted.getBytes(), StandardOpenOption.APPEND);
-//            }
         }
         catch (IOException e) {
             System.out.println("IOException error: " + e.getMessage());
         }
 
+        // Determine user location and timezone
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2020,12,20,14,0,0);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+        sdf.setTimeZone(TimeZone.getDefault());
+
+        System.out.println(TimeZone.getDefault().getID());
+
+        System.out.println(sdf.format(calendar.getTime()));
+        
     }
 
-    // Change between Month and Week views
+    // Open Week view
     public void changeViewHandler(ActionEvent actionEvent) throws IOException {
-        if(month_view){
-            month_view = false;
-            ViewButton.setText("Month View");
-            MonthGridPane.setVisible(false);
-            WeekGridPane.setVisible(true);
-        }
-        else {
-            month_view = true;
-            ViewButton.setText("Week View");
-            WeekGridPane.setVisible(false);
-            MonthGridPane.setVisible(true);
-        }
 
+        // Close calendar stage
+        Stage stageWeek = (Stage) ViewButton.getScene().getWindow();
+        stageWeek.close();
+
+        // Open Week stage
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Week.fxml"));
+        Parent rootWeek = fxmlLoader.load();
+        Stage stage = new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initStyle(StageStyle.UNDECORATED);
+        stage.setTitle("Week View");
+        stage.setScene(new Scene(rootWeek));
+        stage.show();
 
     }
 
