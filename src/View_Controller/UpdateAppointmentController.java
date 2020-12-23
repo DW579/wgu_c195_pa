@@ -12,7 +12,10 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Calendar;
+import java.util.TimeZone;
 
 public class UpdateAppointmentController {
 
@@ -84,10 +87,41 @@ public class UpdateAppointmentController {
         int customerId = Integer.parseInt(CustomerIdField.getText());
         String title = TitleField.getText();
         String type = TypeField.getText();
-        String start = "'" + StartDateField.getValue().toString() + " " + StartHourField.getText() + ":" + StartMinuteField.getText() + ":00'";
-        String end = "'" + EndDateField.getValue().toString() + " " + EndHourField.getText() + ":" + EndMinuteField.getText() + ":00'";
+        String start = StartDateField.getValue().toString() + " " + StartHourField.getText() + ":" + StartMinuteField.getText() + ":00";
+        String end = EndDateField.getValue().toString() + " " + EndHourField.getText() + ":" + EndMinuteField.getText() + ":00";
 
-        CalendarData.updateAppointment(appointmentId, customerId, title, type, start, end);
+        // Convert start and end times to user's timezone
+        String db_start = start;
+        String db_end = end;
+
+        int db_start_year = Integer.parseInt(db_start.substring(0, 4));
+        int db_start_month = Integer.parseInt(db_start.substring(5, 7));
+        int db_start_day = Integer.parseInt(db_start.substring(8, 10));
+        int db_start_hour = Integer.parseInt(db_start.substring(11, 13));
+        int db_start_min = Integer.parseInt(db_start.substring(14, 16));
+        int db_end_year = Integer.parseInt(db_end.substring(0, 4));
+        int db_end_month = Integer.parseInt(db_end.substring(5, 7));
+        int db_end_day = Integer.parseInt(db_end.substring(8, 10));
+        int db_end_hour = Integer.parseInt(db_end.substring(11, 13));
+        int db_end_min = Integer.parseInt(db_end.substring(14, 16));
+
+        // Determine user location and timezone
+        Calendar calendar_start = Calendar.getInstance();
+        Calendar calendar_end = Calendar.getInstance();
+
+        calendar_start.set(db_start_year,db_start_month - 1,db_start_day,db_start_hour,db_start_min,0); // Unsure why I need to subtract 11 from the month
+        calendar_end.set(db_end_year,db_end_month - 1,db_end_day,db_end_hour,db_end_min,0); // Unsure why I need to subtract 11 from the month
+
+        SimpleDateFormat sdf_start = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat sdf_end = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        sdf_start.setTimeZone(TimeZone.getTimeZone("UTC"));
+        sdf_end.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+        sdf_start.setTimeZone(TimeZone.getDefault());
+        sdf_end.setTimeZone(TimeZone.getDefault());
+
+        CalendarData.updateAppointment(appointmentId, customerId, title, type, "'" + sdf_start.format(calendar_start.getTime()) + "'", "'" + sdf_end.format(calendar_end.getTime()) + "'");
 
         Stage stage = (Stage) SaveButton.getScene().getWindow();
         stage.close();

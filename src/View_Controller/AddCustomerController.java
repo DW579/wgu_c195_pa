@@ -2,12 +2,10 @@ package View_Controller;
 
 import Model.CalendarData;
 import Model.Customer;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 

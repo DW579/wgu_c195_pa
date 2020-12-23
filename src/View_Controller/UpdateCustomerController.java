@@ -21,6 +21,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Optional;
+import java.util.TimeZone;
 
 public class UpdateCustomerController {
     public TextField IdField;
@@ -34,6 +35,8 @@ public class UpdateCustomerController {
 
     public Button SaveButton;
     public Button CloseButton;
+
+    public Label TimeZoneLabel;
 
     // Appointment Table View
     @FXML
@@ -227,6 +230,7 @@ public class UpdateCustomerController {
 
     @FXML
     private void initialize() {
-
+        // Set the label to display to the user what time zone they are in
+        TimeZoneLabel.setText("* Your time zone: " + TimeZone.getDefault().getID());
     }
 }

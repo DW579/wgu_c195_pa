@@ -24,9 +24,14 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
 
 public class WeekController {
     public Label WeekMonth;
@@ -45,6 +50,7 @@ public class WeekController {
     public Button Week4Button;
     public Button Week5Button;
     public Button Week6Button;
+    public Label TimeZoneLabel;
 
     @FXML
     private void initialize() {
@@ -88,18 +94,57 @@ public class WeekController {
                     day = CalendarData.getAnchorPaneValue(i);
                 }
 
-                String startFullDate = "'" + year + "-" + Integer.toString(monthInt) + "-" + day + " 00:00:00'";
-                String endFullDate = "'" + year + "-" + Integer.toString(monthInt) + "-" + day + " 23:59:59'";
+                String month_int_string = null;
 
-                // Input all appointments into it's day if appointments exist
+                if(monthInt < 10) {
+                    month_int_string = "0" + Integer.toString(monthInt);
+                }
+                else {
+                    month_int_string = Integer.toString(monthInt);
+                }
+
+                String startFullDate = year + "-" + month_int_string + "-" + day + " 00:00:00";
+                String endFullDate = year + "-" + month_int_string + "-" + day + " 23:59:59";
+
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+                // Convert start of day and end of day to LocalDateTimes
+                LocalDateTime start_of_day = LocalDateTime.parse(startFullDate, formatter);
+                LocalDateTime end_of_day = LocalDateTime.parse(endFullDate, formatter);
+
                 try {
                     Statement dbConnectionStatement = DBConnection.getConnection().createStatement();
-                    String queryForDaysAppointments = "SELECT * FROM appointment WHERE start BETWEEN " + startFullDate + " AND " + endFullDate;
+                    String queryForDaysAppointments = "SELECT * FROM appointment";
                     ResultSet rs = dbConnectionStatement.executeQuery(queryForDaysAppointments);
 
                     while(rs.next()) {
 
-                        appointments_today.add(rs.getString("title"));
+                        String db_start = rs.getString("start");
+
+                        int db_start_year = Integer.parseInt(db_start.substring(0, 4));
+                        int db_start_month = Integer.parseInt(db_start.substring(5, 7));
+                        int db_start_day = Integer.parseInt(db_start.substring(8, 10));
+                        int db_start_hour = Integer.parseInt(db_start.substring(11, 13));
+                        int db_start_min = Integer.parseInt(db_start.substring(14, 16));
+
+                        // Determine user location and timezone
+                        Calendar calendar_start = Calendar.getInstance();
+
+                        calendar_start.set(db_start_year,db_start_month - 1,db_start_day,db_start_hour,db_start_min,0); // Unsure why I need to subtract 11 from the month
+
+                        SimpleDateFormat sdf_start = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+                        sdf_start.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+                        sdf_start.setTimeZone(TimeZone.getDefault());
+
+                        // Convert appointment start time into LocalDateTime
+                        LocalDateTime appointment_start = LocalDateTime.parse(sdf_start.format(calendar_start.getTime()), formatter);
+
+                        // See if start of appointment falls between start of day and end of day
+                        if(appointment_start.isAfter(start_of_day) && appointment_start.isBefore(end_of_day)) {
+                            appointments_today.add(rs.getString("title"));
+                        }
 
                     }
 
@@ -112,6 +157,9 @@ public class WeekController {
             }
 
         }
+
+        // Set the label to display to the user what time zone they are in
+        TimeZoneLabel.setText("* Your time zone: " + TimeZone.getDefault().getID());
     }
 
     public void BackClick(MouseEvent mouseEvent) {
@@ -153,23 +201,63 @@ public class WeekController {
                     day = CalendarData.getAnchorPaneValue(i);
                 }
 
-                String startFullDate = "'" + year + "-" + Integer.toString(monthInt) + "-" + day + " 00:00:00'";
-                String endFullDate = "'" + year + "-" + Integer.toString(monthInt) + "-" + day + " 23:59:59'";
+                String month_int_string = null;
 
-                // Input all appointments into it's day if appointments exist
+                if(monthInt < 10) {
+                    month_int_string = "0" + Integer.toString(monthInt);
+                }
+                else {
+                    month_int_string = Integer.toString(monthInt);
+                }
+
+                String startFullDate = year + "-" + month_int_string + "-" + day + " 00:00:00";
+                String endFullDate = year + "-" + month_int_string + "-" + day + " 23:59:59";
+
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+                // Convert start of day and end of day to LocalDateTimes
+                LocalDateTime start_of_day = LocalDateTime.parse(startFullDate, formatter);
+                LocalDateTime end_of_day = LocalDateTime.parse(endFullDate, formatter);
+
                 try {
                     Statement dbConnectionStatement = DBConnection.getConnection().createStatement();
-                    String queryForDaysAppointments = "SELECT * FROM appointment WHERE start BETWEEN " + startFullDate + " AND " + endFullDate;
+                    String queryForDaysAppointments = "SELECT * FROM appointment";
                     ResultSet rs = dbConnectionStatement.executeQuery(queryForDaysAppointments);
 
-                    while (rs.next()) {
+                    while(rs.next()) {
 
-                        appointments_today.add(rs.getString("title"));
+                        String db_start = rs.getString("start");
+
+                        int db_start_year = Integer.parseInt(db_start.substring(0, 4));
+                        int db_start_month = Integer.parseInt(db_start.substring(5, 7));
+                        int db_start_day = Integer.parseInt(db_start.substring(8, 10));
+                        int db_start_hour = Integer.parseInt(db_start.substring(11, 13));
+                        int db_start_min = Integer.parseInt(db_start.substring(14, 16));
+
+                        // Determine user location and timezone
+                        Calendar calendar_start = Calendar.getInstance();
+
+                        calendar_start.set(db_start_year,db_start_month - 1,db_start_day,db_start_hour,db_start_min,0); // Unsure why I need to subtract 11 from the month
+
+                        SimpleDateFormat sdf_start = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+                        sdf_start.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+                        sdf_start.setTimeZone(TimeZone.getDefault());
+
+                        // Convert appointment start time into LocalDateTime
+                        LocalDateTime appointment_start = LocalDateTime.parse(sdf_start.format(calendar_start.getTime()), formatter);
+
+                        // See if start of appointment falls between start of day and end of day
+                        if(appointment_start.isAfter(start_of_day) && appointment_start.isBefore(end_of_day)) {
+                            appointments_today.add(rs.getString("title"));
+                        }
 
                     }
 
                     anchor_list_view.setItems(appointments_today);
-                } catch (SQLException e) {
+                }
+                catch (SQLException e) {
                     System.out.println("SQLException error: " + e.getMessage());
                 }
 
@@ -225,18 +313,57 @@ public class WeekController {
                     day = CalendarData.getAnchorPaneValue(i);
                 }
 
-                String startFullDate = "'" + year + "-" + Integer.toString(monthInt) + "-" + day + " 00:00:00'";
-                String endFullDate = "'" + year + "-" + Integer.toString(monthInt) + "-" + day + " 23:59:59'";
+                String month_int_string = null;
 
-                // Input all appointments into it's day if appointments exist
+                if(monthInt < 10) {
+                    month_int_string = "0" + Integer.toString(monthInt);
+                }
+                else {
+                    month_int_string = Integer.toString(monthInt);
+                }
+
+                String startFullDate = year + "-" + month_int_string + "-" + day + " 00:00:00";
+                String endFullDate = year + "-" + month_int_string + "-" + day + " 23:59:59";
+
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+                // Convert start of day and end of day to LocalDateTimes
+                LocalDateTime start_of_day = LocalDateTime.parse(startFullDate, formatter);
+                LocalDateTime end_of_day = LocalDateTime.parse(endFullDate, formatter);
+
                 try {
                     Statement dbConnectionStatement = DBConnection.getConnection().createStatement();
-                    String queryForDaysAppointments = "SELECT * FROM appointment WHERE start BETWEEN " + startFullDate + " AND " + endFullDate;
+                    String queryForDaysAppointments = "SELECT * FROM appointment";
                     ResultSet rs = dbConnectionStatement.executeQuery(queryForDaysAppointments);
 
                     while(rs.next()) {
 
-                        appointments_today.add(rs.getString("title"));
+                        String db_start = rs.getString("start");
+
+                        int db_start_year = Integer.parseInt(db_start.substring(0, 4));
+                        int db_start_month = Integer.parseInt(db_start.substring(5, 7));
+                        int db_start_day = Integer.parseInt(db_start.substring(8, 10));
+                        int db_start_hour = Integer.parseInt(db_start.substring(11, 13));
+                        int db_start_min = Integer.parseInt(db_start.substring(14, 16));
+
+                        // Determine user location and timezone
+                        Calendar calendar_start = Calendar.getInstance();
+
+                        calendar_start.set(db_start_year,db_start_month - 1,db_start_day,db_start_hour,db_start_min,0); // Unsure why I need to subtract 11 from the month
+
+                        SimpleDateFormat sdf_start = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+                        sdf_start.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+                        sdf_start.setTimeZone(TimeZone.getDefault());
+
+                        // Convert appointment start time into LocalDateTime
+                        LocalDateTime appointment_start = LocalDateTime.parse(sdf_start.format(calendar_start.getTime()), formatter);
+
+                        // See if start of appointment falls between start of day and end of day
+                        if(appointment_start.isAfter(start_of_day) && appointment_start.isBefore(end_of_day)) {
+                            appointments_today.add(rs.getString("title"));
+                        }
 
                     }
 
@@ -309,23 +436,63 @@ public class WeekController {
                     day = CalendarData.getAnchorPaneValue(i);
                 }
 
-                String startFullDate = "'" + year + "-" + Integer.toString(monthInt) + "-" + day + " 00:00:00'";
-                String endFullDate = "'" + year + "-" + Integer.toString(monthInt) + "-" + day + " 23:59:59'";
+                String month_int_string = null;
 
-                // Input all appointments into it's day if appointments exist
+                if(monthInt < 10) {
+                    month_int_string = "0" + Integer.toString(monthInt);
+                }
+                else {
+                    month_int_string = Integer.toString(monthInt);
+                }
+
+                String startFullDate = year + "-" + month_int_string + "-" + day + " 00:00:00";
+                String endFullDate = year + "-" + month_int_string + "-" + day + " 23:59:59";
+
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+                // Convert start of day and end of day to LocalDateTimes
+                LocalDateTime start_of_day = LocalDateTime.parse(startFullDate, formatter);
+                LocalDateTime end_of_day = LocalDateTime.parse(endFullDate, formatter);
+
                 try {
                     Statement dbConnectionStatement = DBConnection.getConnection().createStatement();
-                    String queryForDaysAppointments = "SELECT * FROM appointment WHERE start BETWEEN " + startFullDate + " AND " + endFullDate;
+                    String queryForDaysAppointments = "SELECT * FROM appointment";
                     ResultSet rs = dbConnectionStatement.executeQuery(queryForDaysAppointments);
 
-                    while (rs.next()) {
+                    while(rs.next()) {
 
-                        appointments_today.add(rs.getString("title"));
+                        String db_start = rs.getString("start");
+
+                        int db_start_year = Integer.parseInt(db_start.substring(0, 4));
+                        int db_start_month = Integer.parseInt(db_start.substring(5, 7));
+                        int db_start_day = Integer.parseInt(db_start.substring(8, 10));
+                        int db_start_hour = Integer.parseInt(db_start.substring(11, 13));
+                        int db_start_min = Integer.parseInt(db_start.substring(14, 16));
+
+                        // Determine user location and timezone
+                        Calendar calendar_start = Calendar.getInstance();
+
+                        calendar_start.set(db_start_year,db_start_month - 1,db_start_day,db_start_hour,db_start_min,0); // Unsure why I need to subtract 11 from the month
+
+                        SimpleDateFormat sdf_start = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+                        sdf_start.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+                        sdf_start.setTimeZone(TimeZone.getDefault());
+
+                        // Convert appointment start time into LocalDateTime
+                        LocalDateTime appointment_start = LocalDateTime.parse(sdf_start.format(calendar_start.getTime()), formatter);
+
+                        // See if start of appointment falls between start of day and end of day
+                        if(appointment_start.isAfter(start_of_day) && appointment_start.isBefore(end_of_day)) {
+                            appointments_today.add(rs.getString("title"));
+                        }
 
                     }
 
                     anchor_list_view.setItems(appointments_today);
-                } catch (SQLException e) {
+                }
+                catch (SQLException e) {
                     System.out.println("SQLException error: " + e.getMessage());
                 }
 
@@ -368,23 +535,63 @@ public class WeekController {
                     day = CalendarData.getAnchorPaneValue(i + 7);
                 }
 
-                String startFullDate = "'" + year + "-" + Integer.toString(monthInt) + "-" + day + " 00:00:00'";
-                String endFullDate = "'" + year + "-" + Integer.toString(monthInt) + "-" + day + " 23:59:59'";
+                String month_int_string = null;
 
-                // Input all appointments into it's day if appointments exist
+                if(monthInt < 10) {
+                    month_int_string = "0" + Integer.toString(monthInt);
+                }
+                else {
+                    month_int_string = Integer.toString(monthInt);
+                }
+
+                String startFullDate = year + "-" + month_int_string + "-" + day + " 00:00:00";
+                String endFullDate = year + "-" + month_int_string + "-" + day + " 23:59:59";
+
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+                // Convert start of day and end of day to LocalDateTimes
+                LocalDateTime start_of_day = LocalDateTime.parse(startFullDate, formatter);
+                LocalDateTime end_of_day = LocalDateTime.parse(endFullDate, formatter);
+
                 try {
                     Statement dbConnectionStatement = DBConnection.getConnection().createStatement();
-                    String queryForDaysAppointments = "SELECT * FROM appointment WHERE start BETWEEN " + startFullDate + " AND " + endFullDate;
+                    String queryForDaysAppointments = "SELECT * FROM appointment";
                     ResultSet rs = dbConnectionStatement.executeQuery(queryForDaysAppointments);
 
-                    while (rs.next()) {
+                    while(rs.next()) {
 
-                        appointments_today.add(rs.getString("title"));
+                        String db_start = rs.getString("start");
+
+                        int db_start_year = Integer.parseInt(db_start.substring(0, 4));
+                        int db_start_month = Integer.parseInt(db_start.substring(5, 7));
+                        int db_start_day = Integer.parseInt(db_start.substring(8, 10));
+                        int db_start_hour = Integer.parseInt(db_start.substring(11, 13));
+                        int db_start_min = Integer.parseInt(db_start.substring(14, 16));
+
+                        // Determine user location and timezone
+                        Calendar calendar_start = Calendar.getInstance();
+
+                        calendar_start.set(db_start_year,db_start_month - 1,db_start_day,db_start_hour,db_start_min,0); // Unsure why I need to subtract 11 from the month
+
+                        SimpleDateFormat sdf_start = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+                        sdf_start.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+                        sdf_start.setTimeZone(TimeZone.getDefault());
+
+                        // Convert appointment start time into LocalDateTime
+                        LocalDateTime appointment_start = LocalDateTime.parse(sdf_start.format(calendar_start.getTime()), formatter);
+
+                        // See if start of appointment falls between start of day and end of day
+                        if(appointment_start.isAfter(start_of_day) && appointment_start.isBefore(end_of_day)) {
+                            appointments_today.add(rs.getString("title"));
+                        }
 
                     }
 
                     anchor_list_view.setItems(appointments_today);
-                } catch (SQLException e) {
+                }
+                catch (SQLException e) {
                     System.out.println("SQLException error: " + e.getMessage());
                 }
 
@@ -427,23 +634,63 @@ public class WeekController {
                     day = CalendarData.getAnchorPaneValue(i + 14);
                 }
 
-                String startFullDate = "'" + year + "-" + Integer.toString(monthInt) + "-" + day + " 00:00:00'";
-                String endFullDate = "'" + year + "-" + Integer.toString(monthInt) + "-" + day + " 23:59:59'";
+                String month_int_string = null;
 
-                // Input all appointments into it's day if appointments exist
+                if(monthInt < 10) {
+                    month_int_string = "0" + Integer.toString(monthInt);
+                }
+                else {
+                    month_int_string = Integer.toString(monthInt);
+                }
+
+                String startFullDate = year + "-" + month_int_string + "-" + day + " 00:00:00";
+                String endFullDate = year + "-" + month_int_string + "-" + day + " 23:59:59";
+
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+                // Convert start of day and end of day to LocalDateTimes
+                LocalDateTime start_of_day = LocalDateTime.parse(startFullDate, formatter);
+                LocalDateTime end_of_day = LocalDateTime.parse(endFullDate, formatter);
+
                 try {
                     Statement dbConnectionStatement = DBConnection.getConnection().createStatement();
-                    String queryForDaysAppointments = "SELECT * FROM appointment WHERE start BETWEEN " + startFullDate + " AND " + endFullDate;
+                    String queryForDaysAppointments = "SELECT * FROM appointment";
                     ResultSet rs = dbConnectionStatement.executeQuery(queryForDaysAppointments);
 
-                    while (rs.next()) {
+                    while(rs.next()) {
 
-                        appointments_today.add(rs.getString("title"));
+                        String db_start = rs.getString("start");
+
+                        int db_start_year = Integer.parseInt(db_start.substring(0, 4));
+                        int db_start_month = Integer.parseInt(db_start.substring(5, 7));
+                        int db_start_day = Integer.parseInt(db_start.substring(8, 10));
+                        int db_start_hour = Integer.parseInt(db_start.substring(11, 13));
+                        int db_start_min = Integer.parseInt(db_start.substring(14, 16));
+
+                        // Determine user location and timezone
+                        Calendar calendar_start = Calendar.getInstance();
+
+                        calendar_start.set(db_start_year,db_start_month - 1,db_start_day,db_start_hour,db_start_min,0); // Unsure why I need to subtract 11 from the month
+
+                        SimpleDateFormat sdf_start = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+                        sdf_start.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+                        sdf_start.setTimeZone(TimeZone.getDefault());
+
+                        // Convert appointment start time into LocalDateTime
+                        LocalDateTime appointment_start = LocalDateTime.parse(sdf_start.format(calendar_start.getTime()), formatter);
+
+                        // See if start of appointment falls between start of day and end of day
+                        if(appointment_start.isAfter(start_of_day) && appointment_start.isBefore(end_of_day)) {
+                            appointments_today.add(rs.getString("title"));
+                        }
 
                     }
 
                     anchor_list_view.setItems(appointments_today);
-                } catch (SQLException e) {
+                }
+                catch (SQLException e) {
                     System.out.println("SQLException error: " + e.getMessage());
                 }
 
@@ -486,23 +733,63 @@ public class WeekController {
                     day = CalendarData.getAnchorPaneValue(i + 21);
                 }
 
-                String startFullDate = "'" + year + "-" + Integer.toString(monthInt) + "-" + day + " 00:00:00'";
-                String endFullDate = "'" + year + "-" + Integer.toString(monthInt) + "-" + day + " 23:59:59'";
+                String month_int_string = null;
 
-                // Input all appointments into it's day if appointments exist
+                if(monthInt < 10) {
+                    month_int_string = "0" + Integer.toString(monthInt);
+                }
+                else {
+                    month_int_string = Integer.toString(monthInt);
+                }
+
+                String startFullDate = year + "-" + month_int_string + "-" + day + " 00:00:00";
+                String endFullDate = year + "-" + month_int_string + "-" + day + " 23:59:59";
+
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+                // Convert start of day and end of day to LocalDateTimes
+                LocalDateTime start_of_day = LocalDateTime.parse(startFullDate, formatter);
+                LocalDateTime end_of_day = LocalDateTime.parse(endFullDate, formatter);
+
                 try {
                     Statement dbConnectionStatement = DBConnection.getConnection().createStatement();
-                    String queryForDaysAppointments = "SELECT * FROM appointment WHERE start BETWEEN " + startFullDate + " AND " + endFullDate;
+                    String queryForDaysAppointments = "SELECT * FROM appointment";
                     ResultSet rs = dbConnectionStatement.executeQuery(queryForDaysAppointments);
 
-                    while (rs.next()) {
+                    while(rs.next()) {
 
-                        appointments_today.add(rs.getString("title"));
+                        String db_start = rs.getString("start");
+
+                        int db_start_year = Integer.parseInt(db_start.substring(0, 4));
+                        int db_start_month = Integer.parseInt(db_start.substring(5, 7));
+                        int db_start_day = Integer.parseInt(db_start.substring(8, 10));
+                        int db_start_hour = Integer.parseInt(db_start.substring(11, 13));
+                        int db_start_min = Integer.parseInt(db_start.substring(14, 16));
+
+                        // Determine user location and timezone
+                        Calendar calendar_start = Calendar.getInstance();
+
+                        calendar_start.set(db_start_year,db_start_month - 1,db_start_day,db_start_hour,db_start_min,0); // Unsure why I need to subtract 11 from the month
+
+                        SimpleDateFormat sdf_start = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+                        sdf_start.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+                        sdf_start.setTimeZone(TimeZone.getDefault());
+
+                        // Convert appointment start time into LocalDateTime
+                        LocalDateTime appointment_start = LocalDateTime.parse(sdf_start.format(calendar_start.getTime()), formatter);
+
+                        // See if start of appointment falls between start of day and end of day
+                        if(appointment_start.isAfter(start_of_day) && appointment_start.isBefore(end_of_day)) {
+                            appointments_today.add(rs.getString("title"));
+                        }
 
                     }
 
                     anchor_list_view.setItems(appointments_today);
-                } catch (SQLException e) {
+                }
+                catch (SQLException e) {
                     System.out.println("SQLException error: " + e.getMessage());
                 }
 
@@ -545,23 +832,63 @@ public class WeekController {
                     day = CalendarData.getAnchorPaneValue(i + 28);
                 }
 
-                String startFullDate = "'" + year + "-" + Integer.toString(monthInt) + "-" + day + " 00:00:00'";
-                String endFullDate = "'" + year + "-" + Integer.toString(monthInt) + "-" + day + " 23:59:59'";
+                String month_int_string = null;
 
-                // Input all appointments into it's day if appointments exist
+                if(monthInt < 10) {
+                    month_int_string = "0" + Integer.toString(monthInt);
+                }
+                else {
+                    month_int_string = Integer.toString(monthInt);
+                }
+
+                String startFullDate = year + "-" + month_int_string + "-" + day + " 00:00:00";
+                String endFullDate = year + "-" + month_int_string + "-" + day + " 23:59:59";
+
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+                // Convert start of day and end of day to LocalDateTimes
+                LocalDateTime start_of_day = LocalDateTime.parse(startFullDate, formatter);
+                LocalDateTime end_of_day = LocalDateTime.parse(endFullDate, formatter);
+
                 try {
                     Statement dbConnectionStatement = DBConnection.getConnection().createStatement();
-                    String queryForDaysAppointments = "SELECT * FROM appointment WHERE start BETWEEN " + startFullDate + " AND " + endFullDate;
+                    String queryForDaysAppointments = "SELECT * FROM appointment";
                     ResultSet rs = dbConnectionStatement.executeQuery(queryForDaysAppointments);
 
-                    while (rs.next()) {
+                    while(rs.next()) {
 
-                        appointments_today.add(rs.getString("title"));
+                        String db_start = rs.getString("start");
+
+                        int db_start_year = Integer.parseInt(db_start.substring(0, 4));
+                        int db_start_month = Integer.parseInt(db_start.substring(5, 7));
+                        int db_start_day = Integer.parseInt(db_start.substring(8, 10));
+                        int db_start_hour = Integer.parseInt(db_start.substring(11, 13));
+                        int db_start_min = Integer.parseInt(db_start.substring(14, 16));
+
+                        // Determine user location and timezone
+                        Calendar calendar_start = Calendar.getInstance();
+
+                        calendar_start.set(db_start_year,db_start_month - 1,db_start_day,db_start_hour,db_start_min,0); // Unsure why I need to subtract 11 from the month
+
+                        SimpleDateFormat sdf_start = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+                        sdf_start.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+                        sdf_start.setTimeZone(TimeZone.getDefault());
+
+                        // Convert appointment start time into LocalDateTime
+                        LocalDateTime appointment_start = LocalDateTime.parse(sdf_start.format(calendar_start.getTime()), formatter);
+
+                        // See if start of appointment falls between start of day and end of day
+                        if(appointment_start.isAfter(start_of_day) && appointment_start.isBefore(end_of_day)) {
+                            appointments_today.add(rs.getString("title"));
+                        }
 
                     }
 
                     anchor_list_view.setItems(appointments_today);
-                } catch (SQLException e) {
+                }
+                catch (SQLException e) {
                     System.out.println("SQLException error: " + e.getMessage());
                 }
 
@@ -604,23 +931,63 @@ public class WeekController {
                     day = CalendarData.getAnchorPaneValue(i + 34);
                 }
 
-                String startFullDate = "'" + year + "-" + Integer.toString(monthInt) + "-" + day + " 00:00:00'";
-                String endFullDate = "'" + year + "-" + Integer.toString(monthInt) + "-" + day + " 23:59:59'";
+                String month_int_string = null;
 
-                // Input all appointments into it's day if appointments exist
+                if(monthInt < 10) {
+                    month_int_string = "0" + Integer.toString(monthInt);
+                }
+                else {
+                    month_int_string = Integer.toString(monthInt);
+                }
+
+                String startFullDate = year + "-" + month_int_string + "-" + day + " 00:00:00";
+                String endFullDate = year + "-" + month_int_string + "-" + day + " 23:59:59";
+
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+                // Convert start of day and end of day to LocalDateTimes
+                LocalDateTime start_of_day = LocalDateTime.parse(startFullDate, formatter);
+                LocalDateTime end_of_day = LocalDateTime.parse(endFullDate, formatter);
+
                 try {
                     Statement dbConnectionStatement = DBConnection.getConnection().createStatement();
-                    String queryForDaysAppointments = "SELECT * FROM appointment WHERE start BETWEEN " + startFullDate + " AND " + endFullDate;
+                    String queryForDaysAppointments = "SELECT * FROM appointment";
                     ResultSet rs = dbConnectionStatement.executeQuery(queryForDaysAppointments);
 
-                    while (rs.next()) {
+                    while(rs.next()) {
 
-                        appointments_today.add(rs.getString("title"));
+                        String db_start = rs.getString("start");
+
+                        int db_start_year = Integer.parseInt(db_start.substring(0, 4));
+                        int db_start_month = Integer.parseInt(db_start.substring(5, 7));
+                        int db_start_day = Integer.parseInt(db_start.substring(8, 10));
+                        int db_start_hour = Integer.parseInt(db_start.substring(11, 13));
+                        int db_start_min = Integer.parseInt(db_start.substring(14, 16));
+
+                        // Determine user location and timezone
+                        Calendar calendar_start = Calendar.getInstance();
+
+                        calendar_start.set(db_start_year,db_start_month - 1,db_start_day,db_start_hour,db_start_min,0); // Unsure why I need to subtract 11 from the month
+
+                        SimpleDateFormat sdf_start = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+                        sdf_start.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+                        sdf_start.setTimeZone(TimeZone.getDefault());
+
+                        // Convert appointment start time into LocalDateTime
+                        LocalDateTime appointment_start = LocalDateTime.parse(sdf_start.format(calendar_start.getTime()), formatter);
+
+                        // See if start of appointment falls between start of day and end of day
+                        if(appointment_start.isAfter(start_of_day) && appointment_start.isBefore(end_of_day)) {
+                            appointments_today.add(rs.getString("title"));
+                        }
 
                     }
 
                     anchor_list_view.setItems(appointments_today);
-                } catch (SQLException e) {
+                }
+                catch (SQLException e) {
                     System.out.println("SQLException error: " + e.getMessage());
                 }
 

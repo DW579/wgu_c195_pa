@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Modality;
@@ -19,8 +20,15 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+import java.util.ResourceBundle;
+import java.util.TimeZone;
 
 public class LoginScreenController {
+    public Button LoginButton;
+
     // Input field IDs
     @FXML
     private TextField Username;
@@ -29,9 +37,7 @@ public class LoginScreenController {
 
     // Error text IDs
     @FXML
-    private Label ErrorEng;
-    @FXML
-    private Label ErrorUkr;
+    private Label Error;
 
     public void loginHandler(ActionEvent actionEvent) throws IOException {
         // If both Username and Password have "test", open calendar page. Else, show error messages
@@ -46,16 +52,20 @@ public class LoginScreenController {
             stage.show();
         }
         else {
-            ErrorEng.setVisible(true);
-            ErrorUkr.setVisible(true);
+            Error.setVisible(true);
         }
     }
 
     @FXML
     private void initialize() {
         // Error texts initial appear hidden
-        ErrorEng.setVisible(false);
-        ErrorUkr.setVisible(false);
+        Error.setVisible(false);
+
+        ResourceBundle rb = ResourceBundle.getBundle("Languages/login", Locale.getDefault());
+        Username.setPromptText(rb.getString("username"));
+        Password.setPromptText(rb.getString("password"));
+        LoginButton.setText(rb.getString("login"));
+        Error.setText(rb.getString("errortext"));
 
         // Get all customer data from DB and insert into Customer ObservableList
         try {
@@ -172,14 +182,43 @@ public class LoginScreenController {
                 String contact = rs.getString("contact");
                 String type = rs.getString("type");
                 String url = rs.getString("url");
-                String start = rs.getString("start");
-                String end = rs.getString("end");
                 String createDate = rs.getString("createDate");
                 String createdBy = rs.getString("createdBy");
                 String lastUpdate = rs.getString("lastUpdate");
                 String lastUpdateBy = rs.getString("lastUpdateBy");
 
-                Appointment newAppointment = new Appointment(appointmentId, customerId, userId, title, description, location, contact, type, url, start, end, createDate, createdBy, lastUpdate, lastUpdateBy);
+                // Convert start and end times to user's timezone
+                String db_start = rs.getString("start");
+                String db_end = rs.getString("end");
+
+                int db_start_year = Integer.parseInt(db_start.substring(0, 4));
+                int db_start_month = Integer.parseInt(db_start.substring(5, 7));
+                int db_start_day = Integer.parseInt(db_start.substring(8, 10));
+                int db_start_hour = Integer.parseInt(db_start.substring(11, 13));
+                int db_start_min = Integer.parseInt(db_start.substring(14, 16));
+                int db_end_year = Integer.parseInt(db_end.substring(0, 4));
+                int db_end_month = Integer.parseInt(db_end.substring(5, 7));
+                int db_end_day = Integer.parseInt(db_end.substring(8, 10));
+                int db_end_hour = Integer.parseInt(db_end.substring(11, 13));
+                int db_end_min = Integer.parseInt(db_end.substring(14, 16));
+
+                // Determine user location and timezone
+                Calendar calendar_start = Calendar.getInstance();
+                Calendar calendar_end = Calendar.getInstance();
+
+                calendar_start.set(db_start_year,db_start_month - 1,db_start_day,db_start_hour,db_start_min,0); // Unsure why I need to subtract 11 from the month
+                calendar_end.set(db_end_year,db_end_month - 1,db_end_day,db_end_hour,db_end_min,0); // Unsure why I need to subtract 11 from the month
+
+                SimpleDateFormat sdf_start = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                SimpleDateFormat sdf_end = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+                sdf_start.setTimeZone(TimeZone.getTimeZone("UTC"));
+                sdf_end.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+                sdf_start.setTimeZone(TimeZone.getDefault());
+                sdf_end.setTimeZone(TimeZone.getDefault());
+
+                Appointment newAppointment = new Appointment(appointmentId, customerId, userId, title, description, location, contact, type, url, sdf_start.format(calendar_start.getTime()), sdf_end.format(calendar_end.getTime()), createDate, createdBy, lastUpdate, lastUpdateBy);
 
                 CalendarData.addAppointment(newAppointment);
             }

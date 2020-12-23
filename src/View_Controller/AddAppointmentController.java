@@ -16,12 +16,15 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.Optional;
+import java.util.TimeZone;
 
 public class AddAppointmentController {
     public TextField AppointmentIdField;
@@ -36,6 +39,22 @@ public class AddAppointmentController {
     public TextField EndMinuteField;
     public Button CancelButton;
     public Button SaveButton;
+    public Label TimeZoneLabel;
+    public ChoiceBox UserBox;
+
+    @FXML
+    private void initialize() {
+        // Set the label to display to the user what time zone they are in
+        TimeZoneLabel.setText("* Your time zone: " + TimeZone.getDefault().getID());
+
+        // Set items in ChoiceBox of users in DB
+        ObservableList<String> user_options = FXCollections.observableArrayList();
+
+        user_options.add("1");
+        user_options.add("2");
+
+        UserBox.setItems(user_options);
+    }
 
     public void selectedCustomer(int customerId) throws IOException {
         CustomerIdField.setText(Integer.toString(customerId));
@@ -150,56 +169,93 @@ public class AddAppointmentController {
                 if(start_dt.isAfter(end_dt)) {
                     throw new ArithmeticException("Incorrect appointment times. Start time is before end time. Please correct.");
                 }
+                else {
+                    // Check is appointment spans more then one day. If so, throw error
+                    if(!start_d.isEqual(end_d)) {
+                        throw new ArithmeticException("Appointment too long. Please keep appointment within business hours on the same day.");
+                    }
+                    else {
+                        // Check if appointment overlaps another appointment
+                        Statement dbc_start = DBConnection.getConnection().createStatement();
+                        Statement dbc_end = DBConnection.getConnection().createStatement();
 
-                // Check is appointment spans more then one day. If so, throw error
-                if(!start_d.isEqual(end_d)) {
-                    throw new ArithmeticException("Appointment too long. Please keep appointment within business hours on the same day.");
+                        String queryStartDate = "SELECT * FROM appointment WHERE start BETWEEN '" + start_date_time_string + "' AND ' " + end_date_time_string + "'";
+                        String queryEndDate = "SELECT * FROM appointment WHERE end BETWEEN '" + start_date_time_string + "' AND ' " + end_date_time_string + "'";
+
+
+                        ResultSet rs_start = dbc_start.executeQuery(queryStartDate);
+                        ResultSet rs_end = dbc_end.executeQuery(queryEndDate);
+
+                        rs_start.last();
+                        rs_end.last();
+
+                        if(rs_start.getRow() > 0 || rs_end.getRow() > 0) {
+                            throw new ArithmeticException("Appointment exists during this time frame. Please choose another time frame for your appointment");
+                        }
+                        else {
+                            // If all of the ifs check out above, add appointment to DB and ObservableList
+                            // Set Dynamic Appointment ID
+                            int dynamicAppointmentId = 1;
+
+                            Statement dbc_all_appointments = DBConnection.getConnection().createStatement();
+                            String queryAllAppointments = "SELECT * FROM appointment";
+                            ResultSet rs_all_appointments = dbc_all_appointments.executeQuery(queryAllAppointments);
+
+                            rs_all_appointments.last();
+
+                            if(rs_all_appointments.getRow() > 0) {
+                                dynamicAppointmentId = rs_all_appointments.getInt("appointmentId") + 1;
+                            }
+
+                            // Input new Appointment data into DB
+                            Statement dbc_insert_db = DBConnection.getConnection().createStatement();
+                            String queryInsertNewAppt = "INSERT INTO appointment VALUES (" + Integer.toString(dynamicAppointmentId) + "," + CustomerIdField.getText() + ",1,'" + TitleField.getText() + "','test','test','test','" + TypeField.getText() + "','test','" + start_date_time_string + "','" + end_date_time_string + "','2019-01-01 00:00:00','test','2019-01-01 00:00:00','test')";
+                            dbc_insert_db.execute(queryInsertNewAppt);
+
+
+                            // Convert start and end times to user's timezone
+                            String db_start = start_date_time_string;
+                            String db_end = end_date_time_string;
+
+                            int db_start_year = Integer.parseInt(db_start.substring(0, 4));
+                            int db_start_month = Integer.parseInt(db_start.substring(5, 7));
+                            int db_start_day = Integer.parseInt(db_start.substring(8, 10));
+                            int db_start_hour = Integer.parseInt(db_start.substring(11, 13));
+                            int db_start_min = Integer.parseInt(db_start.substring(14, 16));
+                            int db_end_year = Integer.parseInt(db_end.substring(0, 4));
+                            int db_end_month = Integer.parseInt(db_end.substring(5, 7));
+                            int db_end_day = Integer.parseInt(db_end.substring(8, 10));
+                            int db_end_hour = Integer.parseInt(db_end.substring(11, 13));
+                            int db_end_min = Integer.parseInt(db_end.substring(14, 16));
+
+                            // Determine user location and timezone
+                            Calendar calendar_start = Calendar.getInstance();
+                            Calendar calendar_end = Calendar.getInstance();
+
+                            calendar_start.set(db_start_year,db_start_month - 1,db_start_day,db_start_hour,db_start_min,0); // Unsure why I need to subtract 11 from the month
+                            calendar_end.set(db_end_year,db_end_month - 1,db_end_day,db_end_hour,db_end_min,0); // Unsure why I need to subtract 11 from the month
+
+                            SimpleDateFormat sdf_start = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                            SimpleDateFormat sdf_end = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+                            sdf_start.setTimeZone(TimeZone.getTimeZone("UTC"));
+                            sdf_end.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+                            sdf_start.setTimeZone(TimeZone.getDefault());
+                            sdf_end.setTimeZone(TimeZone.getDefault());
+
+
+
+                            // Input new Appointment data into ObservableList
+                            Appointment newAppointment = new Appointment(dynamicAppointmentId, Integer.parseInt(CustomerIdField.getText()), Integer.parseInt(UserBox.getValue().toString()), TitleField.getText(), "test", "test", "test", TypeField.getText(), "test", "'" + sdf_start.format(calendar_start.getTime()) + "'", "'" + sdf_end.format(calendar_end.getTime()) + "'", "2019-01-01 00:00:00","test","2019-01-01 00:00:00","test");
+
+                            CalendarData.addAppointment(newAppointment);
+
+                            Stage stage = (Stage) SaveButton.getScene().getWindow();
+                            stage.close();
+                        }
+                    }
                 }
-
-                // Check if appointment overlaps another appointment
-                Statement dbc_start = DBConnection.getConnection().createStatement();
-                Statement dbc_end = DBConnection.getConnection().createStatement();
-
-                String queryStartDate = "SELECT * FROM appointment WHERE start BETWEEN '" + start_date_time_string + "' AND ' " + end_date_time_string + "'";
-                String queryEndDate = "SELECT * FROM appointment WHERE end BETWEEN '" + start_date_time_string + "' AND ' " + end_date_time_string + "'";
-
-
-                ResultSet rs_start = dbc_start.executeQuery(queryStartDate);
-                ResultSet rs_end = dbc_end.executeQuery(queryEndDate);
-
-                rs_start.last();
-                rs_end.last();
-
-                if(rs_start.getRow() > 0 || rs_end.getRow() > 0) {
-                    throw new ArithmeticException("Appointment exists during this time frame. Please choose another time frame for your appointment");
-                }
-
-                // If all of the ifs check out above, add appointment to DB and ObservableList
-                // Set Dynamic Appointment ID
-                int dynamicAppointmentId = 1;
-
-                Statement dbc_all_appointments = DBConnection.getConnection().createStatement();
-                String queryAllAppointments = "SELECT * FROM appointment";
-                ResultSet rs_all_appointments = dbc_all_appointments.executeQuery(queryAllAppointments);
-
-                rs_all_appointments.last();
-
-                if(rs_all_appointments.getRow() > 0) {
-                    dynamicAppointmentId = rs_all_appointments.getInt("appointmentId") + 1;
-                }
-
-                // Input new Appointment data into DB
-                Statement dbc_insert_db = DBConnection.getConnection().createStatement();
-                String queryInsertNewAppt = "INSERT INTO appointment VALUES (" + Integer.toString(dynamicAppointmentId) + "," + CustomerIdField.getText() + ",1,'" + TitleField.getText() + "','test','test','test','" + TypeField.getText() + "','test','" + start_date_time_string + "','" + end_date_time_string + "','2019-01-01 00:00:00','test','2019-01-01 00:00:00','test')";
-                dbc_insert_db.execute(queryInsertNewAppt);
-
-                // Input new Appointment data into ObservableList
-                Appointment newAppointment = new Appointment(dynamicAppointmentId, Integer.parseInt(CustomerIdField.getText()), 1, TitleField.getText(), "test", "test", "test", TypeField.getText(), "test", "'" + start_date_time_string + "'", "'" + end_date_time_string + "'", "2019-01-01 00:00:00","test","2019-01-01 00:00:00","test");
-
-                CalendarData.addAppointment(newAppointment);
-
-                Stage stage = (Stage) SaveButton.getScene().getWindow();
-                stage.close();
             }
             catch (Exception e) {
                 System.out.println("Error with hour and min: " + e.getMessage());

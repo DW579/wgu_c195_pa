@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="700.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View_Controller.CalendarController">
+<AnchorPane fx:id="" prefHeight="700.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View_Controller.CalendarController">
    <children>
       <Button fx:id="ViewButton" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#changeViewHandler" text="Week View" />
       <Button fx:id="ExitButton" layoutX="909.0" layoutY="14.0" mnemonicParsing="false" onAction="#exitHandler" text="X" />
@@ -607,5 +607,6 @@
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
+      <Label fx:id="TimeZoneLabelMonth" layoutX="476.0" layoutY="19.0" text="* Your time zone: PST" textFill="#0c55d3" />
    </children>
 </AnchorPane>
