@@ -138,57 +138,6 @@ public class AddAppointmentController {
             fillAllRequired.setHeaderText("Fill All Required Fields");
             fillAllRequired.setContentText("Please fill in all required fields");
             Optional<ButtonType> userChoice = fillAllRequired.showAndWait();
-
-            // ------- testing ------
-
-//            String start_date_time_string = StartDateField.getValue().toString() + " " + start_hour_string + ":" + start_minute_string + ":00";
-//
-//            DateTimeFormatter dt_formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-//
-//            LocalDateTime origin_start_dt = LocalDateTime.parse(start_date_time_string, dt_formatter);
-//
-//            ZoneId origin_zone = ZoneId.systemDefault();
-//
-//            ZonedDateTime origin_zoned_start_dt = ZonedDateTime.of(origin_start_dt, origin_zone);
-//
-//            System.out.println(origin_zone);
-//            System.out.println(origin_zoned_start_dt);
-//
-//            ZoneId target_zone = ZoneId.of("America/Los_Angeles");
-//
-//            ZonedDateTime target_zoned_start_dt = origin_zoned_start_dt.withZoneSameInstant(target_zone);
-//
-//            LocalDateTime target_start_dt = target_zoned_start_dt.toLocalDateTime();
-//
-//            System.out.println(target_start_dt.toString());
-
-            // User input time constructed into String
-            String start_date_time_string = StartDateField.getValue().toString() + " " + start_hour_string + ":" + start_minute_string + ":00";
-
-            // Format to convert user string for LocalDateTime
-            DateTimeFormatter dt_formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
-            // Convert user date time string into a LocalDateTime variable
-            LocalDateTime origin_start_dt = LocalDateTime.parse(start_date_time_string, dt_formatter);
-
-            // Two ZoneIds, origin_zone = user current zone, utc_zone = UTC zone
-            ZoneId origin_zone = ZoneId.systemDefault();
-            ZoneId utc_zone = ZoneId.of("UTC");
-
-            // Convert user LocalDateTime variable into the user's time zone, this will be stored into the ObservableList of app
-            ZonedDateTime origin_start_zdt = origin_start_dt.atZone(origin_zone);
-
-            // Convert user LocalDateTime variable into UTC zone for storage in DB
-            ZonedDateTime utc_start_zdt = origin_start_zdt.withZoneSameInstant(utc_zone);
-
-            // Convert both ZonedDateTimes to Strings to be storage in their respective locations
-            String origin_start_string = origin_start_zdt.toLocalDateTime().format(dt_formatter);
-            String utc_start_string = utc_start_zdt.toLocalDateTime().format(dt_formatter);
-
-            System.out.println(origin_start_string);
-            System.out.println(utc_start_string);
-
-            // ------- testing ------
         }
         else {
             // User input time constructed into String
@@ -267,9 +216,13 @@ public class AddAppointmentController {
                                 dynamicAppointmentId = rs_all_appointments.getInt("appointmentId") + 1;
                             }
 
+                            System.out.println();
+
+                            String user_choice = UserBox.getValue().toString();
+
                             // Input new Appointment data into DB
                             Statement dbc_insert_db = DBConnection.getConnection().createStatement();
-                            String queryInsertNewAppt = "INSERT INTO appointment VALUES (" + Integer.toString(dynamicAppointmentId) + "," + CustomerIdField.getText() + ",1,'" + TitleField.getText() + "','test','test','test','" + TypeField.getText() + "','test','" + utc_start_string + "','" + utc_end_string + "','2019-01-01 00:00:00','test','2019-01-01 00:00:00','test')";
+                            String queryInsertNewAppt = "INSERT INTO appointment VALUES (" + Integer.toString(dynamicAppointmentId) + "," + CustomerIdField.getText() + "," + user_choice + ",'" + TitleField.getText() + "','test','test','test','" + TypeField.getText() + "','test','" + utc_start_string + "','" + utc_end_string + "','2019-01-01 00:00:00','test','2019-01-01 00:00:00','test')";
                             dbc_insert_db.execute(queryInsertNewAppt);
 
                             // Input new Appointment data into ObservableList

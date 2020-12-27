@@ -27,6 +27,8 @@ import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.TimeZone;
@@ -89,57 +91,74 @@ public class ScheduleController {
             String queryAllAppointments = "SELECT * FROM appointment WHERE userId=" + selected_user;
             ResultSet rs = dbConnectionStatement.executeQuery(queryAllAppointments);
 
-            LocalDate today = LocalDate.now();
+            int today_year = LocalDateTime.now().getYear();
+            int today_month = LocalDateTime.now().getMonthValue();
+            int today_day = LocalDateTime.now().getDayOfMonth();
 
             // Compare all appointments to Todays localdate, if it falls on today put in Observablelist
             while(rs.next()) {
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-                DateTimeFormatter formatter_time = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                // String from DB is in UTC time zone
+                String db_start = rs.getString("start").substring(0,19);
+                String db_end = rs.getString("end").substring(0,19);
+                String db_date = rs.getString("start").substring(0,10);
 
-                String db_start = rs.getString("start");
-                String db_end = rs.getString("end");
+                // Format to convert user string for LocalDateTime
+                DateTimeFormatter dt_formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                DateTimeFormatter d_formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-                int db_start_year = Integer.parseInt(db_start.substring(0, 4));
-                int db_start_month = Integer.parseInt(db_start.substring(5, 7));
-                int db_start_day = Integer.parseInt(db_start.substring(8, 10));
-                int db_start_hour = Integer.parseInt(db_start.substring(11, 13));
-                int db_start_min = Integer.parseInt(db_start.substring(14, 16));
-                int db_end_year = Integer.parseInt(db_end.substring(0, 4));
-                int db_end_month = Integer.parseInt(db_end.substring(5, 7));
-                int db_end_day = Integer.parseInt(db_end.substring(8, 10));
-                int db_end_hour = Integer.parseInt(db_end.substring(11, 13));
-                int db_end_min = Integer.parseInt(db_end.substring(14, 16));
+                // Convert user date time string into a LocalDateTime variable
+                LocalDateTime utc_start_dt = LocalDateTime.parse(db_start, dt_formatter);
+                LocalDateTime utc_end_dt = LocalDateTime.parse(db_end, dt_formatter);
+                LocalDate start_d = LocalDate.parse(db_date, d_formatter);
 
-                // Determine user location and timezone
-                Calendar calendar_start = Calendar.getInstance();
-                Calendar calendar_start_time = Calendar.getInstance();
-                Calendar calendar_end_time = Calendar.getInstance();
+                // Two ZoneIds, origin_zone = user current zone, utc_zone = UTC zone
+                ZoneId origin_zone = ZoneId.systemDefault();
+                ZoneId utc_zone = ZoneId.of("UTC");
 
-                calendar_start.set(db_start_year,db_start_month - 1,db_start_day); // Unsure why I need to subtract 11 from the month
-                calendar_start_time.set(db_start_year,db_start_month - 1,db_start_day, db_start_hour, db_start_min); // Unsure why I need to subtract 11 from the month
-                calendar_end_time.set(db_end_year,db_end_month - 1,db_end_day, db_end_hour, db_end_min); // Unsure why I need to subtract 11 from the month
+                // Convert user LocalDateTime variable into the user's time zone, this will be stored into the ObservableList of app
+                ZonedDateTime utc_start_zdt = utc_start_dt.atZone(utc_zone);
+                ZonedDateTime utc_end_zdt = utc_end_dt.atZone(utc_zone);
 
-                SimpleDateFormat sdf_start = new SimpleDateFormat("yyyy-MM-dd");
-                SimpleDateFormat sdf_start_time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                SimpleDateFormat sdf_end_time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-                sdf_start.setTimeZone(TimeZone.getTimeZone("UTC"));
-                sdf_start_time.setTimeZone(TimeZone.getTimeZone("UTC"));
-                sdf_end_time.setTimeZone(TimeZone.getTimeZone("UTC"));
+                // Convert user LocalDateTime variable into UTC zone for storage in DB
+                ZonedDateTime origin_start_zdt = utc_start_zdt.withZoneSameInstant(origin_zone);
+                ZonedDateTime origin_end_zdt = utc_end_zdt.withZoneSameInstant(origin_zone);
 
-                sdf_start.setTimeZone(TimeZone.getDefault());
-                sdf_start_time.setTimeZone(TimeZone.getDefault());
-                sdf_end_time.setTimeZone(TimeZone.getDefault());
+                // Convert both ZonedDateTimes to Strings to be storage in their respective locations
+                String origin_start_string = origin_start_zdt.toLocalDateTime().format(dt_formatter);
+                String origin_end_string = origin_end_zdt.toLocalDateTime().format(dt_formatter);
 
-                // Convert appointment start time into LocalDateTime
-                LocalDate appointment_start = LocalDate.parse(sdf_start.format(calendar_start.getTime()), formatter);
-                LocalDateTime appointment_start_time = LocalDateTime.parse(sdf_start_time.format(calendar_start_time.getTime()), formatter_time);
-                LocalDateTime appointment_end_time = LocalDateTime.parse(sdf_end_time.format(calendar_end_time.getTime()), formatter_time);
-
-                if(today.isEqual(appointment_start)) {
-                    Appointment new_appointment = new Appointment(rs.getInt("appointmentId"), rs.getInt("customerId"), rs.getInt("userId"), rs.getString("title"), rs.getString("description"), rs.getString("location"), rs.getString("contact"), rs.getString("type"), rs.getString("url"), "'" + sdf_start_time.format(calendar_start_time.getTime()) + "'", "'" + sdf_end_time.format(calendar_end_time.getTime()) + "'", rs.getString("createDate"), rs.getString("createdBy"), rs.getString("lastUpdate"), rs.getString("lastUpdateBy"));
+                if(origin_start_zdt.getYear() == today_year && origin_start_zdt.getMonthValue() == today_month && origin_start_zdt.getDayOfMonth() == today_day) {
+                    Appointment new_appointment = new Appointment(rs.getInt("appointmentId"), rs.getInt("customerId"), rs.getInt("userId"), rs.getString("title"), rs.getString("description"), rs.getString("location"), rs.getString("contact"), rs.getString("type"), rs.getString("url"), "'" + origin_start_string + "'", "'" + origin_end_string + "'", rs.getString("createDate"), rs.getString("createdBy"), rs.getString("lastUpdate"), rs.getString("lastUpdateBy"));
                     todays_appointments.add(new_appointment);
                 }
+
+//                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+//
+//                String db_start = rs.getString("start");
+//
+//                int db_start_year = Integer.parseInt(db_start.substring(0, 4));
+//                int db_start_month = Integer.parseInt(db_start.substring(5, 7));
+//                int db_start_day = Integer.parseInt(db_start.substring(8, 10));
+//
+//                // Determine user location and timezone
+//                Calendar calendar_start = Calendar.getInstance();
+//
+//                calendar_start.set(db_start_year,db_start_month - 1,db_start_day); // Unsure why I need to subtract 11 from the month
+//
+//                SimpleDateFormat sdf_start = new SimpleDateFormat("yyyy-MM-dd");
+//
+//                sdf_start.setTimeZone(TimeZone.getTimeZone("UTC"));
+//
+//                sdf_start.setTimeZone(TimeZone.getDefault());
+//
+//                // Convert appointment start time into LocalDateTime
+//                LocalDate appointment_start = LocalDate.parse(sdf_start.format(calendar_start.getTime()), formatter);
+//
+//                if(today.isEqual(appointment_start)) {
+//                    Appointment new_appointment = new Appointment(rs.getInt("appointmentId"), rs.getInt("customerId"), rs.getInt("userId"), rs.getString("title"), rs.getString("description"), rs.getString("location"), rs.getString("contact"), rs.getString("type"), rs.getString("url"), "'" + sdf_start_time.format(calendar_start_time.getTime()) + "'", "'" + sdf_end_time.format(calendar_end_time.getTime()) + "'", rs.getString("createDate"), rs.getString("createdBy"), rs.getString("lastUpdate"), rs.getString("lastUpdateBy"));
+//                    todays_appointments.add(new_appointment);
+//                }
             }
 
             // Initialize and update Customer table

@@ -2,9 +2,8 @@ package View_Controller;
 
 import Model.CalendarData;
 import javafx.event.ActionEvent;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import utils.DBConnection;
 
@@ -15,8 +14,11 @@ import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
+import java.util.Optional;
 import java.util.TimeZone;
 
 public class UpdateAppointmentController {
@@ -44,50 +46,42 @@ public class UpdateAppointmentController {
 
             rs.next();
 
-            String startDate = rs.getString("start");
-            String endDate = rs.getString("end");
+            String db_start = rs.getString("start").substring(0,19);
+            String db_end = rs.getString("end").substring(0,19);
 
-            int startYear = Integer.parseInt(startDate.substring(0,4));
-            int startMonth = Integer.parseInt(startDate.substring(5,7));
-            int startDay = Integer.parseInt(startDate.substring(8,10));
-            String startHour = startDate.substring(11,13);
-            String startMin = startDate.substring(14,16);
+            // Convert db_start and db_end to user time zone from UTC, UTC to user time zone
+            DateTimeFormatter dt_formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-            int endYear = Integer.parseInt(endDate.substring(0,4));
-            int endMonth = Integer.parseInt(endDate.substring(5,7));
-            int endDay = Integer.parseInt(endDate.substring(8,10));
-            String endHour = endDate.substring(11,13);
-            String endMin = endDate.substring(14,16);
+            // Convert DB time strings into LocalDateTime variables
+            LocalDateTime utc_start_dt = LocalDateTime.parse(db_start, dt_formatter);
+            LocalDateTime utc_end_dt = LocalDateTime.parse(db_end, dt_formatter);
 
-            // -------- Convert start and end dates to user time zone from LocalDateTime to String
-            Calendar calendar_start = Calendar.getInstance();
+            // UTC and user time zone ZoneIds
+            ZoneId utc_zone = ZoneId.of("UTC");
+            ZoneId user_zone = ZoneId.systemDefault();
 
-            calendar_start.set(startYear,startMonth - 1,startDay,Integer.parseInt(startHour),Integer.parseInt(startMin),0); // Unsure why I need to subtract 11 from the month
+            // Convert LocalDateTime utc_start_dt into a ZonedDateTime
+            ZonedDateTime utc_start_zdt = utc_start_dt.atZone(utc_zone);
+            ZonedDateTime utc_end_zdt = utc_end_dt.atZone(utc_zone);
 
-            SimpleDateFormat sdf_start = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            // Convert UTC of time to user time zone
+            ZonedDateTime user_start_zdt = utc_start_zdt.withZoneSameInstant(user_zone);
+            ZonedDateTime user_end_zdt = utc_end_zdt.withZoneSameInstant(user_zone);
 
-            sdf_start.setTimeZone(TimeZone.getTimeZone(TimeZone.getDefault().getDisplayName()));
+            // Convert ZonedDateTime to LocalDateTime to parse out data for input into fields
+            LocalDateTime user_start_string = user_start_zdt.toLocalDateTime();
+            LocalDateTime user_end_string = user_end_zdt.toLocalDateTime();
 
-            DateTimeFormatter utc_dt_formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
-            LocalDateTime utc_start_dt = LocalDateTime.parse(sdf_start.format(calendar_start.getTime()), utc_dt_formatter);
-
-            String utc_dt_start_string = Integer.toString(utc_start_dt.getYear()) + "-" + Integer.toString(utc_start_dt.getMonthValue()) + "-" + Integer.toString(utc_start_dt.getDayOfMonth()) + " " + Integer.toString(utc_start_dt.getHour()) + ":" + Integer.toString(utc_start_dt.getMinute()) + ":00";
-
-            System.out.println("-----------");
-            System.out.println(utc_dt_start_string);
-            System.out.println(TimeZone.getDefault().getDisplayName());
-
-            LocalDate localStartDate = LocalDate.of(startYear, startMonth, startDay);
-            LocalDate localEndDate = LocalDate.of(endYear, endMonth, endDay);
+            LocalDate localStartDate = user_start_string.toLocalDate();
+            LocalDate localEndDate = user_end_string.toLocalDate();
 
             StartDateField.setValue(localStartDate);
-            StartHourField.setText(startHour);
-            StartMinuteField.setText(startMin);
+            StartHourField.setText(Integer.toString(user_start_string.getHour()));
+            StartMinuteField.setText(Integer.toString(user_start_string.getMinute()));
 
             EndDateField.setValue(localEndDate);
-            EndHourField.setText(endHour);
-            EndMinuteField.setText(endMin);
+            EndHourField.setText(Integer.toString(user_end_string.getHour()));
+            EndMinuteField.setText(Integer.toString(user_end_string.getMinute()));
 
             AppointmentIdField.setText(Integer.toString(appointmentId));
             CustomerIdField.setText(Integer.toString(rs.getInt("customerId")));
@@ -104,48 +98,176 @@ public class UpdateAppointmentController {
 
     public void SaveHandler(ActionEvent actionEvent) {
 
-        int appointmentId = Integer.parseInt(AppointmentIdField.getText());
-        int customerId = Integer.parseInt(CustomerIdField.getText());
-        String title = TitleField.getText();
-        String type = TypeField.getText();
-        String start = StartDateField.getValue().toString() + " " + StartHourField.getText() + ":" + StartMinuteField.getText() + ":00";
-        String end = EndDateField.getValue().toString() + " " + EndHourField.getText() + ":" + EndMinuteField.getText() + ":00";
+        int start_hour = 0;
+        int start_minute = 0;
+        int end_hour = 0;
+        int end_minute = 0;
+        String start_hour_string = null;
+        String start_minute_string = null;
+        String end_hour_string = null;
+        String end_minute_string = null;
 
-        // Convert start and end times to user's timezone
-        String db_start = start;
-        String db_end = end;
+        // Error control to receive correct integers for hours and minutes from user
+        try {
+            start_hour = Integer.parseInt(StartHourField.getText());
+            start_minute = Integer.parseInt(StartMinuteField.getText());
+            end_hour = Integer.parseInt(EndHourField.getText());
+            end_minute = Integer.parseInt(EndMinuteField.getText());
 
-        int db_start_year = Integer.parseInt(db_start.substring(0, 4));
-        int db_start_month = Integer.parseInt(db_start.substring(5, 7));
-        int db_start_day = Integer.parseInt(db_start.substring(8, 10));
-        int db_start_hour = Integer.parseInt(db_start.substring(11, 13));
-        int db_start_min = Integer.parseInt(db_start.substring(14, 16));
-        int db_end_year = Integer.parseInt(db_end.substring(0, 4));
-        int db_end_month = Integer.parseInt(db_end.substring(5, 7));
-        int db_end_day = Integer.parseInt(db_end.substring(8, 10));
-        int db_end_hour = Integer.parseInt(db_end.substring(11, 13));
-        int db_end_min = Integer.parseInt(db_end.substring(14, 16));
+            if (start_hour > 16 || start_hour < 9) {
+                throw new ArithmeticException("Please fill in the start hour during business hours with a number between 9 and 16");
+            }
 
-        // Determine user location and timezone
-        Calendar calendar_start = Calendar.getInstance();
-        Calendar calendar_end = Calendar.getInstance();
+            if (start_minute > 59 || start_minute < 0) {
+                throw new ArithmeticException("Please fill in the start minute with a number between 0 and 59");
+            }
 
-        calendar_start.set(db_start_year,db_start_month - 1,db_start_day,db_start_hour,db_start_min,0); // Unsure why I need to subtract 11 from the month
-        calendar_end.set(db_end_year,db_end_month - 1,db_end_day,db_end_hour,db_end_min,0); // Unsure why I need to subtract 11 from the month
+            if (end_hour > 16 || end_hour < 9) {
+                throw new ArithmeticException("Please fill in the end hour during business hours with a number between 9 and 16");
+            }
 
-        SimpleDateFormat sdf_start = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        SimpleDateFormat sdf_end = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            if (end_minute > 59 || end_minute < 0) {
+                throw new ArithmeticException("Please fill in the end minute with a number between 0 and 59");
+            }
+        }
+        catch(Exception e) {
+            System.out.println("Error with hour and min: " + e.getMessage());
 
-        sdf_start.setTimeZone(TimeZone.getTimeZone("UTC"));
-        sdf_end.setTimeZone(TimeZone.getTimeZone("UTC"));
+            Alert fillAllRequired = new Alert(Alert.AlertType.CONFIRMATION);
+            fillAllRequired.initModality(Modality.NONE);
+            fillAllRequired.setTitle("Hour and minute fields");
+            fillAllRequired.setHeaderText("Hour and minute fields");
+            fillAllRequired.setContentText(e.getMessage());
+            Optional<ButtonType> userChoice = fillAllRequired.showAndWait();
+        }
 
-        sdf_start.setTimeZone(TimeZone.getDefault());
-        sdf_end.setTimeZone(TimeZone.getDefault());
+        // Add an additional zero to the front of singular integers
+        if(start_hour < 10) {
+            start_hour_string = "0" + Integer.toString(start_hour);
+        }
+        else {
+            start_hour_string = Integer.toString(start_hour);
+        }
 
-        CalendarData.updateAppointment(appointmentId, customerId, title, type, "'" + sdf_start.format(calendar_start.getTime()) + "'", "'" + sdf_end.format(calendar_end.getTime()) + "'");
+        if(start_minute < 10) {
+            start_minute_string = "0" + Integer.toString(start_minute);
+        }
+        else {
+            start_minute_string = Integer.toString(start_minute);
+        }
 
-        Stage stage = (Stage) SaveButton.getScene().getWindow();
-        stage.close();
+        if(end_hour < 10) {
+            end_hour_string = "0" + Integer.toString(end_hour);
+        }
+        else {
+            end_hour_string = Integer.toString(end_hour);
+        }
+
+        if(end_minute < 10) {
+            end_minute_string = "0" + Integer.toString(end_minute);
+        }
+        else {
+            end_minute_string = Integer.toString(end_minute);
+        }
+
+        // Check to make sure all fields filled out
+        if(TitleField.getText().isEmpty() || TypeField.getText().isEmpty() || StartDateField.getValue().toString().isEmpty() || StartHourField.getText().isEmpty() || StartMinuteField.getText().isEmpty() || EndDateField.getValue().toString().isEmpty() || EndHourField.getText().isEmpty() || EndMinuteField.getText().isEmpty()) {
+            Alert fillAllRequired = new Alert(Alert.AlertType.CONFIRMATION);
+            fillAllRequired.initModality(Modality.NONE);
+            fillAllRequired.setTitle("Fill All Required Fields");
+            fillAllRequired.setHeaderText("Fill All Required Fields");
+            fillAllRequired.setContentText("Please fill in all required fields");
+            Optional<ButtonType> userChoice = fillAllRequired.showAndWait();
+        }
+        else {
+            // User input time constructed into String
+            String start_date_time_string = StartDateField.getValue().toString() + " " + start_hour_string + ":" + start_minute_string + ":00";
+            String end_date_time_string = EndDateField.getValue().toString() + " " + end_hour_string + ":" + end_minute_string + ":00";
+            String string_date_start = StartDateField.getValue().toString();
+            String string_date_end = EndDateField.getValue().toString();
+
+            // Format to convert user string for LocalDateTime
+            DateTimeFormatter dt_formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            DateTimeFormatter d_formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+            // Convert user date time string into a LocalDateTime variable
+            LocalDateTime origin_start_dt = LocalDateTime.parse(start_date_time_string, dt_formatter);
+            LocalDateTime origin_end_dt = LocalDateTime.parse(end_date_time_string, dt_formatter);
+            LocalDate start_d = LocalDate.parse(string_date_start, d_formatter);
+            LocalDate end_d = LocalDate.parse(string_date_end, d_formatter);
+
+            // Two ZoneIds, origin_zone = user current zone, utc_zone = UTC zone
+            ZoneId origin_zone = ZoneId.systemDefault();
+            ZoneId utc_zone = ZoneId.of("UTC");
+
+            // Convert user LocalDateTime variable into the user's time zone, this will be stored into the ObservableList of app
+            ZonedDateTime origin_start_zdt = origin_start_dt.atZone(origin_zone);
+            ZonedDateTime origin_end_zdt = origin_end_dt.atZone(origin_zone);
+
+            // Convert user LocalDateTime variable into UTC zone for storage in DB
+            ZonedDateTime utc_start_zdt = origin_start_zdt.withZoneSameInstant(utc_zone);
+            ZonedDateTime utc_end_zdt = origin_end_zdt.withZoneSameInstant(utc_zone);
+
+            // Convert both ZonedDateTimes to Strings to be storage in their respective locations
+            String origin_start_string = origin_start_zdt.toLocalDateTime().format(dt_formatter);
+            String origin_end_string = origin_end_zdt.toLocalDateTime().format(dt_formatter);
+            String utc_start_string = utc_start_zdt.toLocalDateTime().format(dt_formatter);
+            String utc_end_string = utc_end_zdt.toLocalDateTime().format(dt_formatter);
+
+            try {
+                // Check to see if start time is not after end time
+                if(origin_start_zdt.isAfter(origin_end_zdt)) {
+                    throw new ArithmeticException("Incorrect appointment times. Start time is before end time. Please correct.");
+                }
+                else {
+                    // Check is appointment spans more then one day. If so, throw error
+                    if(!start_d.isEqual(end_d)) {
+                        throw new ArithmeticException("Appointment too long. Please keep appointment within business hours on the same day.");
+                    }
+                    else {
+                        // Check if appointment overlaps another appointment
+                        Statement dbc_start = DBConnection.getConnection().createStatement();
+                        Statement dbc_end = DBConnection.getConnection().createStatement();
+
+                        // ------ Start and end strings need the UTC form of the datetime
+                        String queryStartDate = "SELECT * FROM appointment WHERE start BETWEEN '" + utc_start_string + "' AND '" + utc_end_string + "'";
+                        String queryEndDate = "SELECT * FROM appointment WHERE end BETWEEN '" + utc_start_string + "' AND '" + utc_end_string + "'";
+
+                        ResultSet rs_start = dbc_start.executeQuery(queryStartDate);
+                        ResultSet rs_end = dbc_end.executeQuery(queryEndDate);
+                        rs_start.last();
+                        rs_end.last();
+
+                        if(rs_start.getRow() > 0 || rs_end.getRow() > 0) {
+                            throw new ArithmeticException("Appointment exists during this time frame. Please choose another time frame for your appointment");
+                        }
+                        else {
+
+                            // Update Appointment data into DB
+                            Statement dbc_insert_db = DBConnection.getConnection().createStatement();
+                            String queryUpdateAppointment = "UPDATE appointment SET title='" + TitleField.getText() + "', type='" + TypeField.getText() + "', start='" + utc_start_string + "', end='" + utc_end_string + "' WHERE appointmentId=" + AppointmentIdField.getText();
+                            dbc_insert_db.execute(queryUpdateAppointment);
+                            System.out.println("here");
+
+                            CalendarData.updateAppointment(Integer.parseInt(AppointmentIdField.getText()), Integer.parseInt(CustomerIdField.getText()), TitleField.getText(), TypeField.getText(), "'" + origin_start_string + "'", "'" + origin_end_string + "'");
+
+                            Stage stage = (Stage) SaveButton.getScene().getWindow();
+                            stage.close();
+                        }
+                    }
+                }
+            }
+            catch (Exception e) {
+                System.out.println("Error with hour and min: " + e.getMessage());
+
+                Alert fillAllRequired = new Alert(Alert.AlertType.CONFIRMATION);
+                fillAllRequired.initModality(Modality.NONE);
+                fillAllRequired.setTitle("Hour and minute fields");
+                fillAllRequired.setHeaderText("Hour and minute fields");
+                fillAllRequired.setContentText(e.getMessage());
+                Optional<ButtonType> userChoice = fillAllRequired.showAndWait();
+            }
+        }
 
     }
 

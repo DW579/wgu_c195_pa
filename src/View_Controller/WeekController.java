@@ -25,9 +25,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.YearMonth;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.List;
@@ -119,30 +117,28 @@ public class WeekController {
 
                     while(rs.next()) {
 
-                        String db_start = rs.getString("start");
+                        // String from DB is in UTC time zone
+                        String db_start = rs.getString("start").substring(0,19);
 
-                        int db_start_year = Integer.parseInt(db_start.substring(0, 4));
-                        int db_start_month = Integer.parseInt(db_start.substring(5, 7));
-                        int db_start_day = Integer.parseInt(db_start.substring(8, 10));
-                        int db_start_hour = Integer.parseInt(db_start.substring(11, 13));
-                        int db_start_min = Integer.parseInt(db_start.substring(14, 16));
+                        // Convert db_start to user time zone from UTC, UTC to user time zone
+                        DateTimeFormatter dt_formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-                        // Determine user location and timezone
-                        Calendar calendar_start = Calendar.getInstance();
+                        LocalDateTime utc_start_dt = LocalDateTime.parse(db_start, dt_formatter);
 
-                        calendar_start.set(db_start_year,db_start_month - 1,db_start_day,db_start_hour,db_start_min,0); // Unsure why I need to subtract 11 from the month
+                        ZoneId utc_zone = ZoneId.of("UTC");
+                        ZoneId user_zone = ZoneId.systemDefault();
 
-                        SimpleDateFormat sdf_start = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        // Convert LocalDateTime utc_start_dt into a ZonedDateTime
+                        ZonedDateTime utc_start_zdt = utc_start_dt.atZone(utc_zone);
 
-                        sdf_start.setTimeZone(TimeZone.getTimeZone("UTC"));
+                        // Convert UTC of time to user time zone
+                        ZonedDateTime user_start_zdt = utc_start_zdt.withZoneSameInstant(user_zone);
 
-                        sdf_start.setTimeZone(TimeZone.getDefault());
-
-                        // Convert appointment start time into LocalDateTime
-                        LocalDateTime appointment_start = LocalDateTime.parse(sdf_start.format(calendar_start.getTime()), formatter);
+                        // Convert ZonedDateTime of user time zone to LocalDateTime
+                        LocalDateTime user_start_dt = user_start_zdt.toLocalDateTime();
 
                         // See if start of appointment falls between start of day and end of day
-                        if(appointment_start.isAfter(start_of_day) && appointment_start.isBefore(end_of_day)) {
+                        if(user_start_dt.isAfter(start_of_day) && user_start_dt.isBefore(end_of_day)) {
                             appointments_today.add(rs.getString("title"));
                         }
 
@@ -226,30 +222,28 @@ public class WeekController {
 
                     while(rs.next()) {
 
-                        String db_start = rs.getString("start");
+                        // String from DB is in UTC time zone
+                        String db_start = rs.getString("start").substring(0,19);
 
-                        int db_start_year = Integer.parseInt(db_start.substring(0, 4));
-                        int db_start_month = Integer.parseInt(db_start.substring(5, 7));
-                        int db_start_day = Integer.parseInt(db_start.substring(8, 10));
-                        int db_start_hour = Integer.parseInt(db_start.substring(11, 13));
-                        int db_start_min = Integer.parseInt(db_start.substring(14, 16));
+                        // Convert db_start to user time zone from UTC, UTC to user time zone
+                        DateTimeFormatter dt_formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-                        // Determine user location and timezone
-                        Calendar calendar_start = Calendar.getInstance();
+                        LocalDateTime utc_start_dt = LocalDateTime.parse(db_start, dt_formatter);
 
-                        calendar_start.set(db_start_year,db_start_month - 1,db_start_day,db_start_hour,db_start_min,0); // Unsure why I need to subtract 11 from the month
+                        ZoneId utc_zone = ZoneId.of("UTC");
+                        ZoneId user_zone = ZoneId.systemDefault();
 
-                        SimpleDateFormat sdf_start = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        // Convert LocalDateTime utc_start_dt into a ZonedDateTime
+                        ZonedDateTime utc_start_zdt = utc_start_dt.atZone(utc_zone);
 
-                        sdf_start.setTimeZone(TimeZone.getTimeZone("UTC"));
+                        // Convert UTC of time to user time zone
+                        ZonedDateTime user_start_zdt = utc_start_zdt.withZoneSameInstant(user_zone);
 
-                        sdf_start.setTimeZone(TimeZone.getDefault());
-
-                        // Convert appointment start time into LocalDateTime
-                        LocalDateTime appointment_start = LocalDateTime.parse(sdf_start.format(calendar_start.getTime()), formatter);
+                        // Convert ZonedDateTime of user time zone to LocalDateTime
+                        LocalDateTime user_start_dt = user_start_zdt.toLocalDateTime();
 
                         // See if start of appointment falls between start of day and end of day
-                        if(appointment_start.isAfter(start_of_day) && appointment_start.isBefore(end_of_day)) {
+                        if(user_start_dt.isAfter(start_of_day) && user_start_dt.isBefore(end_of_day)) {
                             appointments_today.add(rs.getString("title"));
                         }
 
@@ -338,30 +332,28 @@ public class WeekController {
 
                     while(rs.next()) {
 
-                        String db_start = rs.getString("start");
+                        // String from DB is in UTC time zone
+                        String db_start = rs.getString("start").substring(0,19);
 
-                        int db_start_year = Integer.parseInt(db_start.substring(0, 4));
-                        int db_start_month = Integer.parseInt(db_start.substring(5, 7));
-                        int db_start_day = Integer.parseInt(db_start.substring(8, 10));
-                        int db_start_hour = Integer.parseInt(db_start.substring(11, 13));
-                        int db_start_min = Integer.parseInt(db_start.substring(14, 16));
+                        // Convert db_start to user time zone from UTC, UTC to user time zone
+                        DateTimeFormatter dt_formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-                        // Determine user location and timezone
-                        Calendar calendar_start = Calendar.getInstance();
+                        LocalDateTime utc_start_dt = LocalDateTime.parse(db_start, dt_formatter);
 
-                        calendar_start.set(db_start_year,db_start_month - 1,db_start_day,db_start_hour,db_start_min,0); // Unsure why I need to subtract 11 from the month
+                        ZoneId utc_zone = ZoneId.of("UTC");
+                        ZoneId user_zone = ZoneId.systemDefault();
 
-                        SimpleDateFormat sdf_start = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        // Convert LocalDateTime utc_start_dt into a ZonedDateTime
+                        ZonedDateTime utc_start_zdt = utc_start_dt.atZone(utc_zone);
 
-                        sdf_start.setTimeZone(TimeZone.getTimeZone("UTC"));
+                        // Convert UTC of time to user time zone
+                        ZonedDateTime user_start_zdt = utc_start_zdt.withZoneSameInstant(user_zone);
 
-                        sdf_start.setTimeZone(TimeZone.getDefault());
-
-                        // Convert appointment start time into LocalDateTime
-                        LocalDateTime appointment_start = LocalDateTime.parse(sdf_start.format(calendar_start.getTime()), formatter);
+                        // Convert ZonedDateTime of user time zone to LocalDateTime
+                        LocalDateTime user_start_dt = user_start_zdt.toLocalDateTime();
 
                         // See if start of appointment falls between start of day and end of day
-                        if(appointment_start.isAfter(start_of_day) && appointment_start.isBefore(end_of_day)) {
+                        if(user_start_dt.isAfter(start_of_day) && user_start_dt.isBefore(end_of_day)) {
                             appointments_today.add(rs.getString("title"));
                         }
 
@@ -461,30 +453,28 @@ public class WeekController {
 
                     while(rs.next()) {
 
-                        String db_start = rs.getString("start");
+                        // String from DB is in UTC time zone
+                        String db_start = rs.getString("start").substring(0,19);
 
-                        int db_start_year = Integer.parseInt(db_start.substring(0, 4));
-                        int db_start_month = Integer.parseInt(db_start.substring(5, 7));
-                        int db_start_day = Integer.parseInt(db_start.substring(8, 10));
-                        int db_start_hour = Integer.parseInt(db_start.substring(11, 13));
-                        int db_start_min = Integer.parseInt(db_start.substring(14, 16));
+                        // Convert db_start to user time zone from UTC, UTC to user time zone
+                        DateTimeFormatter dt_formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-                        // Determine user location and timezone
-                        Calendar calendar_start = Calendar.getInstance();
+                        LocalDateTime utc_start_dt = LocalDateTime.parse(db_start, dt_formatter);
 
-                        calendar_start.set(db_start_year,db_start_month - 1,db_start_day,db_start_hour,db_start_min,0); // Unsure why I need to subtract 11 from the month
+                        ZoneId utc_zone = ZoneId.of("UTC");
+                        ZoneId user_zone = ZoneId.systemDefault();
 
-                        SimpleDateFormat sdf_start = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        // Convert LocalDateTime utc_start_dt into a ZonedDateTime
+                        ZonedDateTime utc_start_zdt = utc_start_dt.atZone(utc_zone);
 
-                        sdf_start.setTimeZone(TimeZone.getTimeZone("UTC"));
+                        // Convert UTC of time to user time zone
+                        ZonedDateTime user_start_zdt = utc_start_zdt.withZoneSameInstant(user_zone);
 
-                        sdf_start.setTimeZone(TimeZone.getDefault());
-
-                        // Convert appointment start time into LocalDateTime
-                        LocalDateTime appointment_start = LocalDateTime.parse(sdf_start.format(calendar_start.getTime()), formatter);
+                        // Convert ZonedDateTime of user time zone to LocalDateTime
+                        LocalDateTime user_start_dt = user_start_zdt.toLocalDateTime();
 
                         // See if start of appointment falls between start of day and end of day
-                        if(appointment_start.isAfter(start_of_day) && appointment_start.isBefore(end_of_day)) {
+                        if(user_start_dt.isAfter(start_of_day) && user_start_dt.isBefore(end_of_day)) {
                             appointments_today.add(rs.getString("title"));
                         }
 
@@ -560,30 +550,28 @@ public class WeekController {
 
                     while(rs.next()) {
 
-                        String db_start = rs.getString("start");
+                        // String from DB is in UTC time zone
+                        String db_start = rs.getString("start").substring(0,19);
 
-                        int db_start_year = Integer.parseInt(db_start.substring(0, 4));
-                        int db_start_month = Integer.parseInt(db_start.substring(5, 7));
-                        int db_start_day = Integer.parseInt(db_start.substring(8, 10));
-                        int db_start_hour = Integer.parseInt(db_start.substring(11, 13));
-                        int db_start_min = Integer.parseInt(db_start.substring(14, 16));
+                        // Convert db_start to user time zone from UTC, UTC to user time zone
+                        DateTimeFormatter dt_formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-                        // Determine user location and timezone
-                        Calendar calendar_start = Calendar.getInstance();
+                        LocalDateTime utc_start_dt = LocalDateTime.parse(db_start, dt_formatter);
 
-                        calendar_start.set(db_start_year,db_start_month - 1,db_start_day,db_start_hour,db_start_min,0); // Unsure why I need to subtract 11 from the month
+                        ZoneId utc_zone = ZoneId.of("UTC");
+                        ZoneId user_zone = ZoneId.systemDefault();
 
-                        SimpleDateFormat sdf_start = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        // Convert LocalDateTime utc_start_dt into a ZonedDateTime
+                        ZonedDateTime utc_start_zdt = utc_start_dt.atZone(utc_zone);
 
-                        sdf_start.setTimeZone(TimeZone.getTimeZone("UTC"));
+                        // Convert UTC of time to user time zone
+                        ZonedDateTime user_start_zdt = utc_start_zdt.withZoneSameInstant(user_zone);
 
-                        sdf_start.setTimeZone(TimeZone.getDefault());
-
-                        // Convert appointment start time into LocalDateTime
-                        LocalDateTime appointment_start = LocalDateTime.parse(sdf_start.format(calendar_start.getTime()), formatter);
+                        // Convert ZonedDateTime of user time zone to LocalDateTime
+                        LocalDateTime user_start_dt = user_start_zdt.toLocalDateTime();
 
                         // See if start of appointment falls between start of day and end of day
-                        if(appointment_start.isAfter(start_of_day) && appointment_start.isBefore(end_of_day)) {
+                        if(user_start_dt.isAfter(start_of_day) && user_start_dt.isBefore(end_of_day)) {
                             appointments_today.add(rs.getString("title"));
                         }
 
@@ -659,30 +647,28 @@ public class WeekController {
 
                     while(rs.next()) {
 
-                        String db_start = rs.getString("start");
+                        // String from DB is in UTC time zone
+                        String db_start = rs.getString("start").substring(0,19);
 
-                        int db_start_year = Integer.parseInt(db_start.substring(0, 4));
-                        int db_start_month = Integer.parseInt(db_start.substring(5, 7));
-                        int db_start_day = Integer.parseInt(db_start.substring(8, 10));
-                        int db_start_hour = Integer.parseInt(db_start.substring(11, 13));
-                        int db_start_min = Integer.parseInt(db_start.substring(14, 16));
+                        // Convert db_start to user time zone from UTC, UTC to user time zone
+                        DateTimeFormatter dt_formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-                        // Determine user location and timezone
-                        Calendar calendar_start = Calendar.getInstance();
+                        LocalDateTime utc_start_dt = LocalDateTime.parse(db_start, dt_formatter);
 
-                        calendar_start.set(db_start_year,db_start_month - 1,db_start_day,db_start_hour,db_start_min,0); // Unsure why I need to subtract 11 from the month
+                        ZoneId utc_zone = ZoneId.of("UTC");
+                        ZoneId user_zone = ZoneId.systemDefault();
 
-                        SimpleDateFormat sdf_start = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        // Convert LocalDateTime utc_start_dt into a ZonedDateTime
+                        ZonedDateTime utc_start_zdt = utc_start_dt.atZone(utc_zone);
 
-                        sdf_start.setTimeZone(TimeZone.getTimeZone("UTC"));
+                        // Convert UTC of time to user time zone
+                        ZonedDateTime user_start_zdt = utc_start_zdt.withZoneSameInstant(user_zone);
 
-                        sdf_start.setTimeZone(TimeZone.getDefault());
-
-                        // Convert appointment start time into LocalDateTime
-                        LocalDateTime appointment_start = LocalDateTime.parse(sdf_start.format(calendar_start.getTime()), formatter);
+                        // Convert ZonedDateTime of user time zone to LocalDateTime
+                        LocalDateTime user_start_dt = user_start_zdt.toLocalDateTime();
 
                         // See if start of appointment falls between start of day and end of day
-                        if(appointment_start.isAfter(start_of_day) && appointment_start.isBefore(end_of_day)) {
+                        if(user_start_dt.isAfter(start_of_day) && user_start_dt.isBefore(end_of_day)) {
                             appointments_today.add(rs.getString("title"));
                         }
 
@@ -758,30 +744,28 @@ public class WeekController {
 
                     while(rs.next()) {
 
-                        String db_start = rs.getString("start");
+                        // String from DB is in UTC time zone
+                        String db_start = rs.getString("start").substring(0,19);
 
-                        int db_start_year = Integer.parseInt(db_start.substring(0, 4));
-                        int db_start_month = Integer.parseInt(db_start.substring(5, 7));
-                        int db_start_day = Integer.parseInt(db_start.substring(8, 10));
-                        int db_start_hour = Integer.parseInt(db_start.substring(11, 13));
-                        int db_start_min = Integer.parseInt(db_start.substring(14, 16));
+                        // Convert db_start to user time zone from UTC, UTC to user time zone
+                        DateTimeFormatter dt_formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-                        // Determine user location and timezone
-                        Calendar calendar_start = Calendar.getInstance();
+                        LocalDateTime utc_start_dt = LocalDateTime.parse(db_start, dt_formatter);
 
-                        calendar_start.set(db_start_year,db_start_month - 1,db_start_day,db_start_hour,db_start_min,0); // Unsure why I need to subtract 11 from the month
+                        ZoneId utc_zone = ZoneId.of("UTC");
+                        ZoneId user_zone = ZoneId.systemDefault();
 
-                        SimpleDateFormat sdf_start = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        // Convert LocalDateTime utc_start_dt into a ZonedDateTime
+                        ZonedDateTime utc_start_zdt = utc_start_dt.atZone(utc_zone);
 
-                        sdf_start.setTimeZone(TimeZone.getTimeZone("UTC"));
+                        // Convert UTC of time to user time zone
+                        ZonedDateTime user_start_zdt = utc_start_zdt.withZoneSameInstant(user_zone);
 
-                        sdf_start.setTimeZone(TimeZone.getDefault());
-
-                        // Convert appointment start time into LocalDateTime
-                        LocalDateTime appointment_start = LocalDateTime.parse(sdf_start.format(calendar_start.getTime()), formatter);
+                        // Convert ZonedDateTime of user time zone to LocalDateTime
+                        LocalDateTime user_start_dt = user_start_zdt.toLocalDateTime();
 
                         // See if start of appointment falls between start of day and end of day
-                        if(appointment_start.isAfter(start_of_day) && appointment_start.isBefore(end_of_day)) {
+                        if(user_start_dt.isAfter(start_of_day) && user_start_dt.isBefore(end_of_day)) {
                             appointments_today.add(rs.getString("title"));
                         }
 
@@ -857,30 +841,28 @@ public class WeekController {
 
                     while(rs.next()) {
 
-                        String db_start = rs.getString("start");
+                        // String from DB is in UTC time zone
+                        String db_start = rs.getString("start").substring(0,19);
 
-                        int db_start_year = Integer.parseInt(db_start.substring(0, 4));
-                        int db_start_month = Integer.parseInt(db_start.substring(5, 7));
-                        int db_start_day = Integer.parseInt(db_start.substring(8, 10));
-                        int db_start_hour = Integer.parseInt(db_start.substring(11, 13));
-                        int db_start_min = Integer.parseInt(db_start.substring(14, 16));
+                        // Convert db_start to user time zone from UTC, UTC to user time zone
+                        DateTimeFormatter dt_formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-                        // Determine user location and timezone
-                        Calendar calendar_start = Calendar.getInstance();
+                        LocalDateTime utc_start_dt = LocalDateTime.parse(db_start, dt_formatter);
 
-                        calendar_start.set(db_start_year,db_start_month - 1,db_start_day,db_start_hour,db_start_min,0); // Unsure why I need to subtract 11 from the month
+                        ZoneId utc_zone = ZoneId.of("UTC");
+                        ZoneId user_zone = ZoneId.systemDefault();
 
-                        SimpleDateFormat sdf_start = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        // Convert LocalDateTime utc_start_dt into a ZonedDateTime
+                        ZonedDateTime utc_start_zdt = utc_start_dt.atZone(utc_zone);
 
-                        sdf_start.setTimeZone(TimeZone.getTimeZone("UTC"));
+                        // Convert UTC of time to user time zone
+                        ZonedDateTime user_start_zdt = utc_start_zdt.withZoneSameInstant(user_zone);
 
-                        sdf_start.setTimeZone(TimeZone.getDefault());
-
-                        // Convert appointment start time into LocalDateTime
-                        LocalDateTime appointment_start = LocalDateTime.parse(sdf_start.format(calendar_start.getTime()), formatter);
+                        // Convert ZonedDateTime of user time zone to LocalDateTime
+                        LocalDateTime user_start_dt = user_start_zdt.toLocalDateTime();
 
                         // See if start of appointment falls between start of day and end of day
-                        if(appointment_start.isAfter(start_of_day) && appointment_start.isBefore(end_of_day)) {
+                        if(user_start_dt.isAfter(start_of_day) && user_start_dt.isBefore(end_of_day)) {
                             appointments_today.add(rs.getString("title"));
                         }
 
@@ -956,30 +938,28 @@ public class WeekController {
 
                     while(rs.next()) {
 
-                        String db_start = rs.getString("start");
+                        // String from DB is in UTC time zone
+                        String db_start = rs.getString("start").substring(0,19);
 
-                        int db_start_year = Integer.parseInt(db_start.substring(0, 4));
-                        int db_start_month = Integer.parseInt(db_start.substring(5, 7));
-                        int db_start_day = Integer.parseInt(db_start.substring(8, 10));
-                        int db_start_hour = Integer.parseInt(db_start.substring(11, 13));
-                        int db_start_min = Integer.parseInt(db_start.substring(14, 16));
+                        // Convert db_start to user time zone from UTC, UTC to user time zone
+                        DateTimeFormatter dt_formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-                        // Determine user location and timezone
-                        Calendar calendar_start = Calendar.getInstance();
+                        LocalDateTime utc_start_dt = LocalDateTime.parse(db_start, dt_formatter);
 
-                        calendar_start.set(db_start_year,db_start_month - 1,db_start_day,db_start_hour,db_start_min,0); // Unsure why I need to subtract 11 from the month
+                        ZoneId utc_zone = ZoneId.of("UTC");
+                        ZoneId user_zone = ZoneId.systemDefault();
 
-                        SimpleDateFormat sdf_start = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        // Convert LocalDateTime utc_start_dt into a ZonedDateTime
+                        ZonedDateTime utc_start_zdt = utc_start_dt.atZone(utc_zone);
 
-                        sdf_start.setTimeZone(TimeZone.getTimeZone("UTC"));
+                        // Convert UTC of time to user time zone
+                        ZonedDateTime user_start_zdt = utc_start_zdt.withZoneSameInstant(user_zone);
 
-                        sdf_start.setTimeZone(TimeZone.getDefault());
-
-                        // Convert appointment start time into LocalDateTime
-                        LocalDateTime appointment_start = LocalDateTime.parse(sdf_start.format(calendar_start.getTime()), formatter);
+                        // Convert ZonedDateTime of user time zone to LocalDateTime
+                        LocalDateTime user_start_dt = user_start_zdt.toLocalDateTime();
 
                         // See if start of appointment falls between start of day and end of day
-                        if(appointment_start.isAfter(start_of_day) && appointment_start.isBefore(end_of_day)) {
+                        if(user_start_dt.isAfter(start_of_day) && user_start_dt.isBefore(end_of_day)) {
                             appointments_today.add(rs.getString("title"));
                         }
 

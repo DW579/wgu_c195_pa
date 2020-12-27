@@ -148,7 +148,7 @@ public class LoginScreenController {
             System.out.println("SQLException error: " + e.getMessage());
         }
 
-        // If no initial user, add one user
+        // If no initial user, add two users
         try {
             Statement dbConnectionStatement = DBConnection.getConnection().createStatement();
             String queryAllUsers = "SELECT * FROM user";
@@ -160,6 +160,15 @@ public class LoginScreenController {
                 try {
                     Statement dbCS = DBConnection.getConnection().createStatement();
                     String queryInsertUser = "INSERT INTO user VALUES (1,'test','test',1,'2019-01-01 00:00:00','test','2019-01-01 00:00:00','test')";
+                    dbCS.execute(queryInsertUser);
+                }
+                catch (SQLException e) {
+                    System.out.println("SQLException error: " + e.getMessage());
+                }
+
+                try {
+                    Statement dbCS = DBConnection.getConnection().createStatement();
+                    String queryInsertUser = "INSERT INTO user VALUES (2,'test','test',1,'2019-01-01 00:00:00','test','2019-01-01 00:00:00','test')";
                     dbCS.execute(queryInsertUser);
                 }
                 catch (SQLException e) {
