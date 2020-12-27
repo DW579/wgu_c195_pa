@@ -35,9 +35,6 @@ public class AddCustomerController {
         stage.close();
     }
 
-    public void IdHandler(ActionEvent actionEvent) {
-    }
-
     // Customer data into DB
     public void saveButtonHandler(ActionEvent actionEvent) {
         Boolean error = false;

@@ -61,6 +61,7 @@ public class LoginScreenController {
         // Error texts initial appear hidden
         Error.setVisible(false);
 
+        // Set language depending on user's localization
         ResourceBundle rb = ResourceBundle.getBundle("Languages/login", Locale.getDefault());
         Username.setPromptText(rb.getString("username"));
         Password.setPromptText(rb.getString("password"));

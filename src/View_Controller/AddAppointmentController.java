@@ -17,10 +17,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
-import java.time.Duration;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Optional;
@@ -61,14 +58,6 @@ public class AddAppointmentController {
     }
 
     public void SaveHandler(ActionEvent actionEvent) {
-        // GET Date field data
-
-        // Check Hour and Min fields are valid numbers
-
-        // Check Duration Drop down that a selection was made
-
-        // Store this data into DB and a new Object
-
         int start_hour = 0;
         int start_minute = 0;
         int end_hour = 0;
@@ -142,31 +131,103 @@ public class AddAppointmentController {
         }
 
         // Check to make sure all fields are filled out
-        if(TitleField.getText().isEmpty() || TypeField.getText().isEmpty() || StartDateField.getValue().toString().isEmpty() || StartHourField.getText().isEmpty() || StartMinuteField.getText().isEmpty() || EndDateField.getValue().toString().isEmpty() || EndHourField.getText().isEmpty() || EndMinuteField.getText().isEmpty()) {
+        if(TitleField.getText().isEmpty() || TypeField.getText().isEmpty() || StartDateField.getValue().toString().isEmpty() || StartHourField.getText().isEmpty() || StartMinuteField.getText().isEmpty() || EndDateField.getValue().toString().isEmpty() || EndHourField.getText().isEmpty() || EndMinuteField.getText().isEmpty() || UserBox.getValue() == null) {
             Alert fillAllRequired = new Alert(Alert.AlertType.CONFIRMATION);
             fillAllRequired.initModality(Modality.NONE);
             fillAllRequired.setTitle("Fill All Required Fields");
             fillAllRequired.setHeaderText("Fill All Required Fields");
             fillAllRequired.setContentText("Please fill in all required fields");
             Optional<ButtonType> userChoice = fillAllRequired.showAndWait();
+
+            // ------- testing ------
+
+//            String start_date_time_string = StartDateField.getValue().toString() + " " + start_hour_string + ":" + start_minute_string + ":00";
+//
+//            DateTimeFormatter dt_formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+//
+//            LocalDateTime origin_start_dt = LocalDateTime.parse(start_date_time_string, dt_formatter);
+//
+//            ZoneId origin_zone = ZoneId.systemDefault();
+//
+//            ZonedDateTime origin_zoned_start_dt = ZonedDateTime.of(origin_start_dt, origin_zone);
+//
+//            System.out.println(origin_zone);
+//            System.out.println(origin_zoned_start_dt);
+//
+//            ZoneId target_zone = ZoneId.of("America/Los_Angeles");
+//
+//            ZonedDateTime target_zoned_start_dt = origin_zoned_start_dt.withZoneSameInstant(target_zone);
+//
+//            LocalDateTime target_start_dt = target_zoned_start_dt.toLocalDateTime();
+//
+//            System.out.println(target_start_dt.toString());
+
+            // User input time constructed into String
+            String start_date_time_string = StartDateField.getValue().toString() + " " + start_hour_string + ":" + start_minute_string + ":00";
+
+            // Format to convert user string for LocalDateTime
+            DateTimeFormatter dt_formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+            // Convert user date time string into a LocalDateTime variable
+            LocalDateTime origin_start_dt = LocalDateTime.parse(start_date_time_string, dt_formatter);
+
+            // Two ZoneIds, origin_zone = user current zone, utc_zone = UTC zone
+            ZoneId origin_zone = ZoneId.systemDefault();
+            ZoneId utc_zone = ZoneId.of("UTC");
+
+            // Convert user LocalDateTime variable into the user's time zone, this will be stored into the ObservableList of app
+            ZonedDateTime origin_start_zdt = origin_start_dt.atZone(origin_zone);
+
+            // Convert user LocalDateTime variable into UTC zone for storage in DB
+            ZonedDateTime utc_start_zdt = origin_start_zdt.withZoneSameInstant(utc_zone);
+
+            // Convert both ZonedDateTimes to Strings to be storage in their respective locations
+            String origin_start_string = origin_start_zdt.toLocalDateTime().format(dt_formatter);
+            String utc_start_string = utc_start_zdt.toLocalDateTime().format(dt_formatter);
+
+            System.out.println(origin_start_string);
+            System.out.println(utc_start_string);
+
+            // ------- testing ------
         }
         else {
+            // User input time constructed into String
             String start_date_time_string = StartDateField.getValue().toString() + " " + start_hour_string + ":" + start_minute_string + ":00";
-            String end_date_time_string =  EndDateField.getValue().toString() + " " + end_hour_string + ":" + end_minute_string + ":00";
-            String start_date_string = StartDateField.getValue().toString();
-            String end_date_string = EndDateField.getValue().toString();
+            String end_date_time_string = EndDateField.getValue().toString() + " " + end_hour_string + ":" + end_minute_string + ":00";
+            String string_date_start = StartDateField.getValue().toString();
+            String string_date_end = EndDateField.getValue().toString();
 
+            // Format to convert user string for LocalDateTime
             DateTimeFormatter dt_formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             DateTimeFormatter d_formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-            LocalDateTime start_dt = LocalDateTime.parse(start_date_time_string, dt_formatter);
-            LocalDateTime end_dt = LocalDateTime.parse(end_date_time_string, dt_formatter);
-            LocalDate start_d = LocalDate.parse(start_date_string, d_formatter);
-            LocalDate end_d = LocalDate.parse(end_date_string, d_formatter);
+            // Convert user date time string into a LocalDateTime variable
+            LocalDateTime origin_start_dt = LocalDateTime.parse(start_date_time_string, dt_formatter);
+            LocalDateTime origin_end_dt = LocalDateTime.parse(end_date_time_string, dt_formatter);
+            LocalDate start_d = LocalDate.parse(string_date_start, d_formatter);
+            LocalDate end_d = LocalDate.parse(string_date_end, d_formatter);
+
+            // Two ZoneIds, origin_zone = user current zone, utc_zone = UTC zone
+            ZoneId origin_zone = ZoneId.systemDefault();
+            ZoneId utc_zone = ZoneId.of("UTC");
+
+            // Convert user LocalDateTime variable into the user's time zone, this will be stored into the ObservableList of app
+            ZonedDateTime origin_start_zdt = origin_start_dt.atZone(origin_zone);
+            ZonedDateTime origin_end_zdt = origin_end_dt.atZone(origin_zone);
+
+            // Convert user LocalDateTime variable into UTC zone for storage in DB
+            ZonedDateTime utc_start_zdt = origin_start_zdt.withZoneSameInstant(utc_zone);
+            ZonedDateTime utc_end_zdt = origin_end_zdt.withZoneSameInstant(utc_zone);
+
+            // Convert both ZonedDateTimes to Strings to be storage in their respective locations
+            String origin_start_string = origin_start_zdt.toLocalDateTime().format(dt_formatter);
+            String origin_end_string = origin_end_zdt.toLocalDateTime().format(dt_formatter);
+            String utc_start_string = utc_start_zdt.toLocalDateTime().format(dt_formatter);
+            String utc_end_string = utc_end_zdt.toLocalDateTime().format(dt_formatter);
 
             try {
                 // Check to see if start time is not after end time
-                if(start_dt.isAfter(end_dt)) {
+                if(origin_start_zdt.isAfter(origin_end_zdt)) {
                     throw new ArithmeticException("Incorrect appointment times. Start time is before end time. Please correct.");
                 }
                 else {
@@ -179,13 +240,12 @@ public class AddAppointmentController {
                         Statement dbc_start = DBConnection.getConnection().createStatement();
                         Statement dbc_end = DBConnection.getConnection().createStatement();
 
-                        String queryStartDate = "SELECT * FROM appointment WHERE start BETWEEN '" + start_date_time_string + "' AND ' " + end_date_time_string + "'";
-                        String queryEndDate = "SELECT * FROM appointment WHERE end BETWEEN '" + start_date_time_string + "' AND ' " + end_date_time_string + "'";
-
+                        // ------ Start and end strings need the UTC form of the datetime
+                        String queryStartDate = "SELECT * FROM appointment WHERE start BETWEEN '" + utc_start_string + "' AND '" + utc_end_string + "'";
+                        String queryEndDate = "SELECT * FROM appointment WHERE end BETWEEN '" + utc_start_string + "' AND '" + utc_end_string + "'";
 
                         ResultSet rs_start = dbc_start.executeQuery(queryStartDate);
                         ResultSet rs_end = dbc_end.executeQuery(queryEndDate);
-
                         rs_start.last();
                         rs_end.last();
 
@@ -209,45 +269,11 @@ public class AddAppointmentController {
 
                             // Input new Appointment data into DB
                             Statement dbc_insert_db = DBConnection.getConnection().createStatement();
-                            String queryInsertNewAppt = "INSERT INTO appointment VALUES (" + Integer.toString(dynamicAppointmentId) + "," + CustomerIdField.getText() + ",1,'" + TitleField.getText() + "','test','test','test','" + TypeField.getText() + "','test','" + start_date_time_string + "','" + end_date_time_string + "','2019-01-01 00:00:00','test','2019-01-01 00:00:00','test')";
+                            String queryInsertNewAppt = "INSERT INTO appointment VALUES (" + Integer.toString(dynamicAppointmentId) + "," + CustomerIdField.getText() + ",1,'" + TitleField.getText() + "','test','test','test','" + TypeField.getText() + "','test','" + utc_start_string + "','" + utc_end_string + "','2019-01-01 00:00:00','test','2019-01-01 00:00:00','test')";
                             dbc_insert_db.execute(queryInsertNewAppt);
 
-
-                            // Convert start and end times to user's timezone
-                            String db_start = start_date_time_string;
-                            String db_end = end_date_time_string;
-
-                            int db_start_year = Integer.parseInt(db_start.substring(0, 4));
-                            int db_start_month = Integer.parseInt(db_start.substring(5, 7));
-                            int db_start_day = Integer.parseInt(db_start.substring(8, 10));
-                            int db_start_hour = Integer.parseInt(db_start.substring(11, 13));
-                            int db_start_min = Integer.parseInt(db_start.substring(14, 16));
-                            int db_end_year = Integer.parseInt(db_end.substring(0, 4));
-                            int db_end_month = Integer.parseInt(db_end.substring(5, 7));
-                            int db_end_day = Integer.parseInt(db_end.substring(8, 10));
-                            int db_end_hour = Integer.parseInt(db_end.substring(11, 13));
-                            int db_end_min = Integer.parseInt(db_end.substring(14, 16));
-
-                            // Determine user location and timezone
-                            Calendar calendar_start = Calendar.getInstance();
-                            Calendar calendar_end = Calendar.getInstance();
-
-                            calendar_start.set(db_start_year,db_start_month - 1,db_start_day,db_start_hour,db_start_min,0); // Unsure why I need to subtract 11 from the month
-                            calendar_end.set(db_end_year,db_end_month - 1,db_end_day,db_end_hour,db_end_min,0); // Unsure why I need to subtract 11 from the month
-
-                            SimpleDateFormat sdf_start = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                            SimpleDateFormat sdf_end = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-                            sdf_start.setTimeZone(TimeZone.getTimeZone("UTC"));
-                            sdf_end.setTimeZone(TimeZone.getTimeZone("UTC"));
-
-                            sdf_start.setTimeZone(TimeZone.getDefault());
-                            sdf_end.setTimeZone(TimeZone.getDefault());
-
-
-
                             // Input new Appointment data into ObservableList
-                            Appointment newAppointment = new Appointment(dynamicAppointmentId, Integer.parseInt(CustomerIdField.getText()), Integer.parseInt(UserBox.getValue().toString()), TitleField.getText(), "test", "test", "test", TypeField.getText(), "test", "'" + sdf_start.format(calendar_start.getTime()) + "'", "'" + sdf_end.format(calendar_end.getTime()) + "'", "2019-01-01 00:00:00","test","2019-01-01 00:00:00","test");
+                            Appointment newAppointment = new Appointment(dynamicAppointmentId, Integer.parseInt(CustomerIdField.getText()), Integer.parseInt(UserBox.getValue().toString()), TitleField.getText(), "test", "test", "test", TypeField.getText(), "test", "'" + origin_start_string + "'", "'" + origin_end_string + "'", "2019-01-01 00:00:00","test","2019-01-01 00:00:00","test");
 
                             CalendarData.addAppointment(newAppointment);
 

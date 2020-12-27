@@ -5,6 +5,9 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
+import java.time.ZonedDateTime;
+import java.util.SimpleTimeZone;
+
 public class Appointment {
     private final IntegerProperty id;
     private final IntegerProperty customerId;

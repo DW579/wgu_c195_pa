@@ -14,6 +14,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.TimeZone;
 
@@ -56,6 +58,25 @@ public class UpdateAppointmentController {
             int endDay = Integer.parseInt(endDate.substring(8,10));
             String endHour = endDate.substring(11,13);
             String endMin = endDate.substring(14,16);
+
+            // -------- Convert start and end dates to user time zone from LocalDateTime to String
+            Calendar calendar_start = Calendar.getInstance();
+
+            calendar_start.set(startYear,startMonth - 1,startDay,Integer.parseInt(startHour),Integer.parseInt(startMin),0); // Unsure why I need to subtract 11 from the month
+
+            SimpleDateFormat sdf_start = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+            sdf_start.setTimeZone(TimeZone.getTimeZone(TimeZone.getDefault().getDisplayName()));
+
+            DateTimeFormatter utc_dt_formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+            LocalDateTime utc_start_dt = LocalDateTime.parse(sdf_start.format(calendar_start.getTime()), utc_dt_formatter);
+
+            String utc_dt_start_string = Integer.toString(utc_start_dt.getYear()) + "-" + Integer.toString(utc_start_dt.getMonthValue()) + "-" + Integer.toString(utc_start_dt.getDayOfMonth()) + " " + Integer.toString(utc_start_dt.getHour()) + ":" + Integer.toString(utc_start_dt.getMinute()) + ":00";
+
+            System.out.println("-----------");
+            System.out.println(utc_dt_start_string);
+            System.out.println(TimeZone.getDefault().getDisplayName());
 
             LocalDate localStartDate = LocalDate.of(startYear, startMonth, startDay);
             LocalDate localEndDate = LocalDate.of(endYear, endMonth, endDay);
