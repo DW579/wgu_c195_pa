@@ -129,3 +129,5 @@
  test logged in successfully at America/Los_Angeles 2020-12-27 01:15:07
  test logged in successfully at Asia/Vladivostok 2020-12-27 19:16:49
  test logged in successfully at Asia/Vladivostok 2020-12-27 19:17:58
+ test logged in successfully at Asia/Vladivostok 2020-12-27 19:37:53
+ test logged in successfully at America/Los_Angeles 2020-12-27 01:38:34

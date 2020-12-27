@@ -21,6 +21,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -189,37 +193,34 @@ public class LoginScreenController {
                 String lastUpdateBy = rs.getString("lastUpdateBy");
 
                 // Convert start and end times to user's timezone
-                String db_start = rs.getString("start");
-                String db_end = rs.getString("end");
+                // Strings from DB is in UTC time zone
+                String db_start = rs.getString("start").substring(0,19);
+                String db_end = rs.getString("end").substring(0,19);
 
-                int db_start_year = Integer.parseInt(db_start.substring(0, 4));
-                int db_start_month = Integer.parseInt(db_start.substring(5, 7));
-                int db_start_day = Integer.parseInt(db_start.substring(8, 10));
-                int db_start_hour = Integer.parseInt(db_start.substring(11, 13));
-                int db_start_min = Integer.parseInt(db_start.substring(14, 16));
-                int db_end_year = Integer.parseInt(db_end.substring(0, 4));
-                int db_end_month = Integer.parseInt(db_end.substring(5, 7));
-                int db_end_day = Integer.parseInt(db_end.substring(8, 10));
-                int db_end_hour = Integer.parseInt(db_end.substring(11, 13));
-                int db_end_min = Integer.parseInt(db_end.substring(14, 16));
+                // Convert db_start and db_end to user time zone from UTC, UTC to user time zone
+                DateTimeFormatter dt_formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-                // Determine user location and timezone
-                Calendar calendar_start = Calendar.getInstance();
-                Calendar calendar_end = Calendar.getInstance();
+                // Convert DB time strings into LocalDateTime variables
+                LocalDateTime utc_start_dt = LocalDateTime.parse(db_start, dt_formatter);
+                LocalDateTime utc_end_dt = LocalDateTime.parse(db_end, dt_formatter);
 
-                calendar_start.set(db_start_year,db_start_month - 1,db_start_day,db_start_hour,db_start_min,0); // Unsure why I need to subtract 11 from the month
-                calendar_end.set(db_end_year,db_end_month - 1,db_end_day,db_end_hour,db_end_min,0); // Unsure why I need to subtract 11 from the month
+                // UTC and user time zone ZoneIds
+                ZoneId utc_zone = ZoneId.of("UTC");
+                ZoneId user_zone = ZoneId.systemDefault();
 
-                SimpleDateFormat sdf_start = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                SimpleDateFormat sdf_end = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                // Convert LocalDateTime utc_start_dt into a ZonedDateTime
+                ZonedDateTime utc_start_zdt = utc_start_dt.atZone(utc_zone);
+                ZonedDateTime utc_end_zdt = utc_end_dt.atZone(utc_zone);
 
-                sdf_start.setTimeZone(TimeZone.getTimeZone("UTC"));
-                sdf_end.setTimeZone(TimeZone.getTimeZone("UTC"));
+                // Convert UTC of time to user time zone
+                ZonedDateTime user_start_zdt = utc_start_zdt.withZoneSameInstant(user_zone);
+                ZonedDateTime user_end_zdt = utc_end_zdt.withZoneSameInstant(user_zone);
 
-                sdf_start.setTimeZone(TimeZone.getDefault());
-                sdf_end.setTimeZone(TimeZone.getDefault());
+                // Convert ZonedDateTime to string for inclusion into ObservableList
+                String user_start_string = user_start_zdt.toLocalDateTime().format(dt_formatter);
+                String user_end_string = user_end_zdt.toLocalDateTime().format(dt_formatter);
 
-                Appointment newAppointment = new Appointment(appointmentId, customerId, userId, title, description, location, contact, type, url, sdf_start.format(calendar_start.getTime()), sdf_end.format(calendar_end.getTime()), createDate, createdBy, lastUpdate, lastUpdateBy);
+                Appointment newAppointment = new Appointment(appointmentId, customerId, userId, title, description, location, contact, type, url, user_start_string, user_end_string, createDate, createdBy, lastUpdate, lastUpdateBy);
 
                 CalendarData.addAppointment(newAppointment);
             }
