@@ -607,6 +607,9 @@
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <Label fx:id="TimeZoneLabelMonth" layoutX="476.0" layoutY="19.0" text="* Your time zone: PST" textFill="#0c55d3" />
+      <Label fx:id="TimeZoneLabelMonth" layoutX="476.0" layoutY="19.0" text="* Your time zone: PST" textFill="#0c55d3">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font></Label>
    </children>
 </AnchorPane>
